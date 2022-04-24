@@ -1,6 +1,6 @@
 {
-  "name": "ts-nextjs-tailwind-starter",
-  "version": "0.1.0",
+  "name": "color-ui-gen",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -21,11 +21,18 @@
   },
   "dependencies": {
     "clsx": "^1.1.1",
+    "framer-motion": "^6.3.1",
     "next": "^12.1.5",
     "react": "^18.0.0",
+    "react-colorful": "^5.5.1",
+    "react-component-export-image": "^1.0.6",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.0.0",
+    "react-hot-toast": "^2.2.0",
     "react-icons": "^4.3.1",
-    "tailwind-merge": "^1.2.1"
+    "react-tooltip": "^4.2.21",
+    "tailwind-merge": "^1.2.1",
+    "tinycolor2": "^1.4.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",
@@ -35,7 +42,9 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@types/react": "^18.0.6",
+    "@types/react-copy-to-clipboard": "^5.0.2",
     "@types/tailwindcss": "^3.0.10",
+    "@types/tinycolor2": "^1.4.3",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "autoprefixer": "^10.4.4",
