@@ -9,7 +9,6 @@ function ColorPicker({ type, colors, onChange, onDismiss }) {
     const { value } = e.target;
     const color = tinycolor(value);
     if (color.isValid()) {
-      console.log(`${type} color changed to ${color.toHexString()}`);
       setCurrentColor(color.getOriginalInput());
       onChange((prev) => ({ ...prev, [type]: color.toHexString() }));
     } else {

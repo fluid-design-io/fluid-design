@@ -9,7 +9,9 @@ import ColorPaletteComponent from './ColorPaletteComponent';
 import ColorPillComponent from './ColorPillComponent';
 
 interface ColorPickerProps {
-  colors: any;
+  colors: {
+    [key: string]: string;
+  };
   onChangeColor: (e) => void;
   inputs: {
     isEditing: boolean;
