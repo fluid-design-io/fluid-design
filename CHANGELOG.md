@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](https://github.com/fluid-design-io/color-ui-generator/compare/v1.0.6...v1.0.7) (2022-04-24)
+
+
+### Bug Fixes
+
+* fixed ESLint errors ([5c2f14b](https://github.com/fluid-design-io/color-ui-generator/commit/5c2f14baab40a36200961138e491c7b000e886a4))
+
 ### [1.0.6](https://github.com/fluid-design-io/color-ui-generator/compare/v1.0.5...v1.0.6) (2022-04-24)
 
 
