@@ -1,73 +1,81 @@
-import * as React from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { useRef, useState } from 'react';
 
+import ColorComponent from '@/components/ColorComponent';
+import ColorPicker from '@/components/ColorPicker';
 import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
 import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
 import Seo from '@/components/Seo';
 
-/**
- * SVGR Support
- * Caveat: No React Props Type.
- *
- * You can override the next-env if the type is important to you
- * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
- */
-import Vercel from '~/svg/Vercel.svg';
-
-// !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
-// Before you begin editing, follow all comments with `STARTERCONF`,
-// to customize the default configuration.
-
 export default function HomePage() {
+  const [colors, setColors] = useState({
+    primary: '#87789B',
+    secondary: '#F3F3E8',
+    tertiary: '#93B2C4',
+  });
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [colorName, setColorName] = useState('Rose Pink');
+  const [isEditing, setIsEditing] = useState(false);
+  const [type, setType] = useState(null);
+  const componentRef = useRef(null);
+  const handleChangeColor = ({ type }) => {
+    setType(type);
+    setIsPickerOpen(true);
+  };
   return (
     <Layout>
       {/* <Seo templateTitle='Home' /> */}
       <Seo />
 
       <main>
-        <section className='bg-white'>
-          <div className='layout flex min-h-screen flex-col items-center justify-center text-center'>
-            <Vercel className='text-5xl' />
-            <h1 className='mt-4'>
-              Next.js + Tailwind CSS + TypeScript Starter
-            </h1>
-            <p className='mt-2 text-sm text-gray-800'>
-              A starter for Next.js, Tailwind CSS, and TypeScript with Absolute
-              Import, Seo, Link component, pre-configured with Husky{' '}
-            </p>
-            <p className='mt-2 text-sm text-gray-700'>
-              <ArrowLink href='https://github.com/theodorusclarence/ts-nextjs-tailwind-starter'>
-                See the repository
-              </ArrowLink>
-            </p>
-
-            <ButtonLink className='mt-6' href='/components' variant='light'>
-              See all components
-            </ButtonLink>
-
-            <UnstyledLink
-              href='https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Ftheodorusclarence%2Fts-nextjs-tailwind-starter'
-              className='mt-4'
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                width='92'
-                height='32'
-                src='https://vercel.com/button'
-                alt='Deploy with Vercel'
+        <section>
+          <div className='mx-auto flex min-h-screen max-w-[93.75rem] flex-col items-center justify-center px-4 text-center'>
+            <AnimatePresence>
+              {isPickerOpen && (
+                <ColorPicker
+                  type={type}
+                  colors={colors}
+                  onChange={setColors}
+                  onDismiss={() => setIsPickerOpen(false)}
+                />
+              )}
+              <ColorComponent
+                ref={componentRef}
+                key='color-component'
+                colors={colors}
+                onChangeColor={handleChangeColor}
+                inputs={{
+                  ...{ isEditing, colorName, setColorName, setIsEditing },
+                }}
               />
-            </UnstyledLink>
-
-            <footer className='absolute bottom-2 text-gray-700'>
-              © {new Date().getFullYear()} By{' '}
-              <UnderlineLink href='https://theodorusclarence.com?ref=tsnextstarter'>
-                Theodorus Clarence
-              </UnderlineLink>
-            </footer>
+            </AnimatePresence>
+            <button
+              disabled={isEditing}
+              className='rounded-full border border-stone-800 bg-transparent py-2 px-4 font-semibold text-stone-800 shadow-lg transition hover:animate-flicker hover:bg-stone-800 hover:text-white hover:shadow-none focus:outline-none disabled:animate-none disabled:cursor-not-allowed disabled:opacity-20 dark:bg-transparent dark:text-stone-100 dark:hover:bg-stone-50 dark:hover:text-black'
+              onClick={async () => {
+                const { exportComponentAsPNG } = await import(
+                  'react-component-export-image'
+                );
+                exportComponentAsPNG(componentRef, {
+                  // replace space colorName with dash
+                  fileName: `color-picker-${colorName.replace(/\s/g, '-')}`,
+                  html2CanvasOptions: {
+                    backgroundColor: 'transparent',
+                    scale: 2,
+                  },
+                });
+              }}
+            >
+              Export As PNG
+            </button>
           </div>
         </section>
+        <footer className='pt-24 pb-8 text-center text-gray-700'>
+          © {new Date().getFullYear()} By{' '}
+          <UnderlineLink href='https://design-by-oliver.vercel.app'>
+            Oliver Pan
+          </UnderlineLink>
+        </footer>
       </main>
     </Layout>
   );
