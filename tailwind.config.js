@@ -59,6 +59,11 @@ module.exports = {
         flicker: 'flicker 3s linear infinite',
         shimmer: 'shimmer 1.3s linear infinite',
       },
+      screens: {
+        'pointer-hover': { 'raw': '(hover: hover) and (pointer: fine)' },
+        'pointer-touch': { 'raw': '(hover: none) and (pointer: coarse)' },
+        'prefers-contrast': { 'raw': '(prefers-contrast: more)' },
+      }
     },
   },
   plugins: [require('@tailwindcss/forms')],
