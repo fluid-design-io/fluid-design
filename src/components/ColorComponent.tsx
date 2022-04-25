@@ -26,7 +26,7 @@ const ColorComponent = React.forwardRef(
     const { isEditing, colorName, setColorName, setIsEditing } = inputs;
     return (
       <div
-        className='my-8 flex h-full w-full items-center justify-center'
+        className='flex h-full w-full items-center justify-center'
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         ref={ref}
@@ -39,7 +39,6 @@ const ColorComponent = React.forwardRef(
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
                     key='color-name-input'
                     className='-my-1.5 -mx-4 overflow-hidden rounded-xl'
                   >
@@ -69,7 +68,6 @@ const ColorComponent = React.forwardRef(
                   <motion.div
                     initial={false}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
                     key='color-name-text'
                     className='-mx-4 -my-2 overflow-hidden rounded-xl px-4 py-2  transition-colors hover:bg-stone-400/30'
                   >
