@@ -43,7 +43,8 @@ You can change the `Awesome Color` to any name, e.g. `Brand Green`, `Company Blu
 
 Click each `Color Area` from `Base Colors` to change colors
 
-<img width="300" alt="color-picker" src="https://user-images.githubusercontent.com/13263720/165002684-7ca143f3-47f8-44c9-8eac-6118f666e057.png">
+https://user-images.githubusercontent.com/13263720/165012924-b3b47869-b602-4c5f-b25a-4a14b3a05d07.mp4
+
 
 ### 3. Save it
 
