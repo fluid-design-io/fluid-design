@@ -69,7 +69,7 @@ const ColorComponent = React.forwardRef(
                     initial={false}
                     animate={{ opacity: 1 }}
                     key='color-name-text'
-                    className='-mx-4 -my-2 overflow-hidden rounded-xl px-4 py-2  transition-colors hover:bg-stone-400/30'
+                    className='-mx-4 -my-2 overflow-hidden whitespace-pre rounded-xl px-4  py-2 transition-colors hover:bg-stone-400/30'
                   >
                     <motion.h1
                       layout
