@@ -4,14 +4,14 @@
 
 <h1>Color UI Generator 🎨</h1>  
 </div>
-<div>
-<p>
-This is a simple color UI generator.
-It generates 3 color palettes based on primary, secondary and tertiary colors.
-t generates a gray scale color palette based on the primary color.
-It generates 6 analogous & monochromatic color palettes based on the primary color.
-It also generates a few more analogous color palettes based on the primary, secondary and tertiary colors.
-</p>
+<div align="left">
+
+- This is a simple color UI generator.
+- It generates 3 color palettes based on primary, secondary and tertiary colors.
+- It generates a gray scale color palette based on the primary color.
+- It generates 6 analogous & monochromatic color palettes based on the primary color.
+- It also generates a few more analogous color palettes based on the primary, secondary and tertiary colors.
+
 </div>
 <div align="center">
 <img src="https://user-images.githubusercontent.com/13263720/165002692-00f36291-a4ae-4e74-bfcb-56c55e49e2c6.png" alt="color UI generator cover" width="100%" />
@@ -43,7 +43,8 @@ You can change the `Awesome Color` to any name, e.g. `Brand Green`, `Company Blu
 
 Click each `Color Area` from `Base Colors` to change colors
 
-<img width="300" alt="color-picker" src="https://user-images.githubusercontent.com/13263720/165002684-7ca143f3-47f8-44c9-8eac-6118f666e057.png">
+https://user-images.githubusercontent.com/13263720/165012924-b3b47869-b602-4c5f-b25a-4a14b3a05d07.mp4
+
 
 ### 3. Save it
 
