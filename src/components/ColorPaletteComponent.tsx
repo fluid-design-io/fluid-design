@@ -1,31 +1,16 @@
+import chroma from 'chroma-js';
 import { IoIosCopy } from 'react-icons/io';
 import tinycolor from 'tinycolor2';
 
 import CopyButton from './CopyButton';
 
 function ColorPaletteComponent({ color, type }) {
-  const brightness = tinycolor(color).getBrightness() / 255;
-  const luminance = tinycolor(color).getLuminance();
-  const average = (Math.round(((brightness + luminance) / 2) * 10) / 10) * 9; // 0-9
-  const colorIndex = 9 - Math.round(average);
-  // console.log(
-  //   `${type} ${colorIndex}, brightness: ${brightness}, luminance: ${luminance}, average: ${average}`
-  // );
   // create an array total of 10 colors, based on colorIndex index, and map over it
   const colors = Array.from({ length: 10 }, (_, i) => {
-    // based on colorIndex, create a color that is 10% lighter or darker
-    const colorObj =
-      i === colorIndex
-        ? tinycolor(color).toHexString()
-        : i < colorIndex
-        ? tinycolor(color)
-            .brighten((colorIndex - i) * 8.5)
-            .desaturate((colorIndex - i) * average)
-            .toHexString()
-        : tinycolor(color)
-            .darken((i - colorIndex) * 8.5)
-            .desaturate((i - colorIndex) * average)
-            .toHexString();
+    const colorObj = chroma(color)
+      .set('lch.l', (9 - i) * 9 + 10)
+      .hex();
+
     return (
       <ColorPalette
         key={`${type}.${i}.${colorObj}`}

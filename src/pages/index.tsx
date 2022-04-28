@@ -1,16 +1,16 @@
+import chroma from 'chroma-js';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef, useState } from 'react';
+import tinycolor from 'tinycolor2';
 
 import ColorComponent from '@/components/ColorComponent';
 import ColorPicker from '@/components/ColorPicker';
 import UnderlineLink from '@/components/links/UnderlineLink';
 import Seo from '@/components/Seo';
 
-export default function HomePage() {
+export default function HomePage({ initColors }) {
   const [colors, setColors] = useState({
-    primary: '#87789B',
-    secondary: '#F3F3E8',
-    tertiary: '#93B2C4',
+    ...initColors,
   });
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [colorName, setColorName] = useState('Awesome Color');
@@ -88,4 +88,31 @@ export default function HomePage() {
       </main>
     </>
   );
+}
+
+// a next.js static function
+export async function getStaticProps() {
+  // generate a boolean based on if number is less than or equal to 0.5
+  const primaryColor = chroma.random().hex();
+  const isDark = chroma(primaryColor).luminance() <= 0.5 ? -1 : 1;
+  const saturation = chroma(primaryColor).get('hsl.s');
+  const isSaturate = saturation < 0.5 ? 1 : -1;
+  const initColors = {
+    primary: primaryColor,
+    secondary: tinycolor(primaryColor)
+      .spin(180)
+      .darken(isDark * 20)
+      .saturate(isSaturate * 20)
+      .toHexString(),
+    tertiary: tinycolor(primaryColor)
+      .spin(isDark * 35)
+      .darken(isDark * 10)
+      .saturate(isSaturate * 20)
+      .toHexString(),
+  };
+  return {
+    props: {
+      initColors,
+    },
+  };
 }

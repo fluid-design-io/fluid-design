@@ -12,7 +12,15 @@ function ColorMainComponent({ color, type, onClick }) {
       className='flex flex-row-reverse overflow-hidden rounded-xl sm:flex-col lg:flex-row-reverse xl:flex-col'
       style={{
         backgroundColor: colorObj.toHexString(),
-        boxShadow: `0 25px 50px -12px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.25), 0 10px 50px -12px rgba(0, 0, 0, 0.08)`,
+        boxShadow: `0 25px 50px -12px rgba(${rgb.r}, ${rgb.g}, ${
+          rgb.b
+        }, ${Math.min(
+          colorObj.getBrightness() / 255 / 5 + 0.1,
+          1
+        )}), 0 10px 50px -12px rgba(140, 140, 140,${Math.min(
+          colorObj.getBrightness() / 255 / 5 + 0.08,
+          1
+        )})`,
       }}
     >
       <motion.button
