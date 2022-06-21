@@ -34,7 +34,7 @@ export default function Header() {
               </li>
             ))}
             <li className='-mb-[1px] rounded px-1.5 py-0.5 font-mono text-xs text-stone-400 ring-1 ring-stone-400 dark:text-stone-500 dark:ring-stone-500'>
-              <span>V1.1.0</span>
+              <span>V1.2.2</span>
             </li>
           </ul>
         </nav>
