@@ -5,11 +5,10 @@ import { openGraph } from '@/lib/helper';
 
 const defaultMeta = {
   title: 'Color UI Generator',
-  siteName: 'Color UI Generator | A beautiful color palette generator',
-  description:
-    'A starter for Next.js, Tailwind CSS, and TypeScript with Absolute Import, Seo, Link component, pre-configured with Husky',
+  siteName: 'Color UI Generator',
+  description: 'A beautiful color palette generator',
   /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
-  url: 'https://color-ui-.vercel.app',
+  url: 'https://color-ui-generator.vercel.app',
   type: 'website',
   robots: 'follow, index',
   /** No need to be filled, will be populated with openGraph function */

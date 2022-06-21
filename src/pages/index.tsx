@@ -23,8 +23,10 @@ export default function HomePage({ initColors }) {
   };
   return (
     <>
-      {/* <Seo templateTitle='Home' /> */}
-      <Seo />
+      <Seo
+        templateTitle='Awesome Color'
+        image='https://github.com/assets/13263720/00f36291-a4ae-4e74-bfcb-56c55e49e2c6'
+      />
 
       <main>
         <section className='min-h-main mx-auto flex max-w-[93.75rem] items-center justify-center px-4'>
