@@ -93,7 +93,7 @@ export default function HomePage({ initColors }) {
 }
 
 // a next.js static function
-export async function getStaticProps() {
+export async function getServerSideProps() {
   // generate a boolean based on if number is less than or equal to 0.5
   const primaryColor = chroma.random().hex();
   const isDark = chroma(primaryColor).luminance() <= 0.5 ? -1 : 1;
