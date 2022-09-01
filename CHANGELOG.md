@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/fluid-design-io/color-ui-generator/compare/v1.2.0...v1.3.0) (2022-09-01)
+
+
+### Features
+
+* 🚀 Rewrote color palette logic ([6cdb0b0](https://github.com/fluid-design-io/color-ui-generator/commit/6cdb0b01c442bacff755b56f07d3804412e35f76))
+* updated SEO settings ([a955dde](https://github.com/fluid-design-io/color-ui-generator/commit/a955dde542d61a0e850a7a93f802da7eee286c0a))
+
+
+### Bug Fixes
+
+* random color on page refresh ([c0a8369](https://github.com/fluid-design-io/color-ui-generator/commit/c0a836909183d18f674470f26d746ed30571114d))
+* updated version number ([20c459a](https://github.com/fluid-design-io/color-ui-generator/commit/20c459ae42242eeab4b5ccc7e158947e6d57943b))
+
 ## [1.2.0](https://github.com/fluid-design-io/color-ui-generator/compare/v1.1.1...v1.2.0) (2022-04-28)
 
 
