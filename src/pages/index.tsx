@@ -83,7 +83,7 @@ export default function HomePage({ initColors }) {
         </section>
         <footer className='pt-24 pb-8 text-center text-gray-700'>
           © {new Date().getFullYear()} By{' '}
-          <UnderlineLink href='https://design-by-oliver.vercel.app'>
+          <UnderlineLink href='https://designed-by-oliver.vercel.app/'>
             Oliver Pan
           </UnderlineLink>
         </footer>
