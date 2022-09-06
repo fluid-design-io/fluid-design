@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.2](https://github.com/fluid-design-io/color-ui-generator/compare/v2.0.1...v2.0.2) (2022-09-06)
+
 ### [2.0.1](https://github.com/fluid-design-io/color-ui-generator/compare/v1.3.0...v2.0.1) (2022-09-06)
 
 
