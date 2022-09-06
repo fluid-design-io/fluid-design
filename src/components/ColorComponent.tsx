@@ -3,15 +3,15 @@ import React from 'react';
 import { MdColorLens } from 'react-icons/md';
 import tinycolor from 'tinycolor2';
 
+import { AppContextProps } from '@/lib/AppContext';
+
 import ColorBoxComponent from './ColorBoxComponent';
 import ColorMainComponent from './ColorMainComponent';
 import ColorPaletteComponent from './ColorPaletteComponent';
 import ColorPillComponent from './ColorPillComponent';
 
 interface ColorPickerProps {
-  colors: {
-    [key: string]: string;
-  };
+  colors: AppContextProps['baseColors'];
   onChangeColor: (e) => void;
   inputs: {
     isEditing: boolean;
@@ -31,10 +31,10 @@ const ColorComponent = React.forwardRef(
         //@ts-ignore
         ref={ref}
       >
-        <div className='min-h-[24rem] w-full rounded-3xl bg-white p-6 dark:bg-black sm:p-8 lg:p-10'>
+        <div className='min-h-[24rem] w-full rounded-3xl bg-white p-6 transition-colors dark:bg-black sm:p-8 lg:p-10'>
           <div className='flex flex-wrap items-end justify-start gap-4 lg:gap-8'>
             <div>
-              <AnimatePresence exitBeforeEnter>
+              <AnimatePresence mode='wait'>
                 {isEditing ? (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -140,7 +140,7 @@ const ColorComponent = React.forwardRef(
                     colors.primary,
                     10
                   )
-                  .toRgbString()}
+                  .toHexString()}
                 type='gray'
               />
               <div className='grid w-full grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8'>

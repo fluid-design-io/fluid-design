@@ -3,16 +3,21 @@ import tinycolor from 'tinycolor2';
 
 import notify from '@/lib/toast';
 
-function CopyButton({ children, color, copiedText = 'Copied!' }) {
-  const isDark = tinycolor(color).isDark();
+function CopyButton({
+  children,
+  color = undefined,
+  text = undefined,
+  copiedText = 'Copied!',
+}) {
+  const isDark = color ? tinycolor(color).isDark() : false;
   return (
     <CopyToClipboard
-      text={color}
+      text={color || text}
       onCopy={() =>
         notify({
           text: copiedText,
           style: {
-            backgroundColor: color,
+            backgroundColor: color || '#FFF',
             color: isDark ? '#FFF' : '#000',
           },
         })

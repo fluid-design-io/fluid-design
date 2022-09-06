@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 
+import { useThemeMode } from '@/lib/ThemeContext';
+
 import UnstyledLink from '@/components/links/UnstyledLink';
+
+import { ThemeSwitch } from '../ThemeSwitch';
 
 const links = [
   {
@@ -12,9 +16,13 @@ const links = [
 ];
 
 export default function Header() {
+  const [mode, setMode] = useThemeMode(true);
+  const handleModeChange = (mode: 'light' | 'dark') => {
+    setMode(mode);
+  };
   return (
     <header className=''>
-      <div className='layout flex h-14 items-center justify-between'>
+      <div className='layout flex h-14 w-full items-center justify-between'>
         <UnstyledLink
           href='/'
           className='bg-gradient-to-tr from-stone-800 to-stone-400 bg-clip-text font-medium text-stone-700 text-transparent hover:text-gray-500 dark:from-stone-50 dark:to-stone-500'
@@ -23,6 +31,10 @@ export default function Header() {
         </UnstyledLink>
         <nav>
           <ul className='flex items-center justify-between space-x-4'>
+            <ThemeSwitch
+              handleModeChange={handleModeChange}
+              mode={mode as 'light' | 'dark'}
+            />
             {links.map(({ href, label }) => (
               <li key={`${href}${label}`}>
                 <UnstyledLink
@@ -34,7 +46,7 @@ export default function Header() {
               </li>
             ))}
             <li className='-mb-[1px] rounded px-1.5 py-0.5 font-mono text-xs text-stone-400 ring-1 ring-stone-400 dark:text-stone-500 dark:ring-stone-500'>
-              <span>V1.2.2</span>
+              <span>V2.0.0</span>
             </li>
           </ul>
         </nav>

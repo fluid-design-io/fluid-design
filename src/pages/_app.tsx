@@ -2,6 +2,8 @@ import { AppProps } from 'next/app';
 
 import '@/styles/globals.css';
 
+import { AppProvider } from '@/lib/AppContext';
+
 import Layout from '@/components/layout/Layout';
 
 /**
@@ -11,9 +13,11 @@ import Layout from '@/components/layout/Layout';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <AppProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </AppProvider>
   );
 }
 

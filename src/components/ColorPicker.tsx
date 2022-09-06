@@ -1,16 +1,28 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import tinycolor from 'tinycolor2';
 
-function ColorPicker({ type, colors, onChange, onDismiss }) {
+import { BaseColors } from '@/lib/AppContext';
+
+function ColorPicker({
+  type,
+  colors,
+  onChange,
+  onDismiss,
+}: {
+  type: keyof BaseColors;
+  colors: BaseColors;
+  onChange: Dispatch<SetStateAction<BaseColors>>;
+  onDismiss: () => void;
+}) {
+  const submitRef = useRef<HTMLButtonElement>(null);
   const [currentColor, setCurrentColor] = useState(colors[type]);
   const handleInputChange = (e) => {
     const { value } = e.target;
     const color = tinycolor(value);
     if (color.isValid()) {
-      setCurrentColor(color.getOriginalInput());
-      onChange((prev) => ({ ...prev, [type]: color.toHexString() }));
+      setCurrentColor(color.getOriginalInput() as string);
     } else {
       setCurrentColor(value);
     }
@@ -20,15 +32,12 @@ function ColorPicker({ type, colors, onChange, onDismiss }) {
       key={`color-picker-${type}`}
       initial={{
         backgroundColor: 'rgba(150,150,150,0)',
-        backdropFilter: 'blur(0px)',
       }}
       animate={{
-        backgroundColor: colors[type],
-        backdropFilter: 'blur(2px)',
+        backgroundColor: currentColor,
       }}
       exit={{
         backgroundColor: 'rgba(150,150,150,0)',
-        backdropFilter: 'blur(0px)',
       }}
       className='fixed inset-0 z-10 flex h-screen w-full items-center justify-center'
     >
@@ -42,7 +51,7 @@ function ColorPicker({ type, colors, onChange, onDismiss }) {
         <motion.div className='px-4' layoutId={`picker-area-${type}`}>
           <HexColorPicker
             color={colors[type]}
-            onChange={(c) => onChange((prev) => ({ ...prev, [type]: c }))}
+            onChange={(c) => setCurrentColor(c)}
             className='!w-full'
           />
         </motion.div>
@@ -62,15 +71,33 @@ function ColorPicker({ type, colors, onChange, onDismiss }) {
               autoFocus
               value={currentColor}
               onChange={handleInputChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  submitRef.current?.click();
+                }
+              }}
             />
           </form>
         </motion.div>
-        <button
-          className='block w-full rounded-b-xl border-t border-t-stone-400/20 px-4 py-2 text-stone-800 transition hover:bg-stone-400/20 dark:text-stone-100'
-          onClick={onDismiss}
-        >
-          Done
-        </button>
+        <div className='flex'>
+          <button
+            className='block w-full rounded-bl-xl border-t border-t-stone-400/20 px-4 py-2 text-stone-800 transition hover:bg-stone-400/20 dark:text-stone-100'
+            onClick={onDismiss}
+          >
+            Cancel
+          </button>
+          <button
+            ref={submitRef}
+            className='block w-full rounded-br-xl border-t border-t-stone-400/20 px-4 py-2 text-stone-800 transition hover:bg-stone-400/20 dark:text-stone-100'
+            onClick={() => {
+              onChange((prev) => ({ ...prev, [type]: currentColor }));
+              onDismiss();
+            }}
+          >
+            Done
+          </button>
+        </div>
       </motion.div>
     </motion.div>
   );
