@@ -19,6 +19,7 @@ class MyDocument extends Document {
           <link
             rel='preload'
             href='/fonts/inter-var-latin.woff2'
+            // eslint-disable-next-line react/no-unknown-property
             as='font'
             type='font/woff2'
             crossOrigin='anonymous'
