@@ -20,9 +20,6 @@ export const translateColor = ({
     case 'rgb':
       convertedColor = color.css();
       break;
-    case 'rgba':
-      convertedColor = color.alpha(1).css();
-      break;
     case 'hsl':
       convertedColor = color.css('hsl');
       break;
