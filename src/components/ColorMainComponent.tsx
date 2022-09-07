@@ -45,7 +45,7 @@ function ColorMainComponent({ color, type, onClick }) {
           style={{ color: tinycolor(color).isDark() ? '#FFF' : '#000' }}
         />
       </motion.button>
-      <div className='min-w-[8.125rem] flex-1 bg-white px-2 py-4 text-left dark:bg-stone-900 sm:w-full sm:px-4 xl:w-full'>
+      <div className='min-w-[8.125rem] flex-shrink-0 bg-white px-2 py-10 text-left dark:bg-stone-900 sm:w-full sm:flex-1 sm:py-4 sm:px-4 xl:w-full'>
         <p className='text-xs font-semibold capitalize leading-none text-stone-800 dark:text-stone-100'>
           {type}
         </p>
