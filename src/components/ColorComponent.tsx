@@ -4,6 +4,7 @@ import { MdColorLens } from 'react-icons/md';
 import tinycolor from 'tinycolor2';
 
 import { AppContextProps } from '@/lib/AppContext';
+import clsxm from '@/lib/clsxm';
 
 import ColorBoxComponent from './ColorBoxComponent';
 import ColorMainComponent from './ColorMainComponent';
@@ -24,6 +25,17 @@ interface ColorPickerProps {
 const ColorComponent = React.forwardRef(
   ({ colors, onChangeColor, inputs }: ColorPickerProps, ref) => {
     const { isEditing, colorName, setColorName, setIsEditing } = inputs;
+    const ColorPillBody = ({ className }) => (
+      <div className={clsxm('flex-col gap-4 sm:gap-6', className)}>
+        <h3 className='pt-4 text-left font-semibold text-stone-700 dark:text-stone-200 lg:pt-8'>
+          Analogous &amp; monochromatic
+        </h3>
+        <div className='grid gap-3 sm:grid-cols-2 sm:gap-6 '>
+          <ColorPillComponent color={colors.primary} type='anal' />
+          <ColorPillComponent color={colors.primary} type='mono' />
+        </div>
+      </div>
+    );
     return (
       <div
         className='flex h-full w-full items-center justify-center'
@@ -113,15 +125,7 @@ const ColorComponent = React.forwardRef(
                   />
                 </div>
               </div>
-              <div className='flex flex-col gap-4 sm:gap-6'>
-                <h3 className='pt-4 text-left font-semibold text-stone-700 dark:text-stone-200 lg:pt-8'>
-                  Analogous &amp; monochromatic
-                </h3>
-                <div className='grid gap-3 sm:grid-cols-2 sm:gap-6 '>
-                  <ColorPillComponent color={colors.primary} type='anal' />
-                  <ColorPillComponent color={colors.primary} type='mono' />
-                </div>
-              </div>
+              <ColorPillBody className='hidden sm:flex' />
             </div>
             <div className='col-span-12 flex flex-col items-start justify-start gap-4 sm:gap-6 md:col-span-8 xl:col-span-7'>
               <h3 className='text-left font-semibold text-stone-700 dark:text-stone-200'>
@@ -143,6 +147,7 @@ const ColorComponent = React.forwardRef(
                   .toHexString()}
                 type='gray'
               />
+              <ColorPillBody className='flex w-full sm:hidden' />
               <div className='grid w-full grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8'>
                 <ColorBoxComponent color={colors.primary} type='primary' />
                 <ColorBoxComponent color={colors.secondary} type='secondary' />
