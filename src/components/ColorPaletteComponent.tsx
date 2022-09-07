@@ -32,14 +32,16 @@ function ColorPaletteComponent({
         calculatedColor = rawColor.set('lch.l', (9 - i) * 9.85 + 8.5);
       } else {
         let hue = Math.round(rawColor.hsl()[0] * 10) / 10;
+        const sat = Math.round(rawColor.hsl()[1] * 10) / 10;
+        const lum = Math.round(rawColor.hsv()[2] * 10) / 10;
         // if hue is Nan, set it to 0
         if (isNaN(hue)) {
-          calculatedColor = rawColor;
+          calculatedColor = rawColor.set('lch.l', (9 - i) * 9.85 + 8.5);
         } else {
-          hue === 0 ? (hue = 359.9) : hue;
-          hue === 360 ? (hue = 0.1) : hue;
-          const saturation = calculateSaturation(hue, 10 - i);
-          const luminescence = getColorLuminescence(hue, 10 - i);
+          hue === 360 ? (hue = 0.001) : hue;
+          hue === 0 ? (hue = 0.001) : hue;
+          const saturation = calculateSaturation(hue, sat, 10 - i);
+          const luminescence = getColorLuminescence(hue, lum, 10 - i);
           const colorString = `hsl(${hue}, ${saturation}%, ${luminescence}%)`;
           calculatedColor = chroma(colorString);
         }
