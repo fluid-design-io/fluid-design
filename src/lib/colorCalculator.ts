@@ -408,18 +408,30 @@ const formulaLightness = {
 };
 
 /** Calculate the ratio between the closest two colors hue values
- and use that to interpolate the formula for the saturation
- Example: inputHue = 11, which means we are between red (0) and orange (22), so we calculate the ratio between 11 and 22,
- the answer is 0.5, so we use the formula for orange and multiply it by 0.5, and add the result to the formula for red and multiply it by 0.5.
- Return the function that calculates the saturation for the given hue.
+ and use that to interpolate the formula for the given input hue
+ @param {number} inputHue - The input value
+ @param {formula} formula - The formula to use
+ @param {factor} factor - @defaultValue `1` Apply a factor to the result
+
+ Example:
+ If `inputHue` = `11`, which means we are between *red* (0) and *orange* (22), so we calculate the ratio between `11` and `22`,
+ the answer is `0.5`, so we use the formula for orange and multiply it by `0.5`, and add the result to the formula for red and multiply it by `0.5`.
+ Finally, apply the factor and return the result.
+ Return the function that calculates the given input hue for the given hue.
 */
-export const getUnionFormula = (inputHue: number, formula: Formula) => {
+export const getUnionFormula = (
+  inputHue: number,
+  formula: Formula,
+  factor = 1
+) => {
   if (!inputHue) {
     throw new Error('Hue must be a number');
   }
   if (!formula) {
     throw new Error('Formula is required');
   }
+  // convert the factor to a number between 0 and 1
+  factor = factor > 1 ? factor * 0.01 : factor < 0 ? 0 : factor;
   const hue = inputHue % 360;
   const closestHues = Object.keys(formula).reduce(
     (acc, key) => {
@@ -439,7 +451,7 @@ export const getUnionFormula = (inputHue: number, formula: Formula) => {
   const closerFormula = formula[closerKey].formula;
   const formulaToUse = formula[key].formula;
   return (step: number) =>
-    ratio * formulaToUse(step) + (1 - ratio) * closerFormula(step);
+    (ratio * formulaToUse(step) + (1 - ratio) * closerFormula(step)) * factor;
 };
 
 const numberBoundry = (num: number, min = 0, max = 100) =>
@@ -448,11 +460,16 @@ const numberBoundry = (num: number, min = 0, max = 100) =>
 /**
   A function calculates saturation based on the given hue and step.
   @param {number} hue - a number between 0 and 360
+  @param {number} saturation - a number between 0 and 1
   @param {number} step - a number between 1 and 10 (represents 50 - 900)
   @returns {number} a number between 0 and 100, in percentage
 */
-export const calculateSaturation = (hue: number, step: number) => {
-  const saturationFormula = getUnionFormula(hue, formulaSaturation);
+export const calculateSaturation = (
+  hue: number,
+  saturation: number,
+  step: number
+) => {
+  const saturationFormula = getUnionFormula(hue, formulaSaturation, saturation);
   const res = numberBoundry(saturationFormula(step));
   return res;
 };
@@ -460,36 +477,48 @@ export const calculateSaturation = (hue: number, step: number) => {
 /**
  * A function that returns color luminescence based on hue range and step
  * @param {number} hue - Hue value, 0-360
+ * @param {number} luminance - Luminance value, 0-1
  * @param {number} step - Step value, 1-10 (1 = darkest, 10 = lightest)
  * @returns {number} - Luminescence value, 0-100
  */
-
-export const getColorLuminescence = (hue: number, step: number): number => {
+export const getColorLuminescence = (
+  hue: number,
+  luminance: number,
+  step: number
+): number => {
+  const lumInfluence = Math.round(luminance * 0.05 * 100) / 100 + 0.95;
   const luminescenceFormula = getUnionFormula(hue, formulaLightness);
-  const res = numberBoundry(luminescenceFormula(step));
+  let res = numberBoundry(luminescenceFormula(step));
+  /* 
+    Fixes for out liners based on Tailwind Color Palette ranges
+    This means that no color within certain step will be lighter or darker than the range
+  */
   if (step === 1) {
-    if (res > 21) return 21;
-    if (res < 14) return 14;
+    if (res > 21) res = 21;
+    if (res < 14) res = 14;
   }
   if (step === 2) {
-    if (res > 36) return 36;
-    if (res < 20) return 20;
+    if (res > 36) res = 36;
+    if (res < 20) res = 20;
   }
   if (step === 7) {
-    if (res > 76) return 76;
-    if (res < 58) return 58;
+    if (res > 76) res = 76;
+    if (res < 58) res = 58;
   }
   if (step === 8) {
-    if (res > 81) return 81;
-    if (res < 68) return 68;
+    if (res > 81) res = 81;
+    if (res < 68) res = 68;
   }
   if (step === 9) {
-    if (res > 90) return 90;
-    if (res < 83) return 83;
+    if (res > 90) res = 90;
+    if (res < 83) res = 83;
   }
   if (step === 10) {
-    if (res > 97) return 97;
-    if (res <= 90) return 93;
+    if (res > 97) res = 97;
+    if (res <= 93) res = 93;
   }
+  // Apply the luminance factor one more time to ensure the color is reflecting the luminance value
+  res = Math.round(res * lumInfluence);
+
   return res;
 };
