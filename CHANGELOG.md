@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/fluid-design-io/color-ui-generator/compare/v2.1.2...v2.2.0) (2022-09-07)
+
+
+### Features
+
+* added saturation factor ([656db9d](https://github.com/fluid-design-io/color-ui-generator/commit/656db9dc5b92936b0d4530681762dc942a196fcc))
+* added support for calculate tone (saturation) ([2e77492](https://github.com/fluid-design-io/color-ui-generator/commit/2e774926bb8bc6950c01da389af832700efccad9))
+
+
+### Bug Fixes
+
+* better mobile UI support ([d0903ac](https://github.com/fluid-design-io/color-ui-generator/commit/d0903acd606424e8bcd833a4d16e3193d37a90fe))
+* improved ui for longer color strings ([571f489](https://github.com/fluid-design-io/color-ui-generator/commit/571f489fd26a778e838b0b9c77a1fe9fd99ee702))
+* performance improvements ([0fc502b](https://github.com/fluid-design-io/color-ui-generator/commit/0fc502b06f540a3908d6a047ec9b6007180f563e))
+
 ### [2.1.2](https://github.com/fluid-design-io/color-ui-generator/compare/v2.1.1...v2.1.2) (2022-09-06)
 
 
