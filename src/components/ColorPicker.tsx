@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import tinycolor from 'tinycolor2';
 
@@ -17,7 +17,12 @@ function ColorPicker({
   onDismiss: () => void;
 }) {
   const submitRef = useRef<HTMLButtonElement>(null);
-  const [currentColor, setCurrentColor] = useState(colors[type]);
+  const [currentColor, setCurrentColor] = useState(
+    tinycolor(colors[type]).toHexString()
+  );
+  const validColor = tinycolor(currentColor).isValid()
+    ? tinycolor(currentColor).toHexString()
+    : colors[type];
   const handleInputChange = (e) => {
     const { value } = e.target;
     const color = tinycolor(value);
@@ -27,6 +32,21 @@ function ColorPicker({
       setCurrentColor(value);
     }
   };
+  // listen for escape key
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      onDismiss();
+    }
+  };
+
+  useEffect(() => {
+    // listen for escape key
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <motion.div
       key={`color-picker-${type}`}
@@ -34,12 +54,12 @@ function ColorPicker({
         backgroundColor: 'rgba(150,150,150,0)',
       }}
       animate={{
-        backgroundColor: currentColor,
+        backgroundColor: validColor,
       }}
       exit={{
         backgroundColor: 'rgba(150,150,150,0)',
       }}
-      className='fixed inset-0 z-10 flex h-screen w-full items-center justify-center'
+      className='fixed inset-0 z-10 flex h-[100dvh] w-full items-center justify-center pb-[calc(env(safe-area-inset-bottom)+20vh)] sm:pb-[env(safe-area-inset-bottom)]'
     >
       <motion.div
         layoutId={`picker-${type}`}
@@ -50,7 +70,7 @@ function ColorPicker({
         </h4>
         <motion.div className='px-4' layoutId={`picker-area-${type}`}>
           <HexColorPicker
-            color={colors[type]}
+            color={validColor}
             onChange={(c) => setCurrentColor(c)}
             className='!w-full'
           />
@@ -70,6 +90,7 @@ function ColorPicker({
               placeholder='Enter a color'
               autoFocus
               value={currentColor}
+              onFocus={(e) => e.target.select()}
               onChange={handleInputChange}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -82,14 +103,14 @@ function ColorPicker({
         </motion.div>
         <div className='flex'>
           <button
-            className='block w-full rounded-bl-xl border-t border-t-stone-400/20 px-4 py-2 text-stone-800 transition hover:bg-stone-400/20 dark:text-stone-100'
+            className='block w-full rounded-bl-xl border-r border-t border-r-stone-400/20 border-t-stone-400/20 px-4 py-2 text-stone-800 transition hocus:bg-stone-400/20 dark:text-stone-100'
             onClick={onDismiss}
           >
             Cancel
           </button>
           <button
             ref={submitRef}
-            className='block w-full rounded-br-xl border-t border-t-stone-400/20 px-4 py-2 text-stone-800 transition hover:bg-stone-400/20 dark:text-stone-100'
+            className='block w-full rounded-br-xl border-t border-t-stone-400/20 px-4 py-2 text-stone-800 transition hocus:bg-stone-400/20 dark:text-stone-100'
             onClick={() => {
               onChange((prev) => ({ ...prev, [type]: currentColor }));
               onDismiss();
