@@ -17,7 +17,9 @@ import {
   useState,
 } from 'react';
 
+import { colorStepMap } from './colorStepMap';
 import { generateBaseColors } from './generateBaseColors';
+import { ThemeProvider } from './ThemeContext';
 
 export const ColorModes = {
   hex: 'hex',
@@ -37,6 +39,12 @@ export type ColorValue =
   | {
       step: number;
       color: string;
+      raw: {
+        r: number;
+        g: number;
+        b: number;
+        a: number;
+      };
     }
   | undefined;
 
@@ -123,7 +131,11 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
     setColorValues,
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>
+      <ThemeProvider>{children}</ThemeProvider>
+    </AppContext.Provider>
+  );
 };
 
 export const useAppContext = (): AppContextProps => {
@@ -210,6 +222,18 @@ export const useColorValues = (): [
   const saveColorValues = (colorValues: AppContextProps['colorValues']) => {
     localStorage.setItem('colorValues', JSON.stringify(colorValues));
     setColorValues(colorValues);
+    // set document css variables
+    const { palette } = colorValues;
+    Object.keys(palette).forEach((key) => {
+      palette[key].forEach((value, index) => {
+        if (value) {
+          document.documentElement.style.setProperty(
+            `--color-${key}-${colorStepMap[index]}`,
+            `${value?.raw?.r} ${value?.raw?.g} ${value?.raw?.b}`
+          );
+        }
+      });
+    });
   };
 
   useEffect(() => {

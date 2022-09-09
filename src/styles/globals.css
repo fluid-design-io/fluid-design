@@ -47,6 +47,28 @@
   --color-gray-700: rgb(var(--tw-color-gray-700)); /* #404346 */
   --color-gray-800: rgb(var(--tw-color-gray-800)); /* #2b2d30 */
   --color-gray-900: rgb(var(--tw-color-gray-900)); /* #17191c */
+
+  --color-secondary-50: transparent;
+  --color-secondary-100: transparent;
+  --color-secondary-200: transparent;
+  --color-secondary-300: transparent;
+  --color-secondary-400: transparent;
+  --color-secondary-500: transparent;
+  --color-secondary-600: transparent;
+  --color-secondary-700: transparent;
+  --color-secondary-800: transparent;
+  --color-secondary-900: transparent;
+
+  --color-tertiary-50: transparent;
+  --color-tertiary-100: transparent;
+  --color-tertiary-200: transparent;
+  --color-tertiary-300: transparent;
+  --color-tertiary-400: transparent;
+  --color-tertiary-500: transparent;
+  --color-tertiary-600: transparent;
+  --color-tertiary-700: transparent;
+  --color-tertiary-800: transparent;
+  --color-tertiary-900: transparent;
 }
 
 @layer base {
@@ -61,42 +83,11 @@
       U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
       U+2215, U+FEFF, U+FFFD;
   }
-  html,
   body {
     @apply bg-stone-100 transition-colors dark:bg-stone-900;
   }
   .cursor-newtab {
     cursor: url('/images/new-tab.png') 10 10, pointer;
-  }
-
-  /* #region  /**=========== Typography =========== */
-  .h0 {
-    @apply font-primary text-3xl font-bold md:text-5xl;
-  }
-
-  h1,
-  .h1 {
-    @apply font-primary text-2xl font-bold md:text-4xl;
-  }
-
-  h2,
-  .h2 {
-    @apply font-primary text-xl font-bold md:text-3xl;
-  }
-
-  h3,
-  .h3 {
-    @apply font-primary text-lg font-bold md:text-2xl;
-  }
-
-  h4,
-  .h4 {
-    @apply font-primary text-base font-bold md:text-lg;
-  }
-
-  body,
-  .p {
-    @apply font-primary text-sm md:text-base;
   }
 
   /* #endregion  /**======== Typography =========== */

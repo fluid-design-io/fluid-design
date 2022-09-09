@@ -61,6 +61,7 @@ function ColorPaletteComponent({
     const valueStepPairs = colors(color).map(({ convertedColor }, i) => ({
       step: step(i),
       color: convertedColor,
+      raw: tinycolor(convertedColor).toRgb(),
     }));
     setColorValues((prev) => ({
       ...prev,

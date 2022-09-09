@@ -66,6 +66,7 @@ export const Toolbar = ({
         whileHover='hover'
         whileTap='tap'
         iconOnly
+        data-tooltip-right='Generate random colors'
       >
         <AnimatePresence mode='popLayout'>
           {diceIcons[dice] && (

@@ -14,7 +14,7 @@ export type Mode = string | undefined | 'light' | 'dark';
 
 interface ThemeContextProps {
   mode?: Mode;
-  toggleMode?: () => void | null;
+  setMode?: (mode: Mode) => void;
 }
 
 export const ThemeContext = createContext<ThemeContextProps>({
@@ -23,12 +23,19 @@ export const ThemeContext = createContext<ThemeContextProps>({
 
 interface ThemeProviderProps {
   children: ReactNode;
-  value: ThemeContextProps;
 }
 
-export const ThemeProvider: FC<ThemeProviderProps> = ({ children, value }) => {
+export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
+  const [mode, setMode] = useState<Mode>(undefined);
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider
+      value={{
+        mode,
+        setMode,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
   );
 };
 
@@ -43,8 +50,8 @@ export const useThemeMode = (
   React.Dispatch<React.SetStateAction<Mode>> | undefined,
   (() => void) | undefined
 ] => {
+  const { mode, setMode } = useTheme();
   if (!usePreferences) return [undefined, undefined, undefined];
-  const [mode, setMode] = useState<Mode>(undefined);
 
   const savePreference = (m: string) => localStorage.setItem('theme', m);
   // also save the time when the theme was last changed
@@ -93,6 +100,7 @@ export const useThemeMode = (
       }
 
       savePreference(mode);
+      saveTime();
 
       if (!windowExists()) {
         return;

@@ -1,49 +1,45 @@
 import { Button } from '@fluid-design/fluid-ui';
 import { IoIosCopy } from 'react-icons/io';
 
-import { BaseColors, ColorValue, useColorValues } from '@/lib/AppContext';
+import { useColorValues } from '@/lib/AppContext';
 import Code from '@/lib/Code';
 
 import CopyButton from './CopyButton';
 
-export const ColorAsTextComponent = ({ colorName }: { colorName }) => {
+export const TailwindConfigComponent = () => {
   const [colorValues] = useColorValues();
   if (!colorValues.palette || colorValues.palette.primary.length === 0)
     return null;
-  const baseName = colorName
-    .toLowerCase()
-    // replace special characters with ''
-    .replace(/[^\w\s]/gi, '')
-    // replace spaces with '-'
-    .replace(/ /g, '-');
-  const generateColorSet = (
-    type: keyof BaseColors | 'gray',
-    colors: ColorValue[]
-  ) => {
+  const { palette } = colorValues;
+  const colorSets = Object.entries(palette).map(([type, colors]) => {
     const colorSet = colors
-      .map(({ step, color }) => `  --${baseName}-${type}-${step}: ${color};\n`)
-      .join('');
-    return colorSet;
-  };
-
-  const colorSets = Object.entries(colorValues.palette)
-    .map(
-      ([type, colors]) =>
-        '\n' + generateColorSet(type as keyof BaseColors | 'gray', colors)
-    )
-    .join('');
-
+      .map(({ step, color }) => `\t\t\t${step}: '${color}',`)
+      .join('\n');
+    return `
+\t\t${type}: {
+${colorSet}
+\t\t},`;
+  });
   const content = `
 /* 
 CSS generated with Color UI Generator
 https://color-ui-generator.vercel.app/
 */
 
-:root {
-${colorSets}
-}
-  `;
-
+/* tailwind.config.js */
+  
+module.exports = {
+  // ...
+  theme: {
+    extend: {
+      colors: {
+${colorSets.join('\n')}
+      },
+    },
+  },
+  // plugins: [],
+};
+    `;
   return (
     <div className='relative mx-auto max-h-[calc(min(750px,85vh))] flex-1 flex-grow overflow-y-auto rounded-3xl bg-stone-800 shadow-2xl shadow-stone-300/30 dark:shadow-black/70'>
       <div className='pointer-events-none sticky top-4 flex w-full justify-end px-4'>
@@ -51,12 +47,11 @@ ${colorSets}
           <Button
             iconOnly
             icon={IoIosCopy}
-            weight='light'
             className='pointer-events-auto btn-primary'
           />
         </CopyButton>
       </div>
-      <Code language='css' content={content} className='w-full' />
+      <Code language='js' content={content} className='w-full' />
     </div>
   );
 };

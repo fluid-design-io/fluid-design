@@ -16,9 +16,9 @@ const links = [
 ];
 
 export default function Header() {
-  const [mode, setMode] = useThemeMode(true);
-  const handleModeChange = (mode: 'light' | 'dark') => {
-    setMode(mode);
+  const [mode, setMode, toggleMode] = useThemeMode(true);
+  const handleModeChange = () => {
+    toggleMode();
   };
   return (
     <header className=''>
@@ -46,7 +46,7 @@ export default function Header() {
               </li>
             ))}
             <li className='-mb-[1px] rounded px-1.5 py-0.5 font-mono text-xs text-stone-400 ring-1 ring-stone-400 dark:text-stone-500 dark:ring-stone-500'>
-              <span>V2.0.0</span>
+              <span>V2.3.0</span>
             </li>
           </ul>
         </nav>
