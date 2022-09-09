@@ -84,16 +84,16 @@ export default function HomePage({
                 <Tab.ListItem>About</Tab.ListItem>
               </Tab.List>
               <Tab.Panels className='my-8'>
-                <Tab.Panel>
+                <Tab.Panel tabPanelClassName=''>
                   <PreviewComponent />
                 </Tab.Panel>
-                <Tab.Panel>
+                <Tab.Panel tabPanelClassName=''>
                   <TailwindConfigComponent />
                 </Tab.Panel>
-                <Tab.Panel>
+                <Tab.Panel tabPanelClassName=''>
                   <ColorAsTextComponent colorName={colorName} />
                 </Tab.Panel>
-                <Tab.Panel>
+                <Tab.Panel tabPanelClassName=''>
                   <AboutComponent />
                 </Tab.Panel>
               </Tab.Panels>
