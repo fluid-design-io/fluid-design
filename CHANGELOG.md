@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.1](https://github.com/fluid-design-io/color-ui-generator/compare/v2.3.0...v2.3.1) (2022-09-09)
+
+
+### Bug Fixes
+
+* bug fix ([3db6176](https://github.com/fluid-design-io/color-ui-generator/commit/3db6176809fb2f838bd0cc6b1a5bc3cd05239280))
+
 ## [2.3.0](https://github.com/fluid-design-io/color-ui-generator/compare/v2.2.0...v2.3.0) (2022-09-09)
 
 
