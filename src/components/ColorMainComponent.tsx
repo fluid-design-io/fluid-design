@@ -49,7 +49,7 @@ function ColorMainComponent({ color, type, onClick }) {
         <p className='text-xs font-semibold capitalize leading-none text-stone-800 dark:text-stone-100'>
           {type}
         </p>
-        <CopyButton color={colorObj.hex()}>
+        <CopyButton color={convertedColor}>
           <button
             className='group flex w-full items-center justify-between break-all pt-1 text-start font-mono text-xs text-stone-500 transition-colors hover:text-primary-500 active:text-primary-800 dark:text-stone-400 dark:active:text-primary-200'
             aria-label={`Click to copy ${convertedColor}`}

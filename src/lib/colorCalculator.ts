@@ -470,7 +470,7 @@ export const calculateSaturation = (
   step: number
 ) => {
   const saturationFormula = getUnionFormula(hue, formulaSaturation, saturation);
-  const res = numberBoundry(saturationFormula(step));
+  const res = numberBoundry(saturationFormula(step + 1));
   return res;
 };
 
@@ -488,7 +488,7 @@ export const getColorLuminescence = (
 ): number => {
   const lumInfluence = Math.round(luminance * 0.05 * 100) / 100 + 0.95;
   const luminescenceFormula = getUnionFormula(hue, formulaLightness);
-  let res = numberBoundry(luminescenceFormula(step));
+  let res = numberBoundry(luminescenceFormula(step + 1));
   /* 
     Fixes for out liners based on Tailwind Color Palette ranges
     This means that no color within certain step will be lighter or darker than the range

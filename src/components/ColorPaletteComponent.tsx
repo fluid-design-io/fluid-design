@@ -99,7 +99,7 @@ function ColorPaletteComponent({
 const ColorPalette = ({ color, colorIndex, hexColor }) => {
   return (
     <div className='space-y-1.5'>
-      <CopyButton color={hexColor}>
+      <CopyButton color={color}>
         <button
           className='group flex h-10 w-full items-center justify-center rounded-md shadow-sm shadow-stone-400/10 transition-all duration-200 hover:scale-105 active:scale-100 dark:border dark:border-white/10 print:border-none'
           style={{
