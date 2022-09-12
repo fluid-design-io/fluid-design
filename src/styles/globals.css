@@ -105,6 +105,9 @@
 }
 
 @layer utilities {
+  .app-focus-ring {
+    @apply outline-none ring ring-primary-700 ring-offset-2 ring-offset-white dark:ring-primary-300 dark:ring-offset-black;
+  }
   .animated-underline {
     background-image: linear-gradient(#33333300, #33333300),
       linear-gradient(

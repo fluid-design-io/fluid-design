@@ -5,6 +5,7 @@ import { IoIosCopy } from 'react-icons/io';
 import tinycolor from 'tinycolor2';
 
 import { useColorMode } from '@/lib/AppContext';
+import clsxm from '@/lib/clsxm';
 import { useThemeMode } from '@/lib/ThemeContext';
 import { translateColor } from '@/lib/translateColor';
 
@@ -34,13 +35,19 @@ function ColorMainComponent({ color, type, onClick }) {
     >
       <motion.button
         layoutId={`picker-area-${type}`}
-        className='group flex w-full items-center justify-center sm:aspect-[2/1] lg:aspect-auto lg:h-full xl:aspect-square'
+        className={clsxm(
+          'group flex w-full items-center justify-center rounded-t-xl transition sm:aspect-[2/1] lg:aspect-auto lg:h-full xl:aspect-square',
+          'focus-visible:outline-none focus-visible:ring focus-visible:ring-inset focus-visible:ring-white focus-visible:ring-offset-2',
+          type === 'primary' && 'focus-visible:ring-offset-primary-500',
+          type === 'secondary' && 'focus-visible:ring-offset-secondary-500',
+          type === 'tertiary' && 'focus-visible:ring-offset-tertiary-500'
+        )}
         onClick={() => onClick({ type })}
         aria-label={`Click to edit ${type} color`}
         title={`Click to edit ${type} color`}
       >
         <SwatchIcon
-          className='h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100 md:h-8 md:w-8'
+          className='h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100 group-focus:opacity-100 md:h-8 md:w-8'
           style={{ color: tinycolor(color).isDark() ? '#FFF' : '#000' }}
         />
       </motion.button>
@@ -50,12 +57,12 @@ function ColorMainComponent({ color, type, onClick }) {
         </p>
         <CopyButton color={convertedColor}>
           <button
-            className='group flex w-full items-center justify-between break-all pt-1 text-start font-mono text-xs text-stone-500 transition-colors hover:text-primary-500 active:text-primary-800 dark:text-stone-400 dark:active:text-primary-200'
+            className='focus-visible:app-focus-ring group mt-1 flex w-full items-center justify-between break-all rounded-full text-start font-mono text-xs text-stone-500 transition hover:text-primary-500 active:text-primary-800 dark:text-stone-400 dark:active:text-primary-200'
             aria-label={`Click to copy ${convertedColor}`}
             title={`Click to copy ${convertedColor}`}
           >
             {convertedColor}
-            <IoIosCopy className='h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100' />
+            <IoIosCopy className='h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100 group-focus:opacity-100' />
           </button>
         </CopyButton>
       </div>

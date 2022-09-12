@@ -1,13 +1,16 @@
 import chroma from 'chroma-js';
-import { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { IoIosCopy } from 'react-icons/io';
 import tinycolor from 'tinycolor2';
 
 import { BaseColors, useColorMode, useColorValues } from '@/lib/AppContext';
+import clsxm from '@/lib/clsxm';
 import {
   calculateSaturation,
   getColorLuminescence,
 } from '@/lib/colorCalculator';
+import { useThemeMode } from '@/lib/ThemeContext';
 import { translateColor } from '@/lib/translateColor';
 
 import CopyButton from './CopyButton';
@@ -20,6 +23,7 @@ function ColorPaletteComponent({
   type: keyof BaseColors | 'gray';
 }) {
   const [colorMode] = useColorMode();
+  const [mode] = useThemeMode(true);
   const [colorValues, setColorValues] = useColorValues();
   // create an array total of 10 colors, based on colorIndex index, and map over it
   const step = (i) => (i === 0 ? 50 : i * 100);
@@ -79,6 +83,7 @@ function ColorPaletteComponent({
   const colorBoxes = colors(color).map(({ convertedColor, hexColor }, i) => {
     return (
       <ColorPalette
+        mode={mode}
         key={`${type}.${i}.${hexColor}`}
         color={convertedColor}
         hexColor={hexColor}
@@ -98,22 +103,54 @@ function ColorPaletteComponent({
   );
 }
 
-const ColorPalette = ({ color, colorIndex, hexColor }) => {
+const ColorPalette = ({ mode, color, colorIndex, hexColor }) => {
+  const [isHocus, setIsHocus] = useState(false);
+  const { h, s } = tinycolor(color).toHsl();
+  const shadowSmall = `${h},${s * 100}%,${mode === 'dark' ? 17 : 73}%, ${
+    mode === 'dark' ? 0.8 : 0.3
+  }`;
+  const shadowLarge = `${h},${s * 100}%,${mode === 'dark' ? 10 : 80}%, ${
+    mode === 'dark' ? 0.8 : 0.3
+  }`;
+  const activeShaodw = `0 4px 14px -2px hsl(${shadowSmall}), 0 12px 24px -2px hsl(${shadowLarge})`;
   return (
     <div className='space-y-1.5'>
-      <CopyButton color={color}>
-        <button
-          className='group flex h-10 w-full items-center justify-center rounded-md shadow-sm shadow-stone-400/10 transition-all duration-200 hover:scale-105 active:scale-100 dark:border dark:border-white/10 print:border-none'
-          style={{
-            backgroundColor: hexColor,
-            color: tinycolor(hexColor).isDark() ? '#FFF' : '#000',
-          }}
-          aria-label={`Click to copy ${tinycolor(color).toHexString()}`}
-          title={`Click to copy ${tinycolor(color).toHexString()}`}
-        >
-          <IoIosCopy className='h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100' />
-        </button>
-      </CopyButton>
+      <div className='relative'>
+        <CopyButton color={color}>
+          <motion.button
+            className={clsxm(
+              'group flex h-10 w-full items-center justify-center rounded-md shadow-sm shadow-stone-400/10 dark:border dark:border-white/10',
+              'focus-within:outline-none focus:outline-none print:border-none',
+              'transition-shadow duration-300'
+            )}
+            style={{
+              backgroundColor: hexColor,
+              color: tinycolor(hexColor).isDark() ? '#FFF' : '#000',
+              boxShadow: isHocus ? activeShaodw : 'none',
+            }}
+            aria-label={`Click to copy ${tinycolor(color).toHexString()}`}
+            title={`Click to copy ${tinycolor(color).toHexString()}`}
+            onHoverStart={() => setIsHocus(true)}
+            onHoverEnd={() => setIsHocus(false)}
+            onBlur={() => setIsHocus(false)}
+            onFocus={() => setIsHocus(true)}
+            initial={{ scale: 1 }}
+            whileHover={{ scale: 1.05 }}
+            transition={{
+              type: 'spring',
+              mass: 0.2,
+            }}
+          >
+            <IoIosCopy className='h-3 w-3 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100' />
+            <div
+              className={clsxm(
+                'pointer-events-none absolute inset-0 z-[2] rounded-md transition',
+                'group-focus-visible:app-focus-ring'
+              )}
+            />
+          </motion.button>
+        </CopyButton>
+      </div>
       <div className='px-0.5 text-left text-xs lg:flex lg:justify-between lg:space-x-2 xl:block xl:space-x-0'>
         <div className='w-6 font-medium text-gray-900 dark:text-gray-50 xl:w-full'>
           {colorIndex}
