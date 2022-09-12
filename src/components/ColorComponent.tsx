@@ -27,7 +27,7 @@ const ColorComponent = React.forwardRef(
     const { isEditing, colorName, setColorName, setIsEditing } = inputs;
     const ColorPillBody = ({ className }) => (
       <div className={clsxm('flex-col gap-4 sm:gap-6', className)}>
-        <h3 className='pt-4 text-left font-semibold text-stone-700 dark:text-stone-200 lg:pt-8'>
+        <h3 className='pt-4 text-left font-semibold text-gray-700 dark:text-gray-200 lg:pt-8'>
           Analogous &amp; monochromatic
         </h3>
         <div className='grid gap-3 sm:grid-cols-2 sm:gap-6 '>
@@ -56,10 +56,10 @@ const ColorComponent = React.forwardRef(
                   >
                     <motion.input
                       layout
-                      className={`w-full bg-transparent px-4 py-2 text-3xl font-semibold text-stone-800 outline-none selection:bg-cyan-600  dark:text-stone-50 sm:py-0 md:text-4xl lg:text-6xl ${
+                      className={`w-full bg-transparent px-4 py-2 text-3xl font-semibold text-gray-800 outline-none selection:bg-cyan-600 dark:text-gray-50 sm:py-0 md:text-4xl lg:text-6xl ${
                         tinycolor(colors.primary).isDark()
-                          ? 'text-stone-100 caret-stone-50'
-                          : 'text-stone-800 caret-stone-900'
+                          ? 'text-stone-100 caret-gray-50'
+                          : 'text-stone-800 caret-gray-900'
                       }`}
                       placeholder='Awesome Color'
                       value={colorName}
@@ -81,11 +81,11 @@ const ColorComponent = React.forwardRef(
                     initial={false}
                     animate={{ opacity: 1 }}
                     key='color-name-text'
-                    className='-mx-4 -my-2 overflow-hidden whitespace-pre rounded-xl px-4  py-2 transition-colors hover:bg-stone-400/30'
+                    className='-mx-4 -my-2 overflow-hidden whitespace-pre rounded-xl px-4  py-2 transition-colors hover:bg-gray-400/30'
                   >
                     <motion.h1
                       layout
-                      className='text-3xl font-semibold text-stone-800 dark:text-stone-50 md:text-4xl lg:text-6xl'
+                      className='text-3xl font-semibold text-gray-800 dark:text-gray-50 md:text-4xl lg:text-6xl'
                       onClick={() => setIsEditing(true)}
                     >
                       {colorName}
@@ -95,7 +95,7 @@ const ColorComponent = React.forwardRef(
               </AnimatePresence>
             </div>
             <p>
-              <span className='flex select-none items-center gap-1 font-mono text-sm text-stone-400 dark:text-stone-500'>
+              <span className='flex select-none items-center gap-1 font-mono text-sm text-gray-400 dark:text-gray-500'>
                 <MdColorLens />
                 Color UI Generator
               </span>
@@ -104,7 +104,7 @@ const ColorComponent = React.forwardRef(
           <div className='grid grid-cols-12 gap-4 pt-6 sm:gap-8 sm:pt-8 lg:pt-10 xl:gap-12'>
             <div className='col-span-12 flex flex-1 flex-col justify-between gap-4 sm:gap-6 md:col-span-4 xl:col-span-5'>
               <div className='flex flex-1 flex-col gap-4 sm:gap-6'>
-                <h3 className='text-left font-semibold text-stone-700 dark:text-stone-200'>
+                <h3 className='text-left font-semibold text-gray-700 dark:text-gray-200'>
                   Base Colors
                 </h3>
                 <div className='grid h-full place-content-stretch gap-3 sm:grid-cols-3 sm:gap-6 md:grid-cols-1 xl:grid-cols-3'>
@@ -128,7 +128,7 @@ const ColorComponent = React.forwardRef(
               <ColorPillBody className='hidden sm:flex' />
             </div>
             <div className='col-span-12 flex flex-col items-start justify-start gap-4 sm:gap-6 md:col-span-8 xl:col-span-7'>
-              <h3 className='text-left font-semibold text-stone-700 dark:text-stone-200'>
+              <h3 className='text-left font-semibold text-gray-700 dark:text-gray-200'>
                 Color Palettes
               </h3>
               <ColorPaletteComponent color={colors.primary} type='primary' />

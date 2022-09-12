@@ -43,9 +43,9 @@ export default function HomePage({
       />
 
       <main>
-        <section className='min-h-main mx-auto flex max-w-[93.75rem] items-center justify-center px-4'>
+        <Toolbar initColors={initColors} initDice={initDice} />
+        <section className='min-h-main mx-auto flex max-w-[93.75rem] items-center justify-center px-4 pb-8'>
           <div className='flex-grow'>
-            <Toolbar initColors={initColors} initDice={initDice} />
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -74,7 +74,7 @@ export default function HomePage({
             </motion.div>
           </div>
         </section>
-        <section className='mx-auto w-full max-w-[93.75rem] pt-8'>
+        <section className='mx-auto w-full max-w-[93.75rem]'>
           <div className='flex w-full max-w-full flex-col items-center justify-center px-4'>
             <Tab>
               <Tab.List className='overscroll-x-auto sm:self-start'>

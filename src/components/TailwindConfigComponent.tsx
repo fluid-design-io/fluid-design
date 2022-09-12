@@ -41,13 +41,15 @@ ${colorSets.join('\n')}
 };
     `;
   return (
-    <div className='relative mx-auto max-h-[calc(min(970px,85vh))] flex-1 flex-grow overflow-y-auto rounded-xl bg-stone-800 shadow-2xl shadow-stone-300/30 dark:shadow-black/70'>
+    <div className='relative mx-auto max-h-[calc(min(970px,85vh))] flex-1 flex-grow overflow-y-auto rounded-xl bg-gray-800 shadow-2xl shadow-gray-300/30 dark:shadow-black/70'>
       <div className='pointer-events-none sticky top-4 flex w-full justify-end px-4'>
         <CopyButton text={content} copiedText='Copied CSS!'>
           <Button
             iconOnly
             icon={IoIosCopy}
-            className='pointer-events-auto btn-primary'
+            className='pointer-events-auto'
+            weight='bold'
+            color='stone'
           />
         </CopyButton>
       </div>

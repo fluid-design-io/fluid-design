@@ -1,9 +1,9 @@
 import { Button } from '@fluid-design/fluid-ui';
 import {
-  BoltIcon,
-  ChatBubbleBottomCenterTextIcon,
+  CursorArrowRippleIcon,
+  EyeIcon,
   GlobeAltIcon,
-  HandThumbUpIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { IoIosCheckmarkCircle, IoIosHeart, IoIosShare } from 'react-icons/io';
@@ -340,28 +340,28 @@ const ListCard = ({ className }: CardProps) => {
 
 const features = [
   {
-    name: 'World-class Support',
+    name: 'Multi-platform',
     description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
+      "Adjust styles based on users' primary pointer, for example, mouse, trackpad, or finger.",
     icon: GlobeAltIcon,
   },
   {
-    name: 'Simple and Intuitive',
+    name: 'Contrast',
     description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-    icon: HandThumbUpIcon,
+      'Optimized for people who have visual disabilities to make content more differentiable.',
+    icon: EyeIcon,
   },
   {
-    name: 'Fast to deploy',
+    name: 'Reduce Motion',
     description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-    icon: BoltIcon,
+      'Animations are awesome, but having a fallback is crucial for users who prefer less motion.',
+    icon: SparklesIcon,
   },
   {
-    name: '7 days a week support',
+    name: 'Keyboard Focus',
     description:
-      'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.',
-    icon: ChatBubbleBottomCenterTextIcon,
+      'Clickable elements can be triggered only using keyboard, with beautiful focus highlight.',
+    icon: CursorArrowRippleIcon,
   },
 ];
 
@@ -371,14 +371,22 @@ const FeatureCard = () => {
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='lg:text-center'>
           <h2 className='text-lg font-semibold text-primary-600 dark:text-primary-400'>
-            Components
+            Fluid UI
           </h2>
           <p className='mt-2 text-3xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-50 sm:text-4xl'>
-            A faster way to build better websites.
+            Modern UI components with smooth transitions.
           </p>
           <p className='mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-400 lg:mx-auto'>
-            Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam
-            voluptatum cupiditate veritatis in accusamus quisquam.
+            Beautiful React UI that are responsive, supports features like dark
+            mode and a11y with elegant transitions.
+            <a
+              href='https://fluid-design.io/'
+              target='_blank'
+              rel='noreferrer'
+              className='cursor-newtab pl-1 text-primary-600 underline hover:opacity-75 dark:text-primary-400'
+            >
+              Learn more
+            </a>
           </p>
         </div>
 

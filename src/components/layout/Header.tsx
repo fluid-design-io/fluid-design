@@ -21,8 +21,8 @@ export default function Header() {
     toggleMode();
   };
   return (
-    <header className=''>
-      <div className='layout flex h-14 w-full items-center justify-between'>
+    <header>
+      <div className='mx-auto flex h-14 w-full max-w-[93.75rem] items-center justify-between px-4'>
         <UnstyledLink
           href='/'
           className='bg-gradient-to-tr from-stone-800 to-stone-400 bg-clip-text font-medium text-stone-700 text-transparent hover:text-gray-500 dark:from-stone-50 dark:to-stone-500'
@@ -46,7 +46,7 @@ export default function Header() {
               </li>
             ))}
             <li className='-mb-[1px] rounded px-1.5 py-0.5 font-mono text-xs text-stone-400 ring-1 ring-stone-400 dark:text-stone-500 dark:ring-stone-500'>
-              <span>V2.3.1</span>
+              <span>V2.3.4</span>
             </li>
           </ul>
         </nav>

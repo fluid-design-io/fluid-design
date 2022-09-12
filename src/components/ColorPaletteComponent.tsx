@@ -29,7 +29,9 @@ function ColorPaletteComponent({
       const rawColor = chroma(color);
       let calculatedColor = rawColor;
       if (type === 'gray') {
-        calculatedColor = rawColor.set('lch.l', (9 - i) * 9.85 + 8.5);
+        calculatedColor = rawColor
+          .set('lch.l', (9 - i) * 9.85 + 8.5)
+          .desaturate(0.1);
       } else {
         let hue = Math.round(rawColor.hsl()[0] * 10) / 10;
         const sat = Math.round(rawColor.hsl()[1] * 10) / 10;
@@ -113,7 +115,7 @@ const ColorPalette = ({ color, colorIndex, hexColor }) => {
         </button>
       </CopyButton>
       <div className='px-0.5 text-left text-xs lg:flex lg:justify-between lg:space-x-2 xl:block xl:space-x-0'>
-        <div className='w-6 font-medium text-slate-900 dark:text-white xl:w-full'>
+        <div className='w-6 font-medium text-gray-900 dark:text-gray-50 xl:w-full'>
           {colorIndex}
         </div>
         <div

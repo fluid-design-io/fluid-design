@@ -52,67 +52,67 @@ export const Toolbar = ({
     setDice(throwDice());
   };
   return (
-    <div className='mb-4 flex w-full items-center justify-between'>
-      <Button
-        sr='Generate random colors'
-        weight='outline'
-        color='neutral'
-        onClick={() => {
-          randomize();
-          reThrowDice();
-        }}
-        as={motion.button}
-        initial='initial'
-        whileHover='hover'
-        whileTap='tap'
-        iconOnly
-        data-tooltip-right='Generate random colors'
-      >
-        <AnimatePresence mode='popLayout'>
-          {diceIcons[dice] && (
-            <motion.span
-              key={`dice-span-${dice}`}
-              variants={animation}
-              initial={{
-                rotate: -30,
-                opacity: 0,
-                scale: 0.7,
-              }}
-              animate={{
-                rotate: 0,
-                opacity: 1,
-                scale: 1,
-              }}
-              exit={{
-                rotate: 0,
-                opacity: 0,
-                scale: 0.85,
-              }}
-            >
-              {diceIcons[dice]}
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </Button>
-      {colorMode && (
-        <Form
-          onSubmit={() => null}
-          initialValues={{
-            colorMode: colorMode,
+    <div className='sticky top-0 z-20 mb-2 w-full bg-gray-50 pb-2 pt-2 dark:bg-gray-900'>
+      <div className='relative mx-auto flex w-full max-w-[93.75rem] items-center justify-between px-4'>
+        <Button
+          sr='Generate random colors'
+          onClick={() => {
+            randomize();
+            reThrowDice();
           }}
+          as={motion.button}
+          initial='initial'
+          whileHover='hover'
+          whileTap='tap'
+          iconOnly
+          className='btn-outline-primary'
         >
-          <Select
-            name='colorMode'
-            label='Color Mode'
-            className='uppercase'
-            buttonClassName='uppercase'
-            labelClassName='sr-only'
-            list={colorModeList}
-            onChange={(value) => setColorMode(value)}
-            itemKey='name'
-          />
-        </Form>
-      )}
+          <AnimatePresence mode='popLayout'>
+            {diceIcons[dice] && (
+              <motion.span
+                key={`dice-span-${dice}`}
+                variants={animation}
+                initial={{
+                  rotate: -30,
+                  opacity: 0,
+                  scale: 0.7,
+                }}
+                animate={{
+                  rotate: 0,
+                  opacity: 1,
+                  scale: 1,
+                }}
+                exit={{
+                  rotate: 0,
+                  opacity: 0,
+                  scale: 0.85,
+                }}
+              >
+                {diceIcons[dice]}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </Button>
+        {colorMode && (
+          <Form
+            onSubmit={() => null}
+            initialValues={{
+              colorMode: colorMode,
+            }}
+          >
+            <Select
+              name='colorMode'
+              label='Color Mode'
+              className='uppercase'
+              buttonClassName='uppercase'
+              labelClassName='sr-only'
+              list={colorModeList}
+              onChange={(value) => setColorMode(value)}
+              itemKey='name'
+            />
+          </Form>
+        )}
+      </div>
     </div>
   );
 };

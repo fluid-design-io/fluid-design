@@ -47,11 +47,6 @@ export const generateBaseColors = () => {
   //   tertiaryColor = generateTertiaryColor(primaryColor);
   // } while (!checkColorIsValid(tertiaryColor));
 
-  console.log(
-    primaryColor,
-    secondaryColor.toHslString(),
-    tertiaryColor.toHslString()
-  );
   const initColors = {
     primary: primaryColor,
     secondary: secondaryColor.toHexString(),

@@ -44,7 +44,7 @@ export const ThemeSwitch = ({
         {mode === 'light' && (
           <motion.button
             animate='animate'
-            className='focus-visible:borde-stone-400/80 focus-ring rounded border border-transparent p-1.5 focus-visible:border focus-visible:bg-stone-500/10 hocus:border-stone-400/30 hocus:bg-stone-400/10'
+            className='focus-ring rounded border border-transparent p-1.5 focus-visible:border focus-visible:border-stone-400/80 focus-visible:bg-stone-500/10 hocus:border-stone-400/30 hocus:bg-stone-400/10'
             exit='exit'
             initial='initial'
             key='dark-toggle'

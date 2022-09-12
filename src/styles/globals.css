@@ -84,7 +84,7 @@
       U+2215, U+FEFF, U+FFFD;
   }
   body {
-    @apply bg-stone-100 transition-colors dark:bg-stone-900;
+    @apply bg-gray-50 transition-colors dark:bg-gray-900;
   }
   .cursor-newtab {
     cursor: url('/images/new-tab.png') 10 10, pointer;
