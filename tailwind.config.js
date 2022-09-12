@@ -98,5 +98,6 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
+    require('@headlessui/tailwindcss'),
     require('@fluid-design/fluid-ui/src/plugin')],
 };
