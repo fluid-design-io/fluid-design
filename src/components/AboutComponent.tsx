@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import Zoom from 'next-image-zoom';
 import luminaceHueDark from 'public/images/luminance-vs-hue-dark.webp';
@@ -8,10 +9,19 @@ import saturationHueLight from 'public/images/saturation-vs-hue-light.webp';
 export const AboutComponent = () => {
   return (
     <article className='prose prose-stone mx-auto dark:prose-invert md:prose-lg'>
-      <h2 id='simple-ui-generator'>
-        This is a &apos;simple&apos; color UI generator
+      <div className='h-16 w-16 sm:h-20 sm:w-20'>
+        <Image
+          src='https://user-images.githubusercontent.com/13263720/165000315-67bfd426-a45d-4706-998e-ad99926b4a45.png'
+          alt='Color UI App Icon'
+          width={128}
+          height={128}
+          layout='responsive'
+        />
+      </div>
+      <h2 className='mt-4' id='simple-ui-generator'>
+        Color UI Generator 🎨
       </h2>
-      <p>
+      <p className='first-letter:text-4xl first-letter:font-semibold'>
         This is a &apos;simple&apos; color UI generator with complex algorithms
         to generate the colors that feels natural and harmonious. It
         doesn&apos;t just generate color steps using luminosity alone, instead
@@ -167,11 +177,11 @@ export const AboutComponent = () => {
         As a result, we can then calculate color values using quatric equations,
         eg. color orange, where `x` is the given hue that is in range of orange
         hue 22.
-        <pre>
-          y = 0.002x^6 - 0.0695x^5 + 0.8757x^4 - 4.9266x^3 + 12.94x^2 - 17.593x
-          + 91.633
-        </pre>
       </p>
+      <pre>
+        y = 0.002x^6 - 0.0695x^5 + 0.8757x^4 - 4.9266x^3 + 12.94x^2 - 17.593x +
+        91.633
+      </pre>
       <p>
         But it doesn&apos;t stop there, because these formulas are might not
         represent the values of the given hue exactly, we need to make a
@@ -182,21 +192,25 @@ export const AboutComponent = () => {
         the hue from the color: 18. And in our manual color sets, 18 lies
         between red (15) and orange (31). So we can use the formula to calculate
         the ratio between red and orage:
-        <pre>ratio = (18 - 15) / (31 - 15) = 0.3</pre>
+      </p>
+      <pre>ratio = (18 - 15) / (31 - 15) = 0.3</pre>
+      <p>
         Then we can use the ratio to calculate the luminosity and saturation of
         the color using formulas for steps between 50 - 900 (where x is the step
         count):
-        <pre>
-          saturation_red_step_1 = 0.0076x^6 - 0.2422x^5 + 2.9831x^4 - 17.638x^3
-          + 52.063x^2 - 77.927x + 132.83 = 92.0765 <br />
-          saturation_orange_step_1 = 0.002x^6 - 0.0695x^5 + 0.8757x^4 -
-          4.9266x^3 + 12.94x^2 - 17.593x + 91.633 = 82.8616
-        </pre>
-        Then we can calculate the saturation of the color using the ratio:
-        <pre>
-          saturation = saturation_red_step_1 * ratio + saturation_orange_step_1
-          * (1 - ratio) = 92.0765 * 0.3 + 82.8616 * 0.7 = 88.201
-        </pre>
+      </p>
+      <pre>
+        saturation_red_step_1 = 0.0076x^6 - 0.2422x^5 + 2.9831x^4 - 17.638x^3 +
+        52.063x^2 - 77.927x + 132.83 = 92.0765 <br />
+        saturation_orange_step_1 = 0.002x^6 - 0.0695x^5 + 0.8757x^4 - 4.9266x^3
+        + 12.94x^2 - 17.593x + 91.633 = 82.8616
+      </pre>
+      <p>Then we can calculate the saturation of the color using the ratio:</p>
+      <pre>
+        saturation = saturation_red_step_1 * ratio + saturation_orange_step_1 *
+        (1 - ratio) = 92.0765 * 0.3 + 82.8616 * 0.7 = 88.201
+      </pre>
+      <p>
         Same concept applies to luminosity. Lastly, based on user&apos;s input
         of the saturation and luminosity, we can convert them as a factor and
         multiply them with the calculated saturation and luminosity to get the
