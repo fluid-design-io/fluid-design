@@ -51,13 +51,13 @@ function ColorMainComponent({ color, type, onClick }) {
           style={{ color: tinycolor(color).isDark() ? '#FFF' : '#000' }}
         />
       </motion.button>
-      <div className='min-w-[8.125rem] flex-shrink-0 bg-white px-2 py-10 text-left ring ring-inset ring-white ring-offset-1 ring-offset-white dark:bg-stone-900 dark:ring-stone-900 dark:ring-offset-stone-900 sm:w-full sm:flex-1 sm:py-4 sm:px-4 xl:w-full'>
-        <p className='text-xs font-semibold capitalize leading-none text-stone-800 dark:text-stone-100'>
+      <div className='ease-in-outtext-start min-w-[8.125rem] flex-shrink-0 bg-white px-2  py-10 ring ring-inset ring-white ring-offset-1 ring-offset-white transition-all duration-1000 dark:bg-stone-900 dark:ring-stone-900 dark:ring-offset-stone-900 sm:w-full sm:flex-1 sm:py-4 sm:px-4 xl:w-full'>
+        <p className='text-start text-xs font-semibold capitalize leading-none text-stone-800 transition-colors duration-1000 ease-in-out dark:text-stone-100'>
           {type}
         </p>
         <CopyButton color={convertedColor}>
           <button
-            className='focus-visible:app-focus-ring group mt-1 flex w-full items-center justify-between break-all rounded-full text-start font-mono text-xs text-stone-500 transition hover:text-primary-500 active:text-primary-800 dark:text-stone-400 dark:active:text-primary-200'
+            className='focus-visible:app-focus-ring group mt-1 flex w-full items-center justify-between break-all rounded-full text-start font-mono text-xs text-stone-500 transition duration-1000 ease-in-out hover:text-primary-500 active:text-primary-800 dark:text-stone-400 dark:active:text-primary-200'
             aria-label={`Click to copy ${convertedColor}`}
             title={`Click to copy ${convertedColor}`}
           >

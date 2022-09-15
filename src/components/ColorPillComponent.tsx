@@ -35,7 +35,7 @@ function ColorPillComponent({ color, type }) {
                 title={`Click to copy ${convertedColor}`}
               >
                 <div
-                  className='flex w-full flex-wrap justify-between px-0.5 text-left text-xs opacity-30 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 pointer-touch:opacity-90'
+                  className='flex w-full flex-wrap justify-between px-0.5 text-start text-xs opacity-30 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100 pointer-touch:opacity-90'
                   style={{ color: mono.isDark() ? '#fff' : '#000' }}
                 >
                   {/* <div className='font-mono lowercase'>{mono.toRgbString()}</div> */}

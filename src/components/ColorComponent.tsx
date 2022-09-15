@@ -27,7 +27,7 @@ const ColorComponent = React.forwardRef(
     const { isEditing, colorName, setColorName, setIsEditing } = inputs;
     const ColorPillBody = ({ className }) => (
       <div className={clsxm('flex-col gap-4 sm:gap-6', className)}>
-        <h3 className='pt-4 text-left font-semibold text-gray-700 dark:text-gray-200 lg:pt-8'>
+        <h3 className='pt-4 text-start font-semibold text-gray-700 transition-colors duration-1000 ease-in-out dark:text-gray-200 lg:pt-8'>
           Analogous &amp; monochromatic
         </h3>
         <div className='grid gap-3 sm:grid-cols-2 sm:gap-6 '>
@@ -43,7 +43,7 @@ const ColorComponent = React.forwardRef(
         //@ts-ignore
         ref={ref}
       >
-        <div className='min-h-[24rem] w-full rounded-3xl bg-white p-6 transition-colors dark:bg-black sm:p-8 lg:p-10'>
+        <div className='min-h-[24rem] w-full rounded-3xl bg-white p-6 transition-colors duration-[1s] ease-in-out dark:bg-black sm:p-8 lg:p-10'>
           <div className='flex flex-wrap items-end justify-start gap-4 lg:gap-8'>
             <div>
               <AnimatePresence mode='wait'>
@@ -104,7 +104,7 @@ const ColorComponent = React.forwardRef(
           <div className='grid grid-cols-12 gap-4 pt-6 sm:gap-8 sm:pt-8 lg:pt-10 xl:gap-12'>
             <div className='col-span-12 flex flex-1 flex-col justify-between gap-4 sm:gap-6 md:col-span-4 xl:col-span-5'>
               <div className='flex flex-1 flex-col gap-4 sm:gap-6'>
-                <h3 className='text-left font-semibold text-gray-700 dark:text-gray-200'>
+                <h3 className='text-start font-semibold text-gray-700 transition-colors duration-1000 ease-in-out dark:text-gray-200'>
                   Base Colors
                 </h3>
                 <div className='grid h-full place-content-stretch gap-3 sm:grid-cols-3 sm:gap-6 md:grid-cols-1 xl:grid-cols-3'>
@@ -128,7 +128,7 @@ const ColorComponent = React.forwardRef(
               <ColorPillBody className='hidden sm:flex' />
             </div>
             <div className='col-span-12 flex flex-col items-start justify-start gap-4 sm:gap-6 md:col-span-8 xl:col-span-7'>
-              <h3 className='text-left font-semibold text-gray-700 dark:text-gray-200'>
+              <h3 className='text-start font-semibold text-gray-700 transition-colors duration-1000 ease-in-out dark:text-gray-200'>
                 Color Palettes
               </h3>
               <ColorPaletteComponent color={colors.primary} type='primary' />

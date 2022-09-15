@@ -130,7 +130,6 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
     colorValues,
     setColorValues,
   };
-
   return (
     <AppContext.Provider value={value}>
       <ThemeProvider>{children}</ThemeProvider>

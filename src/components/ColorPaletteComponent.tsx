@@ -93,7 +93,7 @@ function ColorPaletteComponent({
   });
   return (
     <div className='w-full'>
-      {/* <h3 className='pb-4 text-left font-semibold capitalize text-stone-700'>
+      {/* <h3 className='pb-4 text-start font-semibold capitalize text-stone-700'>
         {type}
       </h3> */}
       <div className='grid min-w-0 flex-1 grid-cols-5 gap-x-1 gap-y-3 sm:gap-x-4 xl:grid-cols-10 xl:gap-x-2'>
@@ -136,6 +136,7 @@ const ColorPalette = ({ mode, color, colorIndex, hexColor }) => {
             onFocus={() => setIsHocus(true)}
             initial={{ scale: 1 }}
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             transition={{
               type: 'spring',
               mass: 0.2,
@@ -151,12 +152,12 @@ const ColorPalette = ({ mode, color, colorIndex, hexColor }) => {
           </motion.button>
         </CopyButton>
       </div>
-      <div className='px-0.5 text-left text-xs lg:flex lg:justify-between lg:space-x-2 xl:block xl:space-x-0'>
-        <div className='w-6 font-medium text-gray-900 dark:text-gray-50 xl:w-full'>
+      <div className='px-0.5 text-start text-xs lg:flex lg:justify-between lg:space-x-2 xl:block xl:space-x-0'>
+        <div className='w-6 font-medium text-gray-900 transition-colors duration-1000 ease-in-out dark:text-gray-50 xl:w-full'>
           {colorIndex}
         </div>
         <div
-          className='truncate font-mono lowercase text-slate-500 dark:text-slate-400'
+          className='truncate font-mono lowercase text-slate-500 transition-colors duration-1000 ease-in-out dark:text-slate-400'
           title={color}
         >
           {color}

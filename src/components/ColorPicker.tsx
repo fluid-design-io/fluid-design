@@ -63,7 +63,7 @@ function ColorPicker({
     >
       <motion.div
         layoutId={`picker-${type}`}
-        className='relative flex flex-col gap-4 rounded-xl bg-white text-left shadow-2xl shadow-gray-900/20 dark:bg-gray-900'
+        className='relative flex flex-col gap-4 rounded-xl bg-white text-start shadow-2xl shadow-gray-900/20 transition-colors duration-1000 ease-in-out dark:bg-gray-900'
       >
         <h4 className='z-[2] px-4 pt-4 capitalize text-gray-800 dark:text-gray-100'>
           {type} Color

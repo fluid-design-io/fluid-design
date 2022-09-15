@@ -52,7 +52,7 @@ export const Toolbar = ({
     setDice(throwDice());
   };
   return (
-    <div className='sticky top-0 z-20 mb-2 w-full bg-gray-50 pb-2 pt-2 dark:bg-gray-900'>
+    <div className='sticky top-0 z-20 mb-2 w-full bg-gray-50 pb-2 pt-2 transition-colors duration-[1.5s] ease-in-out dark:bg-gray-900'>
       <div className='relative mx-auto flex w-full max-w-[93.75rem] items-center justify-between px-4'>
         <Button
           sr='Generate random colors'

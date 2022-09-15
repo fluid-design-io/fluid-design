@@ -8,6 +8,7 @@ import React, {
   useState,
 } from 'react';
 
+import { ColorValues } from './AppContext';
 import { windowExists } from './windowExists';
 
 export type Mode = string | undefined | 'light' | 'dark';
@@ -129,4 +130,19 @@ export const useThemeMode = (
   }
 
   return [mode, setMode, toggleMode];
+};
+
+export const saveMetaThemeColor = (colorValues: ColorValues) => {
+  // const [mode] = useThemeMode(true);
+  const mode = 'dark';
+  if (colorValues.palette.gray) {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta && colorValues.palette.gray.length > 0) {
+      if (mode === 'dark') {
+        meta.setAttribute('content', colorValues.palette.gray[8].color);
+      } else {
+        meta.setAttribute('content', colorValues.palette.gray[0].color);
+      }
+    }
+  }
 };
