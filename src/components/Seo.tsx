@@ -37,7 +37,6 @@ export default function Seo(props: SeoProps) {
     siteName: props.templateTitle ? meta.siteName : meta.title,
     templateTitle: props.templateTitle,
   });
-
   return (
     <Head>
       <title>{meta.title}</title>
@@ -77,12 +76,24 @@ export default function Seo(props: SeoProps) {
       {favicons.map((linkProps) => (
         <link key={linkProps.href} {...linkProps} />
       ))}
-      <meta name='msapplication-TileColor' content='#ffffff' />
+      <meta
+        name='msapplication-TileColor'
+        content='var(rgb(--color-gray-900))'
+      />
       <meta
         name='msapplication-TileImage'
         content='/favicon/ms-icon-144x144.png'
       />
-      <meta name='theme-color' content='#ffffff' />
+      <meta
+        name='theme-color'
+        media='(prefers-color-scheme: light)'
+        content='var(rgb(--color-gray-50))'
+      />
+      <meta
+        name='theme-color'
+        media='(prefers-color-scheme: dark)'
+        content='var(rgb(--color-gray-900))'
+      />
     </Head>
   );
 }

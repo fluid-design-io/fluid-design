@@ -17,9 +17,6 @@ const links = [
 
 export default function Header() {
   const [mode, setMode, toggleMode] = useThemeMode(true);
-  const handleModeChange = () => {
-    toggleMode();
-  };
   return (
     <header>
       <div className='mx-auto flex h-14 w-full max-w-[93.75rem] items-center justify-between px-4'>
@@ -32,7 +29,7 @@ export default function Header() {
         <nav>
           <ul className='flex items-center justify-between space-x-4'>
             <ThemeSwitch
-              handleModeChange={handleModeChange}
+              handleModeChange={toggleMode}
               mode={mode as 'light' | 'dark'}
             />
             {links.map(({ href, label }) => (
