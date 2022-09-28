@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, {
   createContext,
+  Dispatch,
   FC,
   ReactNode,
   useContext,
@@ -15,7 +16,7 @@ export type Mode = string | undefined | 'light' | 'dark';
 
 interface ThemeContextProps {
   mode?: Mode;
-  setMode?: (mode: Mode) => void;
+  setMode?: Dispatch<React.SetStateAction<Mode>>;
 }
 
 export const ThemeContext = createContext<ThemeContextProps>({
@@ -133,16 +134,18 @@ export const useThemeMode = (
 };
 
 export const saveMetaThemeColor = (colorValues: ColorValues) => {
-  // const [mode] = useThemeMode(true);
-  const mode = 'dark';
+  // <meta content="rgb(141 88 242)" media="(prefers-color-scheme: light)" name="theme-color">
+  // <meta content="rgb(141 88 242)" media="(prefers-color-scheme: dark)" name="theme-color">
   if (colorValues.palette.gray) {
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta && colorValues.palette.gray.length > 0) {
-      if (mode === 'dark') {
-        meta.setAttribute('content', colorValues.palette.gray[8].color);
-      } else {
-        meta.setAttribute('content', colorValues.palette.gray[0].color);
-      }
+    const metaLight = document.querySelector(
+      'meta[name="theme-color"][media="(prefers-color-scheme: light)"]'
+    );
+    const metaDark = document.querySelector(
+      'meta[name="theme-color"][media="(prefers-color-scheme: dark)"]'
+    );
+    if (metaLight && metaDark) {
+      metaLight.setAttribute('content', colorValues.palette.gray[100].color);
+      metaDark.setAttribute('content', colorValues.palette.gray[900].color);
     }
   }
 };
