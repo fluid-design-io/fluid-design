@@ -65,7 +65,7 @@ export const Toolbar = ({
           whileHover='hover'
           whileTap='tap'
           iconOnly
-          className='btn-outline-primary'
+          className='btn-outline-primary border-primary-400 hocus:!border-primary-700 dark:hocus:!border-primary-200'
         >
           <AnimatePresence mode='popLayout'>
             {diceIcons[dice] && (
@@ -109,6 +109,8 @@ export const Toolbar = ({
               list={colorModeList}
               onChange={(value) => setColorMode(value)}
               itemKey='name'
+              listOptionSelectedClassName='!text-primary-900 dark:!text-primary-100'
+              listOptionActiveClassName='!text-primary-900 dark:!text-primary-100'
             />
           </Form>
         )}

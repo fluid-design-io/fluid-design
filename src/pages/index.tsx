@@ -1,6 +1,8 @@
-import { Tab } from '@fluid-design/fluid-ui';
+import { Button, Tab } from '@fluid-design/fluid-ui';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useRef, useState } from 'react';
+import tinycolor from 'tinycolor2';
 
 import { BaseColors, useBaseColors } from '@/lib/AppContext';
 import { throwDice } from '@/lib/dice';
@@ -18,9 +20,11 @@ import { Toolbar } from '@/components/Toolbar';
 
 export default function HomePage({
   initColors,
+  hasInvalidUrlColors,
   dice: initDice,
 }: {
   initColors: BaseColors;
+  hasInvalidUrlColors: boolean;
   dice: number;
 }) {
   const [baseColors, setBaseColors] = useBaseColors({
@@ -31,20 +35,42 @@ export default function HomePage({
   const [isEditing, setIsEditing] = useState(false);
   const [type, setType] = useState(null);
   const componentRef = useRef(null);
+  const errorRef = useRef(null);
   const handleChangeColor = ({ type }) => {
     setType(type);
     setIsPickerOpen(true);
   };
+  // parse the baseColors into query params
   return (
     <>
-      <Seo
-        templateTitle='Awesome Color'
-        image='https://github.com/assets/13263720/00f36291-a4ae-4e74-bfcb-56c55e49e2c6'
-      />
+      <Seo templateTitle={colorName} baseColors={baseColors} />
 
-      <main>
-        <Toolbar initColors={initColors} initDice={initDice} />
-        <section className='min-h-main mx-auto flex max-w-[93.75rem] items-center justify-center px-4 pb-8'>
+      <Toolbar initColors={initColors} initDice={initDice} />
+      <main id='main'>
+        {hasInvalidUrlColors && (
+          <div className='mx-auto w-full max-w-[93.75rem] px-4' ref={errorRef}>
+            <div className='my-8 flex w-full max-w-[93.75rem] items-center justify-between gap-4 rounded-lg border border-rose-300 bg-rose-100 p-4 dark:border-rose-600/70 dark:bg-rose-700/30'>
+              <p className='text-rose-800 dark:text-rose-200'>
+                The colors in the URL are invalid.
+              </p>
+              <Button
+                icon={XMarkIcon}
+                shape='pill'
+                weight='clear'
+                size='sm'
+                color='rose'
+                iconOnly
+                onClick={() => {
+                  errorRef.current.remove();
+                }}
+              />
+            </div>
+          </div>
+        )}
+        <section
+          id='color-generator'
+          className='min-h-main mx-auto flex max-w-[93.75rem] items-center justify-center px-4 pb-8'
+        >
           <div className='flex-grow'>
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
@@ -74,7 +100,7 @@ export default function HomePage({
             </motion.div>
           </div>
         </section>
-        <section className='mx-auto w-full max-w-[93.75rem]'>
+        <section className='mx-auto w-full max-w-[93.75rem]' id='tabs'>
           <div className='flex w-full max-w-full flex-col items-center justify-center px-4'>
             <Tab>
               <Tab.List className='overscroll-x-auto sm:self-start'>
@@ -98,28 +124,6 @@ export default function HomePage({
                 </Tab.Panel>
               </Tab.Panels>
             </Tab>
-            <button
-              disabled={isEditing}
-              className='mt-8 rounded-full border border-stone-800 bg-transparent py-2 px-4 font-semibold text-stone-800 shadow-lg transition hover:bg-stone-800 hover:text-white hover:shadow-none focus:outline-none  disabled:cursor-not-allowed disabled:opacity-20 dark:bg-transparent dark:text-stone-100 dark:hover:bg-stone-50 dark:hover:text-black'
-              onClick={async () => {
-                const { exportComponentAsPNG } = await import(
-                  'react-component-export-image'
-                );
-                exportComponentAsPNG(componentRef, {
-                  // replace space with dash, and lowercase, and remove special characters
-                  fileName: `color-picker-${colorName
-                    .replace(/\s/g, '-')
-                    .toLowerCase()
-                    .replace(/[^a-z0-9-]/g, '')}`,
-                  html2CanvasOptions: {
-                    backgroundColor: 'transparent',
-                    scale: 2,
-                  },
-                });
-              }}
-            >
-              Export As PNG
-            </button>
           </div>
         </section>
         <footer className='pt-24 pb-8 text-center text-gray-700'>
@@ -134,13 +138,38 @@ export default function HomePage({
 }
 
 // a next.js static function
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
+  // get the baseColors from the query params if they exist
+  const hasColorQuries =
+    Object.keys(query).length > 0 &&
+    query.primary &&
+    query.secondary &&
+    query.tertiary;
+  const baseColors: BaseColors = hasColorQuries
+    ? {
+        primary: query.primary,
+        secondary: query.secondary,
+        tertiary: query.tertiary,
+      }
+    : null;
+  // isValidBaseColors means that there're at least primary, secondary, and tertiary colors
+  // and they're all valid hex colors
+  const isValidBaseColors = () => {
+    if (!baseColors) return false;
+    const keys = Object.keys(baseColors);
+    const hasValidColors = keys.every((key) => {
+      const color = baseColors[key];
+      return tinycolor(color).isValid();
+    });
+    return hasValidColors;
+  };
   // generate a boolean based on if number is less than or equal to 0.5
-  const initColors = generateBaseColors();
+  const initColors = isValidBaseColors() ? baseColors : generateBaseColors();
   const dice = throwDice();
   return {
     props: {
       initColors,
+      hasInvalidUrlColors: hasColorQuries && !isValidBaseColors(),
       dice,
     },
   };

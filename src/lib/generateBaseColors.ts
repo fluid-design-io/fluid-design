@@ -28,14 +28,6 @@ export const generateBaseColors = () => {
       .darken(isDark * tertiaryDarken)
       .saturate(isSaturate ? 5 : -25);
 
-  const checkColorIsValid = (color: tinycolor.Instance) => {
-    const luminance = color.getLuminance();
-    if (luminance < 0.01 || luminance > 0.99) {
-      return false;
-    }
-    return true;
-  };
-
   const secondaryColor = generateSecondaryColor(primaryColor);
   const tertiaryColor = generateTertiaryColor(primaryColor);
 

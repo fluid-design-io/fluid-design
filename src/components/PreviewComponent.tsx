@@ -65,7 +65,7 @@ const Card = ({ className }: CardProps) => {
         <div className='flex items-center justify-between pt-1'>
           <Button
             size='xs'
-            className='!text-primary-800 btn-light-primary dark:!text-primary-100'
+            className='!text-primary-800 btn-light-primary dark:btn-light-primary-700 dark:!text-primary-100 hocus:!bg-primary-300 dark:hocus:!bg-primary-700'
           >
             Card Button
           </Button>

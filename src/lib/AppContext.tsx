@@ -6,6 +6,7 @@
   - setBaseColors: (colors: { primary: string, secondary: string, tertiary: string }) => void
 */
 
+import { useRouter } from 'next/router';
 import {
   createContext,
   Dispatch,
@@ -182,10 +183,11 @@ export const useBaseColors = ({
   () => void | null
 ] => {
   const { baseColors, setBaseColors } = useAppContext();
+  const router = useRouter();
 
   const saveBaseColors = (baseColors: BaseColors) => {
-    localStorage.setItem('baseColors', JSON.stringify(baseColors));
     setBaseColors(baseColors);
+    updateQuery(baseColors);
   };
 
   const randomize = () => {
@@ -193,17 +195,13 @@ export const useBaseColors = ({
     saveBaseColors(newBaseColors);
   };
 
+  const updateQuery = (baseColors: BaseColors) => {
+    router.push({ query: baseColors }, undefined, { shallow: true });
+  };
+
   useEffect(() => {
-    if (!baseColors.primary) {
-      const colors = localStorage.getItem('baseColors');
-      if (colors) {
-        const parsedColors = JSON.parse(colors);
-        if (Object.keys(parsedColors).length === 3) {
-          setBaseColors(parsedColors);
-        }
-      } else {
-        setBaseColors(initialColors);
-      }
+    if (!baseColors || !baseColors.primary) {
+      setBaseColors(initialColors);
     } else {
       saveBaseColors(baseColors);
     }
