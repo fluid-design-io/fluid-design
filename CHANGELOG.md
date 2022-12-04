@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/fluid-design-io/color-ui-generator/compare/v2.3.7...v2.4.0) (2022-12-04)
+
+
+### Features
+
+* new og generator with dynamic colors ([0a51ec5](https://github.com/fluid-design-io/color-ui-generator/commit/0a51ec502035858ba7b2f5f32e915f157266b20d))
+* Skip to content a11y support with beautiful interface ([cf7c0b8](https://github.com/fluid-design-io/color-ui-generator/commit/cf7c0b89e160dcb4d8748ee63daa61ec5a042571))
+
+
+### Bug Fixes
+
+* a11y improvements ([8a9b3be](https://github.com/fluid-design-io/color-ui-generator/commit/8a9b3bea2e134d5d99f34889ae3415c676e255a8))
+* UI improvements bug fixes ([e906636](https://github.com/fluid-design-io/color-ui-generator/commit/e9066368fcbb79dce1a8523a0e32644d345759f3))
+
 ### [2.3.7](https://github.com/fluid-design-io/color-ui-generator/compare/v2.3.6...v2.3.7) (2022-09-28)
 
 
