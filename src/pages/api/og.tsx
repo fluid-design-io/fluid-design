@@ -51,45 +51,78 @@ const handle = async (req: NextRequest) => {
           />
           <div tw='flex w-full h-full flex-col justify-end items-stretch absolute inset-0'>
             <div tw='flex-1 flex w-full absolute top-16 justify-center'>
-              <div tw='flex justify-center'>
-                {Object.keys(baseColors).map((key, i) => (
+              {Object.keys(baseColors).map((key, i) => (
+                <div
+                  tw='rounded-2xl flex w-1/4 absolute h-[74vh] overflow-hidden flex-col bg-white p-2'
+                  key={key}
+                  style={{
+                    transform: `rotate(${i * 10 - 10}deg) translateX(${
+                      i * 50 - 18
+                    }%)`,
+                    transformOrigin: 'bottom',
+                    boxShadow: `0px 8px 32px 0px rgba(35, 35, 35, 0.15), 0 0 12px -4px rgba(35, 35, 35, 0.3)`,
+                  }}
+                >
                   <div
-                    tw='rounded-2xl flex w-1/4 absolute h-[74vh] overflow-hidden flex-col bg-white p-2'
-                    key={key}
+                    tw='flex flex-col justify-end flex-1 w-full rounded-t-lg'
                     style={{
-                      transform: `rotate(${i * 10 - 10}deg) translateX(${
-                        i * 50 - 18
-                      }%)`,
-                      transformOrigin: 'bottom',
-                      boxShadow: `0px 8px 32px 0px rgba(35, 35, 35, 0.15), 0 0 12px -4px rgba(35, 35, 35, 0.3)`,
+                      backgroundColor: baseColors[key],
                     }}
-                  >
-                    <div
-                      tw='flex flex-col justify-end flex-1 w-full rounded-t-lg'
-                      style={{
-                        backgroundColor: baseColors[key],
-                      }}
-                    />
-                    <div tw='flex w-full pt-6 pb-2 px-2 flex-shrink-0 items-end'>
-                      <div tw='flex flex-1 flex-col uppercase'>
-                        <div tw='text-2xl font-bold tracking-wide text-slate-700 -mb-1'>
-                          {baseColors[key].slice(1)}
-                        </div>
-                        <div tw='font-semibold text-xs tracking-[0.15rem] text-slate-500'>
-                          {key}
-                        </div>
+                  />
+                  <div tw='flex w-full pt-6 pb-2 px-2 flex-shrink-0 items-end'>
+                    <div tw='flex flex-1 flex-col uppercase'>
+                      <div tw='text-2xl font-bold tracking-wide text-slate-700 -mb-1'>
+                        {baseColors[key].slice(1)}
                       </div>
-                      <div tw='flex flex-col'>
-                        <div tw='flex font-semibold tracking-wide text-lg uppercase -mb-1 text-slate-500'>
-                          Fluid
-                        </div>
-                        <div tw='flex uppercase tracking-widest text-xs font-extralight border-t-4 border-t-slate-300 text-slate-800'>
-                          colors
-                        </div>
+                      <div tw='font-semibold text-xs tracking-[0.15rem] text-slate-500'>
+                        {key}
+                      </div>
+                    </div>
+                    <div tw='flex flex-col'>
+                      <div tw='flex font-semibold tracking-wide text-lg uppercase -mb-1 text-slate-500'>
+                        Fluid
+                      </div>
+                      <div tw='flex uppercase tracking-widest text-xs font-extralight border-t-4 border-t-slate-300 text-slate-800'>
+                        colors
                       </div>
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
+              <div
+                tw='rounded-2xl flex w-1/4 absolute h-[74vh] overflow-hidden flex-col bg-white p-2'
+                style={{
+                  transform: `rotate(${-2 * 10}deg) translateX(${
+                    -1 * 50 - 18
+                  }%)`,
+                  transformOrigin: 'bottom',
+                  boxShadow: `0px 8px 32px 0px rgba(35, 35, 35, 0.15), 0 0 12px -4px rgba(35, 35, 35, 0.3)`,
+                }}
+              >
+                <div
+                  tw='flex flex-col justify-end flex-1 w-full rounded-t-lg'
+                  style={{
+                    backgroundColor: baseColors.primary,
+                  }}
+                />
+                <div tw='flex w-full pt-6 pb-2 px-2 flex-shrink-0 items-end'>
+                  <div tw='flex flex-1 flex-col uppercase'>
+                    <div tw='text-2xl font-bold tracking-wide text-slate-700 -mb-1'>
+                      {baseColors.primary.slice(1)}
+                    </div>
+                    <div tw='font-semibold text-xs tracking-[0.15rem] text-slate-500'>
+                      Primary
+                    </div>
+                  </div>
+                  <div tw='flex flex-col'>
+                    <div tw='flex font-semibold tracking-wide text-lg uppercase -mb-1 text-slate-500'>
+                      Fluid
+                    </div>
+                    <div tw='flex uppercase tracking-widest text-xs font-extralight border-t-4 border-t-slate-300 text-slate-800'>
+                      colors
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div tw='flex flex-col p-8 relative'>
