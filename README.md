@@ -33,6 +33,10 @@
 
 https://user-images.githubusercontent.com/13263720/165003250-60a8b74d-05f9-4000-8448-28ea93d4e1ae.mp4
 
+## Demo
+
+[Website](https://fluid-color.vercel.app/)
+
 ## Getting Started
 
 ### 1. Change the name
@@ -49,3 +53,7 @@ https://user-images.githubusercontent.com/13263720/165012924-b3b47869-b602-4c5f-
 ### 3. Save it
 
 Click on the `Export As PNG` button to save to your computer! Use it anywhere :)
+
+## About
+
+Read more about the project [here](https://fluid-color.vercel.app/#tabs)
