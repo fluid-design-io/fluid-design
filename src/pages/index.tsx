@@ -43,7 +43,7 @@ export default function HomePage({
   // parse the baseColors into query params
   return (
     <>
-      <Seo templateTitle={colorName} baseColors={baseColors} />
+      <Seo templateTitle={colorName} baseColors={initColors} />
 
       <Toolbar initColors={initColors} initDice={initDice} />
       <main id='main'>
