@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/fluid-design-io/color-ui-generator/compare/v2.4.0...v2.4.1) (2022-12-04)
+
+
+### Bug Fixes
+
+* fixed og where color sare not showing ([ff645b1](https://github.com/fluid-design-io/color-ui-generator/commit/ff645b1effc99e5be8d6391e5e02fb065be44b3c))
+* remove env file ([3fbc9b6](https://github.com/fluid-design-io/color-ui-generator/commit/3fbc9b60bd3c8cd634fb7d857d982542fa543213))
+
 ## [2.4.0](https://github.com/fluid-design-io/color-ui-generator/compare/v2.3.7...v2.4.0) (2022-12-04)
 
 
