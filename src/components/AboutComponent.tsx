@@ -217,8 +217,8 @@ export const AboutComponent = () => {
         final color steps. For example, if a user chose a color hue 18 with 40%
         saturation, we can then calculate the computed saturation for value step
         50 as:
-        <pre>saturation = 40 * 88.201 / 100 = 35.2804</pre>
       </p>
+      <pre>saturation = 40 * 88.201 / 100 = 35.2804</pre>
       <h2 id='how-to-contribute'>How to contribute?</h2>
       <p>
         You can contribute to this project by reporting bugs, suggesting

@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 import { AppProvider } from '@/lib/AppContext';
 
 import Layout from '@/components/layout/Layout';
+import { SkipNavContent } from '@/components/SkipNavContent';
 
 /**
  * !STARTERCONF info
@@ -14,6 +15,7 @@ import Layout from '@/components/layout/Layout';
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AppProvider>
+      <SkipNavContent />
       <Layout>
         <Component {...pageProps} />
       </Layout>
