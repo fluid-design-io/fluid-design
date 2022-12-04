@@ -102,6 +102,26 @@
   .min-h-main {
     @apply min-h-[calc(100vh-56px)];
   }
+
+  .skip-main-wrap {
+    /* @apply absolute left-[-999px] top-auto z-[-999] h-1 w-1 overflow-hidden; */
+    @apply absolute inset-x-0 z-[-999] h-1 w-1 overflow-hidden opacity-0 transition-opacity duration-500;
+  }
+  .skip-main-wrap:focus,
+  .skip-main-wrap:focus-visible,
+  .skip-main-wrap:focus-within {
+    @apply top-4 z-[999] mx-auto h-auto w-full max-w-lg opacity-100 outline-none;
+  }
+  .skip-main-wrap .skip-main {
+    @apply w-full rounded-lg border-4 border-primary-700 bg-primary-50 py-4 px-2 text-primary-800 shadow-lg shadow-primary-300/40 outline-none dark:border-primary-700 dark:bg-primary-200 dark:text-slate-700 dark:shadow-primary-800/30;
+  }
+  .skip-main-wrap .skip-btn {
+    @apply btn-clear-primary hocus:!text-white dark:hocus:!text-white !text-primary-800 dark:!text-primary-900 rounded px-2 py-1 hocus:!bg-primary-600 dark:hocus:!bg-primary-800;
+  }
+  /* Any element that has id will have scroll padding y of 8 */
+  [id] {
+    @apply scroll-m-20;
+  }
 }
 
 @layer utilities {
