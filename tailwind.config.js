@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
-/** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
@@ -99,5 +98,7 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('@headlessui/tailwindcss'),
-    require('@fluid-design/fluid-ui/src/plugin')],
+    require('@fluid-design/fluid-ui/src/plugin/core'), // main plugin
+    require('@fluid-design/fluid-ui/src/plugin/button'),
+  ]
 };

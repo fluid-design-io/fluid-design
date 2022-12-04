@@ -1,24 +1,48 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import { openGraph } from '@/lib/helper';
+import { BaseColors } from '@/lib/AppContext';
 
 const defaultMeta = {
-  title: 'Color UI Generator',
-  siteName: 'Color UI Generator',
+  title: 'Beautiful color palettes for your next project',
+  siteName: 'Fluid Color',
   description: 'A beautiful color palette generator',
-  /** Without additional '/' on the end, e.g. https://theodorusclarence.com */
   url: 'https://color-ui-generator.vercel.app',
   type: 'website',
   robots: 'follow, index',
-  /** No need to be filled, will be populated with openGraph function */
+  /**
+   * No need to be filled, will be populated with openGraph function
+   * If you wish to use a normal image, just specify the path below
+   */
   image: '',
+  author: 'Oliver Pan',
 };
 
 type SeoProps = {
   date?: string;
   templateTitle?: string;
+  baseColors?: BaseColors;
 } & Partial<typeof defaultMeta>;
+
+const openGraph = ({
+  title,
+  author,
+  cover,
+  baseColors,
+}: {
+  title: string;
+  author: string;
+  cover: string;
+  baseColors: BaseColors;
+}) => {
+  return (
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/og?` +
+    `title=${encodeURIComponent(title)}` +
+    `&author=${encodeURIComponent(author)}` +
+    `&cover=${encodeURIComponent(cover)}` +
+    `&baseColors=${encodeURIComponent(JSON.stringify(baseColors))}`
+  );
+};
 
 export default function Seo(props: SeoProps) {
   const router = useRouter();
@@ -30,13 +54,17 @@ export default function Seo(props: SeoProps) {
     ? `${props.templateTitle} | ${meta.siteName}`
     : meta.title;
 
-  // Use siteName if there is templateTitle
-  // but show full title if there is none
   meta['image'] = openGraph({
-    description: meta.description,
-    siteName: props.templateTitle ? meta.siteName : meta.title,
-    templateTitle: props.templateTitle,
+    title: props.templateTitle ? meta.siteName : meta.title,
+    author: meta?.author,
+    cover: meta?.image,
+    baseColors: meta?.baseColors,
   });
+
+  meta['description'] = meta?.baseColors
+    ? `Check out this beautiful color palette for your next project!`
+    : meta.description;
+
   return (
     <Head>
       <title>{meta.title}</title>
@@ -52,7 +80,7 @@ export default function Seo(props: SeoProps) {
       <meta name='image' property='og:image' content={meta.image} />
       {/* Twitter */}
       <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:site' content='@th_clarence' />
+      <meta name='twitter:site' content='@jiuzhenPan' />
       <meta name='twitter:title' content={meta.title} />
       <meta name='twitter:description' content={meta.description} />
       <meta name='twitter:image' content={meta.image} />
@@ -64,11 +92,7 @@ export default function Seo(props: SeoProps) {
             property='og:publish_date'
             content={meta.date}
           />
-          <meta
-            name='author'
-            property='article:author'
-            content='Theodorus Clarence'
-          />
+          <meta name='author' property='article:author' content={meta.author} />
         </>
       )}
 
@@ -76,23 +100,20 @@ export default function Seo(props: SeoProps) {
       {favicons.map((linkProps) => (
         <link key={linkProps.href} {...linkProps} />
       ))}
-      <meta
-        name='msapplication-TileColor'
-        content='var(rgb(--color-gray-900))'
-      />
+      <meta name='msapplication-TileColor' content='#F3F4F6' />
       <meta
         name='msapplication-TileImage'
         content='/favicon/ms-icon-144x144.png'
       />
       <meta
         name='theme-color'
+        content='#F3F4F6'
         media='(prefers-color-scheme: light)'
-        content='var(rgb(--color-gray-50))'
       />
       <meta
         name='theme-color'
+        content='#27292B'
         media='(prefers-color-scheme: dark)'
-        content='var(rgb(--color-gray-900))'
       />
     </Head>
   );
@@ -105,7 +126,6 @@ type Favicons = {
   type?: string;
 };
 
-// !STARTERCONF this is the default favicon, you can generate your own from https://www.favicon-generator.org/ then replace the whole /public/favicon folder
 const favicons: Array<Favicons> = [
   {
     rel: 'apple-touch-icon',
