@@ -46,10 +46,10 @@ const handle = async (req: NextRequest) => {
           <img
             src={cover}
             alt=''
-            tw='flex-1 w-full h-full absolute inset-0 opacity-10'
+            tw='flex-1 w-full h-full opacity-10'
             style={{ objectFit: 'cover', objectPosition: 'center' }}
           />
-          <div tw='flex w-full h-full flex-col justify-end items-stretch'>
+          <div tw='flex w-full h-full flex-col justify-end items-stretch absolute inset-0'>
             <div tw='flex-1 flex w-full absolute top-16 justify-center'>
               <div tw='flex justify-center'>
                 {Object.keys(baseColors).map((key, i) => (
