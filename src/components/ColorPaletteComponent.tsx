@@ -10,10 +10,10 @@ import {
   calculateSaturation,
   getColorLuminescence,
 } from '@/lib/colorCalculator';
-import { useThemeMode } from '@/lib/ThemeContext';
 import { translateColor } from '@/lib/translateColor';
 
 import CopyButton from './CopyButton';
+import { useTheme } from '@/lib/useTheme';
 
 function ColorPaletteComponent({
   color,
@@ -23,7 +23,7 @@ function ColorPaletteComponent({
   type: keyof BaseColors | 'gray';
 }) {
   const [colorMode] = useColorMode();
-  const [mode] = useThemeMode(true);
+  const { mode } = useTheme();
   const [colorValues, setColorValues] = useColorValues();
   // create an array total of 10 colors, based on colorIndex index, and map over it
   const step = (i) => (i === 0 ? 50 : i * 100);

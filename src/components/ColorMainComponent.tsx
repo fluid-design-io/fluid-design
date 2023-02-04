@@ -6,12 +6,12 @@ import tinycolor from 'tinycolor2';
 
 import { useColorMode } from '@/lib/AppContext';
 import clsxm from '@/lib/clsxm';
-import { useThemeMode } from '@/lib/ThemeContext';
 import { translateColor } from '@/lib/translateColor';
 
 import CopyButton from './CopyButton';
+import { useTheme } from '@/lib/useTheme';
 function ColorMainComponent({ color, type, onClick }) {
-  const [mode] = useThemeMode(true);
+  const { mode } = useTheme();
   const [colorMode] = useColorMode();
   if (!color) return null;
   const colorObj = chroma(color);

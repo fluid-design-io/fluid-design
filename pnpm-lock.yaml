@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@commitlint/cli': ^17.3.0
   '@commitlint/config-conventional': ^17.3.0
-  '@fluid-design/fluid-ui': ^2.4.2
+  '@fluid-design/fluid-ui': ^2.4.3
   '@headlessui/tailwindcss': ^0.1.1
   '@heroicons/react': ^2.0.13
   '@tailwindcss/forms': ^0.5.3
@@ -39,13 +39,14 @@ specifiers:
   react-hot-toast: ^2.3.0
   react-icons: ^4.7.1
   standard-version: ^9.5.0
-  tailwind-merge: ^1.8.0
+  tailwind-merge: ^1.9.1
   tailwindcss: ^3.2.4
   tinycolor2: ^1.4.2
   typescript: ^4.9.3
+  zustand: ^4.3.2
 
 dependencies:
-  '@fluid-design/fluid-ui': 2.4.2_j54qvijw5mqgej42cynat5s3xu
+  '@fluid-design/fluid-ui': 2.4.3_j54qvijw5mqgej42cynat5s3xu
   '@heroicons/react': 2.0.14_react@18.2.0
   '@vercel/og': 0.0.27
   chroma-js: 2.4.2
@@ -60,8 +61,9 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-hot-toast: 2.4.0_owo25xnefcwdq3zjgtohz6dbju
   react-icons: 4.7.1_react@18.2.0
-  tailwind-merge: 1.9.0
+  tailwind-merge: 1.9.1
   tinycolor2: 1.6.0
+  zustand: 4.3.2_react@18.2.0
 
 devDependencies:
   '@commitlint/cli': 17.4.2
@@ -327,8 +329,8 @@ packages:
       - supports-color
     dev: true
 
-  /@fluid-design/fluid-ui/2.4.2_j54qvijw5mqgej42cynat5s3xu:
-    resolution: {integrity: sha512-Dk2kHArM4bX00HqprQqI5Myo3AIYzU3lHKcvEecz5f5mjgWnWcbM7GfnNIOvJTB+s2GZ4GEdPc2Y0ffepu7fzg==}
+  /@fluid-design/fluid-ui/2.4.3_j54qvijw5mqgej42cynat5s3xu:
+    resolution: {integrity: sha512-ftz8I8upz8GLjzbJCbWbcAKHSDW3yl/O77MN3fD1yoPghax/DQZXyOgBG44MjSGfuNszyEKPBJUUWJ0ymtiGuA==}
     peerDependencies:
       framer-motion: '>=7'
       react: '>=17'
@@ -346,7 +348,7 @@ packages:
       react-dom: 18.2.0_react@18.2.0
       react-icons: 4.7.1_react@18.2.0
       react-textarea-autosize: 8.4.0_3stiutgnnbnfnf3uowm5cip22i
-      tailwind-merge: 1.9.0
+      tailwind-merge: 1.9.1
       tailwindcss: 3.2.4_aesdjsunmf4wiehhujt67my7tu
       yup: 0.32.11
     transitivePeerDependencies:
@@ -4434,8 +4436,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /tailwind-merge/1.9.0:
-    resolution: {integrity: sha512-coziXxViLHbVtFvD1+jwSu+UmDJSFX4dhj9ZuqHCuhTzu9Wk5wMedAz5AVY3uUYw95TaO7NwgUS/dLGcWvtgqw==}
+  /tailwind-merge/1.9.1:
+    resolution: {integrity: sha512-ED9MkiUHlmfh58EC1xHRqXcH1IQyRtmDP0AmXlugYkP2tvfu7ejtjFEHJLJt93mQ7ZJkcqSIgm9M394bq5vOJg==}
     dev: false
 
   /tailwindcss/3.2.4_aesdjsunmf4wiehhujt67my7tu:
@@ -4714,6 +4716,14 @@ packages:
       use-isomorphic-layout-effect: 1.1.2_3stiutgnnbnfnf3uowm5cip22i
     dev: false
 
+  /use-sync-external-store/1.2.0_react@18.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -4879,4 +4889,20 @@ packages:
       nanoclone: 0.2.1
       property-expr: 2.0.5
       toposort: 2.0.2
+    dev: false
+
+  /zustand/4.3.2_react@18.2.0:
+    resolution: {integrity: sha512-rd4haDmlwMTVWVqwvgy00ny8rtti/klRoZjFbL/MAcDnmD5qSw/RZc+Vddstdv90M5Lv6RPgWvm1Hivyn0QgJw==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false

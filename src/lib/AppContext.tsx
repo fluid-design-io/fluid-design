@@ -21,6 +21,7 @@ import {
 import { colorStepMap } from './colorStepMap';
 import { generateBaseColors } from './generateBaseColors';
 import { ThemeProvider } from './ThemeContext';
+import { unifiedTransitionTemporarily } from './useTheme';
 
 export const ColorModes = {
   hex: 'hex',
@@ -186,7 +187,7 @@ export const useBaseColors = ({
   const router = useRouter();
 
   const saveBaseColors = (baseColors: BaseColors) => {
-    setBaseColors(baseColors);
+    unifiedTransitionTemporarily();
     updateQuery(baseColors);
   };
 
@@ -199,13 +200,47 @@ export const useBaseColors = ({
     router.push({ query: baseColors }, undefined, { shallow: true });
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!baseColors || !baseColors.primary) {
       setBaseColors(initialColors);
     } else {
       saveBaseColors(baseColors);
     }
-  }, [baseColors]);
+  }, [baseColors]); */
+
+  useEffect(() => {
+    if (!baseColors || !baseColors.primary) {
+      setBaseColors(initialColors);
+    }
+    const handleRouteChange = (url, { shallow }) => {
+      if (shallow) {
+        // url looks like this: /?primary=%2396fa6a&secondary=%23a43ae7&tertiary=%23d68728
+        // extract the colors from the url, not from the query object
+        const primary = url.match(/primary=(.*?)&/)?.[1]?.replace('%23', '#');
+        const secondary = url
+          .match(/secondary=(.*?)&/)?.[1]
+          ?.replace('%23', '#');
+        const tertiary = url.match(/tertiary=(.*)/)?.[1]?.replace('%23', '#');
+
+        if (primary && secondary && tertiary) {
+          const newBaseColors = {
+            primary: primary as string,
+            secondary: secondary as string,
+            tertiary: tertiary as string,
+          };
+          setBaseColors(newBaseColors);
+        }
+      }
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, []);
 
   return [baseColors, setBaseColors, randomize];
 };

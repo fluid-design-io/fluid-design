@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { AiFillGithub } from 'react-icons/ai';
 
-import { useThemeMode } from '@/lib/ThemeContext';
-
 import UnstyledLink from '@/components/links/UnstyledLink';
 
-import { ThemeSwitch } from '../ThemeSwitch';
+import { ThemeSwitch } from '../buttons/ThemeSwitch';
 
 const links = [
   {
@@ -16,7 +14,6 @@ const links = [
 ];
 
 export default function Header() {
-  const [mode, setMode, toggleMode] = useThemeMode(true);
   return (
     <header>
       <div className='mx-auto flex h-14 w-full max-w-[93.75rem] items-center justify-between px-4'>
@@ -28,10 +25,7 @@ export default function Header() {
         </UnstyledLink>
         <nav>
           <ul className='flex items-center justify-between space-x-4'>
-            <ThemeSwitch
-              handleModeChange={toggleMode}
-              mode={mode as 'light' | 'dark'}
-            />
+            <ThemeSwitch />
             {links.map(({ href, label }) => (
               <li key={`${href}${label}`}>
                 <UnstyledLink
@@ -43,7 +37,7 @@ export default function Header() {
               </li>
             ))}
             <li className='-mb-[1px] rounded px-1.5 py-0.5 font-mono text-xs text-stone-400 ring-1 ring-stone-400 dark:text-stone-500 dark:ring-stone-500'>
-              <span>V2.4.0</span>
+              <span>V2.5.0</span>
             </li>
           </ul>
         </nav>
