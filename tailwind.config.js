@@ -4,7 +4,7 @@ const { fontFamily } = require('tailwindcss/defaultTheme');
 module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
-    './node_modules/@fluid-design/fluid-ui/src/**/*.{js,ts,jsx,tsx}'],
+    './node_modules/@fluid-design/fluid-ui/dist/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
@@ -98,7 +98,7 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('@headlessui/tailwindcss'),
-    require('@fluid-design/fluid-ui/src/plugin/core'), // main plugin
-    require('@fluid-design/fluid-ui/src/plugin/button'),
+    require('@fluid-design/fluid-ui/dist/plugin/core'), // main plugin
+    require('@fluid-design/fluid-ui/dist/plugin/button'),
   ]
 };
