@@ -12,8 +12,8 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: latest
-      - run: pnpm
-      - run: pnpm lint
+      - run: pnpm run
+      - run: pnpm run lint
 
   tsc:
     name: Run Type Check
@@ -23,5 +23,5 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: latest
-      - run: pnpm
-      - run: pnpm build
+      - run: pnpm run
+      - run: pnpm run build
