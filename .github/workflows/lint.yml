@@ -8,22 +8,22 @@ jobs:
     name: Run ESLint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
-          cache: 'yarn'
-      - run: yarn
-      - run: yarn lint:strict
+          node-version: 'lts/*'
+      - run: pnpm
+      - run: pnpm lint
 
   tsc:
     name: Run Type Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
-          cache: 'yarn'
-      - run: yarn
-      - run: yarn typecheck
+          node-version: 'lts/*'
+      - run: pnpm
+      - run: pnpm typecheck
