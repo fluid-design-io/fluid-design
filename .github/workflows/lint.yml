@@ -12,7 +12,7 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: latest
-      - run: pnpm run
+      - run: pnpm install
       - run: pnpm run lint
 
   tsc:
@@ -23,5 +23,5 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: latest
-      - run: pnpm run
+      - run: pnpm install
       - run: pnpm run build
