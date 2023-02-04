@@ -3,7 +3,7 @@ import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
 
 export const config = {
-  runtime: 'experimental-edge',
+  runtime: 'edge',
 };
 
 const fontExtraLight = fetch(
@@ -15,24 +15,17 @@ const fontRegular = fetch(
 const fontSemiBold = fetch(
   new URL('../../../assets/Inter-SemiBold.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
-const fontBold = fetch(
-  new URL('../../../assets/Inter-Bold.ttf', import.meta.url)
-).then((res) => res.arrayBuffer());
 
 const handle = async (req: NextRequest) => {
   const InterExtraLight = await fontExtraLight;
   const InterRegular = await fontRegular;
   const InterSemiBold = await fontSemiBold;
-  const InterBold = await fontBold;
   const { searchParams, host, protocol } = new URL(req.url);
-  const title = searchParams.get('title') || 'No post title';
   const baseColorsString = searchParams.get('baseColors') || 'null';
-  console.log(`\n\n====\tRecieved baseColors: ${baseColorsString}\t====\n\n`);
   let baseColors;
   try {
     baseColors = JSON.parse(baseColorsString);
   } catch (e) {
-    console.log(`\n\n====\tError parsing baseColors: ${e}\t====\n\n`);
     baseColors = null;
   }
   const cover = `${protocol}//${host}/_next/image?url=${encodeURIComponent(
@@ -76,7 +69,7 @@ const handle = async (req: NextRequest) => {
                   />
                   <div tw='flex w-full pt-6 pb-2 px-2 flex-shrink-0 items-end'>
                     <div tw='flex flex-1 flex-col uppercase'>
-                      <div tw='text-2xl font-bold tracking-wide text-slate-700 -mb-1'>
+                      <div tw='text-2xl font-semibold tracking-wide text-slate-700 -mb-1'>
                         {baseColors[key].slice(1)}
                       </div>
                       <div tw='font-semibold text-xs tracking-[0.15rem] text-slate-500'>
@@ -126,11 +119,6 @@ const handle = async (req: NextRequest) => {
             name: 'Inter',
             data: InterSemiBold,
             weight: 600,
-          },
-          {
-            name: 'Inter',
-            data: InterBold,
-            weight: 700,
           },
         ],
       }
