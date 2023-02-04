@@ -5,10 +5,6 @@ import { NextRequest } from 'next/server';
 export const config = {
   runtime: 'edge',
 };
-
-const fontExtraLight = fetch(
-  new URL('../../../assets/Inter-ExtraLight.ttf', import.meta.url)
-).then((res) => res.arrayBuffer());
 const fontRegular = fetch(
   new URL('../../../assets/Inter-Regular.ttf', import.meta.url)
 ).then((res) => res.arrayBuffer());
@@ -17,7 +13,6 @@ const fontSemiBold = fetch(
 ).then((res) => res.arrayBuffer());
 
 const handle = async (req: NextRequest) => {
-  const InterExtraLight = await fontExtraLight;
   const InterRegular = await fontRegular;
   const InterSemiBold = await fontSemiBold;
   const { searchParams, host, protocol } = new URL(req.url);
@@ -81,7 +76,7 @@ const handle = async (req: NextRequest) => {
                         <div tw='flex font-semibold tracking-wide text-lg uppercase -mb-1 text-slate-500'>
                           Fluid
                         </div>
-                        <div tw='flex uppercase tracking-widest text-xs font-extralight border-t-4 border-t-slate-300 text-slate-800'>
+                        <div tw='flex uppercase tracking-widest text-xs font-light border-t-4 border-t-slate-300 text-slate-800'>
                           colors
                         </div>
                       </div>
@@ -105,11 +100,6 @@ const handle = async (req: NextRequest) => {
         width: 1200,
         height: 628,
         fonts: [
-          {
-            name: 'Inter',
-            data: InterExtraLight,
-            weight: 200,
-          },
           {
             name: 'Inter',
             data: InterRegular,
