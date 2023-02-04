@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/fluid-design-io/color-ui-generator/compare/v2.4.3...v2.5.0) (2023-02-04)
+
+
+### Features
+
+* new theme swithcer ([98fef3a](https://github.com/fluid-design-io/color-ui-generator/commit/98fef3a9c6c70c060844dbc4dcbea9502fbe3133))
+* now colors will change on url change ([e6a6690](https://github.com/fluid-design-io/color-ui-generator/commit/e6a6690f555d09add293f60783216a969d6fd5e4))
+
+
+### Bug Fixes
+
+* minor bug fixes and UI improvements ([55328a4](https://github.com/fluid-design-io/color-ui-generator/commit/55328a4c8967398023dbfa51d33937fd846998eb))
+
 ### [2.4.3](https://github.com/fluid-design-io/color-ui-generator/compare/v2.4.2...v2.4.3) (2023-02-04)
 
 
