@@ -424,12 +424,8 @@ export const getUnionFormula = (
   formula: Formula,
   factor = 1
 ) => {
-  if (!inputHue) {
-    throw new Error('Hue must be a number');
-  }
-  if (!formula) {
-    throw new Error('Formula is required');
-  }
+  if (!inputHue) throw new Error('Hue must be a number');
+  if (!formula) throw new Error('Formula is required');
   // convert the factor to a number between 0 and 1
   factor = factor > 1 ? factor * 0.01 : factor < 0 ? 0 : factor;
   const hue = inputHue % 360;
@@ -461,7 +457,7 @@ const numberBoundry = (num: number, min = 0, max = 100) =>
   A function calculates saturation based on the given hue and step.
   @param {number} hue - a number between 0 and 360
   @param {number} saturation - a number between 0 and 1
-  @param {number} step - a number between 1 and 10 (represents 50 - 900)
+  @param {number} step - a number between 1 and 11 (represents 50 - 950)
   @returns {number} a number between 0 and 100, in percentage
 */
 export const calculateSaturation = (
@@ -478,7 +474,7 @@ export const calculateSaturation = (
  * A function that returns color luminescence based on hue range and step
  * @param {number} hue - Hue value, 0-360
  * @param {number} luminance - Luminance value, 0-1
- * @param {number} step - Step value, 1-10 (1 = darkest, 10 = lightest)
+ * @param {number} step - Step value, 1-11 (1 = darkest, 11 = lightest)
  * @returns {number} - Luminescence value, 0-100
  */
 export const getColorLuminescence = (
@@ -494,26 +490,34 @@ export const getColorLuminescence = (
     This means that no color within certain step will be lighter or darker than the range
   */
   if (step === 1) {
+    if (res > 13) res = 13;
+    if (res < 7) res = 7;
+  }
+  if (step === 2) {
     if (res > 21) res = 21;
     if (res < 14) res = 14;
   }
-  if (step === 2) {
+  if (step === 3) {
     if (res > 36) res = 36;
     if (res < 20) res = 20;
   }
   if (step === 7) {
-    if (res > 76) res = 76;
-    if (res < 58) res = 58;
+    if (res > 73) res = 73;
+    if (res < 65) res = 65;
   }
   if (step === 8) {
-    if (res > 81) res = 81;
-    if (res < 68) res = 68;
+    if (res > 80) res = 80;
+    if (res < 73) res = 73;
   }
   if (step === 9) {
-    if (res > 90) res = 90;
-    if (res < 83) res = 83;
+    if (res > 88) res = 88;
+    if (res < 76) res = 76;
   }
   if (step === 10) {
+    if (res > 94) res = 94;
+    if (res < 87) res = 87;
+  }
+  if (step === 11) {
     if (res > 97) res = 97;
     if (res <= 93) res = 93;
   }

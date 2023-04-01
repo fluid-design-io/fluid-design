@@ -7,9 +7,9 @@ import tinycolor from 'tinycolor2';
 import { useColorMode } from '@/lib/AppContext';
 import clsxm from '@/lib/clsxm';
 import { translateColor } from '@/lib/translateColor';
+import { useTheme } from '@/lib/useTheme';
 
 import CopyButton from './CopyButton';
-import { useTheme } from '@/lib/useTheme';
 function ColorMainComponent({ color, type, onClick }) {
   const { mode } = useTheme();
   const [colorMode] = useColorMode();
@@ -36,7 +36,7 @@ function ColorMainComponent({ color, type, onClick }) {
       <motion.button
         layoutId={`picker-area-${type}`}
         className={clsxm(
-          'group flex w-full items-center justify-center rounded-t-xl transition sm:aspect-[2/1] lg:aspect-auto lg:h-full xl:aspect-square',
+          'group flex w-full items-center justify-center rounded-t-xl transition sm:aspect-[2/1] md:aspect-[2.5/1] lg:aspect-auto lg:h-full xl:aspect-square',
           'focus-visible:outline-none focus-visible:ring focus-visible:ring-inset focus-visible:ring-white focus-visible:ring-offset-2',
           type === 'primary' && 'focus-visible:ring-offset-primary-500',
           type === 'secondary' && 'focus-visible:ring-offset-secondary-500',

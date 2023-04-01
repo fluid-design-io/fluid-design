@@ -9,4 +9,7 @@ export const colorStepMap = {
   7: 700,
   8: 800,
   9: 900,
+  10: 950,
 };
+
+export const COLOR_LENGTH = Object.keys(colorStepMap).length;

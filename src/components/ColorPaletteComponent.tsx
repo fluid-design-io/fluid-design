@@ -10,10 +10,11 @@ import {
   calculateSaturation,
   getColorLuminescence,
 } from '@/lib/colorCalculator';
+import { COLOR_LENGTH } from '@/lib/colorStepMap';
 import { translateColor } from '@/lib/translateColor';
+import { useTheme } from '@/lib/useTheme';
 
 import CopyButton from './CopyButton';
-import { useTheme } from '@/lib/useTheme';
 
 function ColorPaletteComponent({
   color,
@@ -26,28 +27,31 @@ function ColorPaletteComponent({
   const { mode } = useTheme();
   const [colorValues, setColorValues] = useColorValues();
   // create an array total of 10 colors, based on colorIndex index, and map over it
-  const step = (i) => (i === 0 ? 50 : i * 100);
+  const step = (i) => (i === 0 ? 50 : i === 10 ? 950 : i * 100);
 
   const colors = (color) =>
-    Array.from({ length: 10 }, (_, i) => {
+    Array.from({ length: COLOR_LENGTH }, (_, i) => {
       const rawColor = chroma(color);
       let calculatedColor = rawColor;
       if (type === 'gray') {
         calculatedColor = rawColor
-          .set('lch.l', (9 - i) * 9.85 + 8.5)
-          .desaturate(0.1);
+          .set('lch.l', (COLOR_LENGTH - 1 - i) * 8.85 + 5)
+          .desaturate(1 / COLOR_LENGTH);
       } else {
         let hue = Math.round(rawColor.hsl()[0] * 10) / 10;
         const sat = Math.round(rawColor.hsl()[1] * 10) / 10;
         const lum = Math.round(rawColor.hsv()[2] * 10) / 10;
         // if hue is Nan, set it to 0
         if (isNaN(hue)) {
-          calculatedColor = rawColor.set('lch.l', (9 - i) * 9.85 + 8.5);
+          calculatedColor = rawColor.set(
+            'lch.l',
+            (COLOR_LENGTH - 1 - i) * 8.85 + 5
+          );
         } else {
           hue === 360 ? (hue = 0.001) : hue;
           hue === 0 ? (hue = 0.001) : hue;
-          const saturation = calculateSaturation(hue, sat, 10 - i);
-          const luminescence = getColorLuminescence(hue, lum, 10 - i);
+          const saturation = calculateSaturation(hue, sat, COLOR_LENGTH - i);
+          const luminescence = getColorLuminescence(hue, lum, COLOR_LENGTH - i);
           const colorString = `hsl(${hue}, ${saturation}%, ${luminescence}%)`;
           calculatedColor = chroma(colorString);
         }
@@ -80,23 +84,21 @@ function ColorPaletteComponent({
 
   if (!color || !colorMode) return null;
 
-  const colorBoxes = colors(color).map(({ convertedColor, hexColor }, i) => {
-    return (
-      <ColorPalette
-        mode={mode}
-        key={`${type}.${i}.${hexColor}`}
-        color={convertedColor}
-        hexColor={hexColor}
-        colorIndex={step(i)}
-      />
-    );
-  });
+  const colorBoxes = colors(color).map(({ convertedColor, hexColor }, i) => (
+    <ColorPalette
+      mode={mode}
+      key={`${type}.${i}.${hexColor}`}
+      color={convertedColor}
+      hexColor={hexColor}
+      colorIndex={step(i)}
+    />
+  ));
   return (
     <div className='w-full'>
       {/* <h3 className='pb-4 text-start font-semibold capitalize text-stone-700'>
         {type}
       </h3> */}
-      <div className='grid min-w-0 flex-1 grid-cols-5 gap-x-1 gap-y-3 sm:gap-x-4 xl:grid-cols-10 xl:gap-x-2'>
+      <div className='grid min-w-0 flex-1 grid-cols-1 gap-x-1 gap-y-3 sm:gap-x-4 lg:grid-cols-11 lg:gap-x-2'>
         {colorBoxes}
       </div>
     </div>
@@ -114,8 +116,8 @@ const ColorPalette = ({ mode, color, colorIndex, hexColor }) => {
   }`;
   const activeShaodw = `0 4px 14px -2px hsl(${shadowSmall}), 0 12px 24px -2px hsl(${shadowLarge})`;
   return (
-    <div className='space-y-1.5'>
-      <div className='relative'>
+    <div className='space-y-1.5 flex gap-1.5 justify-between items-center lg:block'>
+      <div className='relative flex-1'>
         <CopyButton color={color}>
           <motion.button
             className={clsxm(
@@ -152,12 +154,12 @@ const ColorPalette = ({ mode, color, colorIndex, hexColor }) => {
           </motion.button>
         </CopyButton>
       </div>
-      <div className='px-0.5 text-start text-xs lg:flex lg:justify-between lg:space-x-2 xl:block xl:space-x-0'>
-        <div className='w-6 font-medium text-gray-900 transition-colors duration-1000 ease-in-out dark:text-gray-50 xl:w-full'>
+      <div className='px-0.5 flex-shrink-0 text-start text-xs'>
+        <div className='w-6 font-medium text-gray-900 transition-colors duration-1000 ease-in-out dark:text-gray-50 lg:w-full'>
           {colorIndex}
         </div>
         <div
-          className='truncate font-mono lowercase text-slate-500 transition-colors duration-1000 ease-in-out dark:text-slate-400'
+          className='truncate font-mono lowercase text-[0.7rem] text-slate-500 transition-colors duration-1000 ease-in-out dark:text-slate-400'
           title={color}
         >
           {color}

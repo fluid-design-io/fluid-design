@@ -91,6 +91,7 @@ module.exports = {
         'pointer-hover': { 'raw': '(hover: hover) and (pointer: fine)' },
         'pointer-touch': { 'raw': '(hover: none) and (pointer: coarse)' },
         'prefers-contrast': { 'raw': '(prefers-contrast: more)' },
+        'xs': '480px',
       }
     },
   },

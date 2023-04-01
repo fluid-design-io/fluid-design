@@ -113,7 +113,7 @@ const ColorComponent = React.forwardRef(
                 >
                   Base Colors
                 </h3>
-                <div className='grid h-full place-content-stretch gap-3 sm:grid-cols-3 sm:gap-6 md:grid-cols-1 xl:grid-cols-3'>
+                <div className='grid h-fit place-content-stretch gap-3 sm:grid-cols-3 sm:gap-6 md:grid-cols-1 xl:grid-cols-3'>
                   <ColorMainComponent
                     color={colors.primary}
                     type='primary'
@@ -140,22 +140,27 @@ const ColorComponent = React.forwardRef(
               >
                 Color Palettes
               </h3>
-              <ColorPaletteComponent color={colors.primary} type='primary' />
-              <ColorPaletteComponent
-                color={colors.secondary}
-                type='secondary'
-              />
-              <ColorPaletteComponent color={colors.tertiary} type='tertiary' />
-              <ColorPaletteComponent
-                color={tinycolor
-                  .mix(
-                    tinycolor(colors.primary).greyscale().toRgbString(),
-                    colors.primary,
-                    10
-                  )
-                  .toHexString()}
-                type='gray'
-              />
+              <div className='grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] lg:grid-cols-1 md:grid-cols-4 w-full gap-x-2 gap-y-8'>
+                <ColorPaletteComponent color={colors.primary} type='primary' />
+                <ColorPaletteComponent
+                  color={colors.secondary}
+                  type='secondary'
+                />
+                <ColorPaletteComponent
+                  color={colors.tertiary}
+                  type='tertiary'
+                />
+                <ColorPaletteComponent
+                  color={tinycolor
+                    .mix(
+                      tinycolor(colors.primary).greyscale().toRgbString(),
+                      colors.primary,
+                      10
+                    )
+                    .toHexString()}
+                  type='gray'
+                />
+              </div>
               <ColorPillBody className='flex w-full sm:hidden' />
               <div
                 id='monochromatic'
