@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/fluid-design-io/color-ui-generator/compare/v2.5.0...v2.7.0) (2023-04-01)
+
+
+### Features
+
+* supports Tailwind v3.3.1 color step 950 ([f83ad68](https://github.com/fluid-design-io/color-ui-generator/commit/f83ad68e0af62ca0b812df927616176ac25f7e0f))
+
+
+### Bug Fixes
+
+* reduced edge size to < 1MB ([32d57b7](https://github.com/fluid-design-io/color-ui-generator/commit/32d57b78d63ed3474d10689a4ca2a93dd1852a48))
+* reduced more og edge function size to < 1MB ([a61cce5](https://github.com/fluid-design-io/color-ui-generator/commit/a61cce58843e928a07f1c04ed0fe81369e050010))
+
 ## [2.5.0](https://github.com/fluid-design-io/color-ui-generator/compare/v2.4.3...v2.5.0) (2023-02-04)
 
 
