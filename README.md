@@ -4,32 +4,26 @@
 
 <h1>Color UI Generator 🎨</h1>  
 </div>
-<div align="left">
 
-- This is a simple color UI generator.
-- It generates 3 color palettes based on primary, secondary and tertiary colors.
-- It generates a gray scale color palette based on the primary color.
-- It generates 6 analogous & monochromatic color palettes based on the primary color.
-- It also generates a few more analogous color palettes based on the primary, secondary and tertiary colors.
+![color UI generator cover](https://user-images.githubusercontent.com/13263720/229339496-d6733470-69a1-4b39-8096-f1ae6f41efaf.png)
 
-</div>
-<div align="center">
-<img src="https://user-images.githubusercontent.com/13263720/165002692-00f36291-a4ae-4e74-bfcb-56c55e49e2c6.png" alt="color UI generator cover" width="100%" />
-</div>
 
 ## Features
 
-- Mordern & minimal UI design
+- 🆕 Updated to TailwindCSS V3.3.0+ with new 950 color step.
 
-- Ability to generate color palettes, analogous & monochromatic colors from primary, secondary & tertiary colors
+- 🎨 Mordern & minimal UI design
 
-- Save the entire UI as png, you can then use it as a color template for your UI designs
+- 🔴🟢🟣 Ability to generate color palettes, analogous & monochromatic colors from primary, secondary & tertiary colors
 
-- Copy individual colors to clipboard
+- 📷 Save the entire UI as png, you can then use it as a color template for your UI designs
 
-- Fully mobile friendly
+- 📋 Copy individual colors to clipboard
 
-- Supports light/Dark mode
+- 📱 Fully mobile friendly
+
+- 🌞🌜 Supports light/Dark mode
+
 
 https://user-images.githubusercontent.com/13263720/165003250-60a8b74d-05f9-4000-8448-28ea93d4e1ae.mp4
 
