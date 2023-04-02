@@ -1,12 +1,14 @@
 import { Button, Tab } from '@fluid-design/fluid-ui';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect, useRef, useState } from 'react';
 import tinycolor from 'tinycolor2';
 
-import { BaseColors, useBaseColors } from '@/lib/AppContext';
+import { BaseColors, useAppContext, useBaseColors } from '@/lib/AppContext';
 import { throwDice } from '@/lib/dice';
 import { generateBaseColors } from '@/lib/generateBaseColors';
+import { isBaseColors } from '@/lib/isBaseColors';
 
 import { AboutComponent } from '@/components/AboutComponent';
 import { ColorAsTextComponent } from '@/components/ColorAsTextComponent';
@@ -27,7 +29,9 @@ export default function HomePage({
   hasInvalidUrlColors: boolean;
   dice: number;
 }) {
-  const [baseColors, setBaseColors] = useBaseColors({
+  const router = useRouter();
+  const { setBaseColors } = useAppContext();
+  const [baseColors, saveBaseColors] = useBaseColors({
     initialColors: initColors,
   });
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -40,7 +44,29 @@ export default function HomePage({
     setType(type);
     setIsPickerOpen(true);
   };
-  // parse the baseColors into query params
+
+  useEffect(() => {
+    const handleRouteChange = (url, { shallow }) => {
+      console.log(`handleRouteChange: ${url} ${shallow}`);
+      const { query } = router;
+      const newBaseColors = {
+        primary: query.primary,
+        secondary: query.secondary,
+        tertiary: query.tertiary,
+      };
+      if (isBaseColors(newBaseColors)) {
+        console.log(`Updating base colors: ${JSON.stringify(newBaseColors)}`);
+        setBaseColors(newBaseColors);
+      }
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router]);
+
   return (
     <>
       <Seo templateTitle={colorName} baseColors={initColors} />
@@ -83,7 +109,7 @@ export default function HomePage({
                   <ColorPicker
                     type={type}
                     colors={baseColors || initColors}
-                    onChange={setBaseColors}
+                    onChange={saveBaseColors}
                     onDismiss={() => setIsPickerOpen(false)}
                   />
                 )}

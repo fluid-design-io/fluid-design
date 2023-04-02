@@ -112,7 +112,10 @@ function ColorPicker({
             ref={submitRef}
             className='block w-full rounded-br-xl border-t border-t-gray-400/20 px-4 py-2 text-gray-800 transition hocus:bg-gray-400/20 dark:text-gray-100'
             onClick={() => {
-              onChange((prev) => ({ ...prev, [type]: currentColor }));
+              onChange({
+                ...colors,
+                [type]: currentColor,
+              });
               onDismiss();
             }}
           >
