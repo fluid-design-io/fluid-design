@@ -6,7 +6,6 @@
   - setBaseColors: (colors: { primary: string, secondary: string, tertiary: string }) => void
 */
 
-import { useRouter } from 'next/router';
 import {
   createContext,
   Dispatch,
@@ -19,15 +18,12 @@ import {
 } from 'react';
 
 import { colorStepMap } from './colorStepMap';
-import { generateBaseColors } from './generateBaseColors';
 import { ThemeProvider } from './ThemeContext';
 
 export const ColorModes = {
   hex: 'hex',
   rgb: 'rgb',
   hsl: 'hsl',
-  lab: 'lab',
-  lch: 'lch',
 };
 export type ColorMode = keyof typeof ColorModes;
 export type BaseColors = {
@@ -167,44 +163,6 @@ export const useColorMode = (): [
   }, [colorMode]);
 
   return [colorMode, setColorMode];
-};
-
-export const useBaseColors = ({
-  initialColors,
-}: {
-  initialColors: BaseColors;
-}): [
-  AppContextProps['baseColors'],
-  (baseColors: AppContextProps['baseColors']) => void,
-  () => void
-] => {
-  const { baseColors, setBaseColors } = useAppContext();
-  const router = useRouter();
-
-  const updateQuery = (baseColors: BaseColors) => {
-    router.push({
-      pathname: '/',
-      query: baseColors,
-    });
-  };
-
-  const saveBaseColors = (newBaseColors: BaseColors) => {
-    setBaseColors(newBaseColors);
-    updateQuery(newBaseColors);
-  };
-
-  const randomize = () => {
-    const newBaseColors = generateBaseColors();
-    saveBaseColors(newBaseColors);
-  };
-
-  useEffect(() => {
-    if (!baseColors || !baseColors.primary) {
-      saveBaseColors(initialColors);
-    }
-  }, [baseColors]);
-
-  return [baseColors, saveBaseColors, randomize];
 };
 
 export const useColorValues = (): [
