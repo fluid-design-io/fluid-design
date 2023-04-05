@@ -23,20 +23,6 @@ export const translateColor = ({
     case 'hsl':
       convertedColor = color.css('hsl');
       break;
-    case 'lab':
-      // eslint-disable-next-line no-case-declarations
-      const lab = color.lab();
-      convertedColor = `lab(${toNearestTen(lab[0])}% ${toNearestTen(
-        lab[1]
-      )} ${toNearestTen(lab[2])})`;
-      break;
-    case 'lch':
-      // eslint-disable-next-line no-case-declarations
-      const lch = color.lch();
-      convertedColor = `lch(${toNearestTen(lch[0])}% ${toNearestTen(
-        lch[1]
-      )} ${toNearestTen(lch[2])})`;
-      break;
     default:
       convertedColor = color.hex();
   }

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 // Run on node.js environment
 
 const fs = require('fs');
