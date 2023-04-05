@@ -3,12 +3,11 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
-import tinycolor from 'tinycolor2';
 
-import { BaseColors, useAppContext, useBaseColors } from '@/lib/AppContext';
 import { throwDice } from '@/lib/dice';
 import { generateBaseColors } from '@/lib/generateBaseColors';
 import { isBaseColors } from '@/lib/isBaseColors';
+import { BaseColors, useStore } from '@/lib/useStore';
 
 import { AboutComponent } from '@/components/AboutComponent';
 import { ColorAsTextComponent } from '@/components/ColorAsTextComponent';
@@ -21,19 +20,16 @@ import { TailwindConfigComponent } from '@/components/TailwindConfigComponent';
 import { Toolbar } from '@/components/Toolbar';
 
 export default function HomePage({
-  initColors,
+  serverBaseColors,
   hasInvalidUrlColors,
   dice: initDice,
 }: {
-  initColors: BaseColors;
+  serverBaseColors: BaseColors;
   hasInvalidUrlColors: boolean;
   dice: number;
 }) {
   const router = useRouter();
-  const { setBaseColors } = useAppContext();
-  const [baseColors, saveBaseColors] = useBaseColors({
-    initialColors: initColors,
-  });
+  const { baseColors, setBaseColors } = useStore();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [colorName, setColorName] = useState('Awesome Color');
   const [isEditing, setIsEditing] = useState(false);
@@ -44,17 +40,21 @@ export default function HomePage({
     setType(type);
     setIsPickerOpen(true);
   };
+  // Update Zustand store with the serverBaseColors when the component mounts
+  useEffect(() => {
+    setBaseColors(serverBaseColors);
+  }, []);
 
   useEffect(() => {
-    const handleRouteChange = (url, { shallow }) => {
-      console.log(`handleRouteChange: ${url} ${shallow}`);
+    const handleRouteChange = (url) => {
+      console.log(`handleRouteChange: ${url}`);
       const { query } = router;
       const newBaseColors = {
         primary: query.primary,
         secondary: query.secondary,
         tertiary: query.tertiary,
       };
-      if (isBaseColors(newBaseColors)) {
+      if (isBaseColors(newBaseColors) && url !== '/') {
         console.log(`Updating base colors: ${JSON.stringify(newBaseColors)}`);
         setBaseColors(newBaseColors);
       }
@@ -65,13 +65,13 @@ export default function HomePage({
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router]);
+  }, [router, baseColors, setBaseColors]);
 
   return (
     <>
-      <Seo templateTitle={colorName} baseColors={initColors} />
+      <Seo templateTitle={colorName} baseColors={baseColors} />
 
-      <Toolbar initColors={initColors} initDice={initDice} />
+      <Toolbar initDice={initDice} />
       <main id='main'>
         {hasInvalidUrlColors && (
           <div className='mx-auto w-full max-w-[93.75rem] px-4' ref={errorRef}>
@@ -108,15 +108,15 @@ export default function HomePage({
                 {isPickerOpen && (
                   <ColorPicker
                     type={type}
-                    colors={baseColors || initColors}
-                    onChange={saveBaseColors}
+                    colors={baseColors}
+                    onChange={setBaseColors}
                     onDismiss={() => setIsPickerOpen(false)}
                   />
                 )}
                 <ColorComponent
                   ref={componentRef}
                   key='color-component'
-                  colors={baseColors || initColors}
+                  colors={baseColors}
                   onChangeColor={handleChangeColor}
                   inputs={{
                     ...{ isEditing, colorName, setColorName, setIsEditing },
@@ -178,24 +178,15 @@ export async function getServerSideProps({ query }) {
         tertiary: query.tertiary,
       }
     : null;
-  // isValidBaseColors means that there're at least primary, secondary, and tertiary colors
-  // and they're all valid hex colors
-  const isValidBaseColors = () => {
-    if (!baseColors) return false;
-    const keys = Object.keys(baseColors);
-    const hasValidColors = keys.every((key) => {
-      const color = baseColors[key];
-      return tinycolor(color).isValid();
-    });
-    return hasValidColors;
-  };
   // generate a boolean based on if number is less than or equal to 0.5
-  const initColors = isValidBaseColors() ? baseColors : generateBaseColors();
+  const serverBaseColors = isBaseColors(baseColors)
+    ? baseColors
+    : generateBaseColors();
   const dice = throwDice();
   return {
     props: {
-      initColors,
-      hasInvalidUrlColors: hasColorQuries && !isValidBaseColors(),
+      serverBaseColors,
+      hasInvalidUrlColors: hasColorQuries && !isBaseColors(baseColors),
       dice,
     },
   };

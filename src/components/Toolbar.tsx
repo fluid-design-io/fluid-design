@@ -10,13 +10,9 @@ import {
   BsDice6Fill,
 } from 'react-icons/bs';
 
-import {
-  BaseColors,
-  ColorModes,
-  useBaseColors,
-  useColorMode,
-} from '@/lib/AppContext';
+import { ColorModes, useColorMode } from '@/lib/AppContext';
 import { throwDice } from '@/lib/dice';
+import { useStore } from '@/lib/useStore';
 
 const diceIcons = [
   <BsDice1Fill key='dice-1' />,
@@ -27,17 +23,9 @@ const diceIcons = [
   <BsDice6Fill key='dice-6' />,
 ];
 
-export const Toolbar = ({
-  initColors,
-  initDice,
-}: {
-  initColors: BaseColors;
-  initDice: number;
-}) => {
+export const Toolbar = ({ initDice }: { initDice: number }) => {
   const [colorMode, setColorMode] = useColorMode();
-  const [baseColors, setBaseColors, randomize] = useBaseColors({
-    initialColors: initColors,
-  });
+  const { randomize } = useStore();
   const [dice, setDice] = useState(initDice);
   const colorModeList = Object.keys(ColorModes).map((mode) => ({
     name: mode,

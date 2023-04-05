@@ -6,10 +6,7 @@ import tinycolor from 'tinycolor2';
 
 import { BaseColors, useColorMode, useColorValues } from '@/lib/AppContext';
 import clsxm from '@/lib/clsxm';
-import {
-  calculateSaturation,
-  getColorLuminescence,
-} from '@/lib/colorCalculator';
+import { getUnionFormula } from '@/lib/colorCalculator';
 import { COLOR_LENGTH } from '@/lib/colorStepMap';
 import { translateColor } from '@/lib/translateColor';
 import { useTheme } from '@/lib/useTheme';
@@ -33,14 +30,15 @@ function ColorPaletteComponent({
     Array.from({ length: COLOR_LENGTH }, (_, i) => {
       const rawColor = chroma(color);
       let calculatedColor = rawColor;
+      const step = i;
+      const sat = rawColor.hsl()[1];
+      const lig = rawColor.hsl()[2];
       if (type === 'gray') {
         calculatedColor = rawColor
           .set('lch.l', (COLOR_LENGTH - 1 - i) * 8.85 + 5)
-          .desaturate(1 / COLOR_LENGTH);
+          .set('hsl.s', 0.02 + sat * 0.25);
       } else {
         let hue = Math.round(rawColor.hsl()[0] * 10) / 10;
-        const sat = Math.round(rawColor.hsl()[1] * 10) / 10;
-        const lum = Math.round(rawColor.hsv()[2] * 10) / 10;
         // if hue is Nan, set it to 0
         if (isNaN(hue)) {
           calculatedColor = rawColor.set(
@@ -50,9 +48,11 @@ function ColorPaletteComponent({
         } else {
           hue === 360 ? (hue = 0.001) : hue;
           hue === 0 ? (hue = 0.001) : hue;
-          const saturation = calculateSaturation(hue, sat, COLOR_LENGTH - i);
-          const luminescence = getColorLuminescence(hue, lum, COLOR_LENGTH - i);
-          const colorString = `hsl(${hue}, ${saturation}%, ${luminescence}%)`;
+          // const saturation = calculateSaturation(hue, sat, COLOR_LENGTH - i);
+          // const luminescence = getColorLuminescence(hue, lum, COLOR_LENGTH - i);
+          const formula = getUnionFormula(hue, sat, lig);
+          const { saturation, lightness } = formula(step);
+          const colorString = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
           calculatedColor = chroma(colorString);
         }
       }

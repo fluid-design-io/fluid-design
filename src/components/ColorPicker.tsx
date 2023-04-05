@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import tinycolor from 'tinycolor2';
 
-import { BaseColors } from '@/lib/AppContext';
+import { BaseColors } from '@/lib/useStore';
 
 function ColorPicker({
   type,
@@ -72,7 +72,7 @@ function ColorPicker({
           <HexColorPicker
             color={validColor}
             onChange={(c) => setCurrentColor(c)}
-            className='!w-full'
+            className='!w-full min-w-[12rem]'
           />
         </motion.div>
         <motion.div className='px-4'>
@@ -86,7 +86,7 @@ function ColorPicker({
               type='text'
               name='color'
               id='color'
-              className='block w-full rounded-full border-gray-300 bg-transparent px-4 text-gray-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:text-gray-100 sm:text-sm'
+              className='block w-full rounded-lg border-gray-300 bg-transparent px-2 text-gray-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:text-gray-100 sm:text-sm'
               placeholder='Enter a color'
               autoFocus
               value={currentColor}
