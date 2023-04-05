@@ -45,27 +45,12 @@ export default function HomePage({
     setBaseColors(serverBaseColors);
   }, []);
 
+  // Update the URL when the baseColors change
   useEffect(() => {
-    const handleRouteChange = (url) => {
-      console.log(`handleRouteChange: ${url}`);
-      const { query } = router;
-      const newBaseColors = {
-        primary: query.primary,
-        secondary: query.secondary,
-        tertiary: query.tertiary,
-      };
-      if (isBaseColors(newBaseColors) && url !== '/') {
-        console.log(`Updating base colors: ${JSON.stringify(newBaseColors)}`);
-        setBaseColors(newBaseColors);
-      }
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router, baseColors, setBaseColors]);
+    const { pathname, query } = router;
+    const newQuery = { ...query, ...baseColors };
+    router.push({ pathname, query: newQuery }, undefined, { shallow: true });
+  }, [baseColors]);
 
   return (
     <>
