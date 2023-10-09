@@ -9,20 +9,34 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "^13.4.1",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "chroma-js": "^2.4.2",
+    "culori": "^3.2.0",
+    "extract-colors": "^4.0.2",
+    "framer-motion": "^10.16.4",
+    "immer": "^10.0.3",
+    "lucide-react": "^0.284.0",
+    "next": "^13.5.4",
+    "next-themes": "^0.2.1",
     "react": "^18.2.0",
+    "react-colorful": "^5.6.1",
     "react-dom": "^18.2.0",
-    "ui": "workspace:*"
+    "tinycolor2": "^1.6.0",
+    "ui": "workspace:*",
+    "zustand": "^4.4.3"
   },
   "devDependencies": {
+    "@types/culori": "^2.0.1",
     "@types/node": "^17.0.12",
-    "@types/react": "^18.0.22",
-    "@types/react-dom": "^18.0.7",
+    "@types/react": "^18.2.25",
+    "@types/react-dom": "^18.2.11",
     "autoprefixer": "^10.4.14",
     "eslint-config-custom": "workspace:*",
+    "install": "^0.13.0",
     "postcss": "^8.4.24",
-    "tailwindcss": "^3.3.2",
+    "prettier": "^3.0.3",
+    "tailwindcss": "^3.3.3",
     "tsconfig": "workspace:*",
-    "typescript": "^4.5.3"
+    "typescript": "5.1.6"
   }
 }
