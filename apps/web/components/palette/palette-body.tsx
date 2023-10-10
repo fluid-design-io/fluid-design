@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import BaseColorPickers from "./base-color-pickers";
 import { cn } from "@ui/lib/utils";
 import AnalogousMonochromaticPalettes from "./analogous-mono-palettes";

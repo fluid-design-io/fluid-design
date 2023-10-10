@@ -17,7 +17,10 @@ const comfortaa = Comfortaa({
 });
 
 export const metadata: Metadata = {
-  title: "Fluid Colors",
+  title: {
+    default: "Fluid Colors",
+    template: "%s | Fluid Colors",
+  },
   description: "Mordern color palette generator",
   viewport:
     "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no",
@@ -33,9 +36,12 @@ export default function RootLayout({
       <body className={cn(inter.variable, comfortaa.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="site-padding relative z-20 mx-auto flex w-full max-w-[120rem] items-center justify-between py-2">
-            <div className="flex items-center font-comfortaa font-thin tracking-widest">
+            <Link
+              className="flex items-center font-comfortaa font-thin tracking-widest"
+              href="/"
+            >
               Fluid Colors
-            </div>
+            </Link>
             <div className="flex items-center justify-end gap-4">
               <Button variant="ghost" size="icon" asChild>
                 <Link

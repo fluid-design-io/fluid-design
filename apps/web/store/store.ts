@@ -16,8 +16,9 @@ import {
   StateStorage,
   createJSONStorage,
   devtools,
+  PersistOptions,
 } from "zustand/middleware";
-import { generateColorPalette, getUnionFormula } from "@/lib/colorCalculator";
+import { generateColorPalette } from "@/lib/colorCalculator";
 import { updateCSSVariables } from "@/lib/updateCssVariables";
 
 // Zustand store type
@@ -61,13 +62,27 @@ const queryParamStorage: StateStorage = {
   },
 };
 
-let storageOptions = {
+let storageOptions: PersistOptions<ColorStore> = {
   name: "colors",
   storage: createJSONStorage(() => queryParamStorage),
+  onRehydrateStorage: (state) => {
+    console.log("hydration starts");
+    // optional
+    return ({ baseColors, generatePalette }: ColorStore, error) => {
+      if (baseColors) {
+        console.log("baseColors exist");
+        generatePalette(true);
+      } else {
+        console.log("baseColors do not exist");
+        generatePalette(false);
+      }
+      console.log("hydration ends");
+    };
+  },
 };
 
 let localAndUrlStore = (set, get) => ({
-  colorMode: ColorMode.HSL,
+  colorMode: ColorMode.HEX,
   baseColors: undefined,
   colorPalettes: {
     primary: [],
@@ -157,7 +172,7 @@ export type SiteSettingsStore = {
   setPerformance: (performance: Performance) => void;
 };
 
-let localStorageOptions = {
+let localStorageOptions: PersistOptions<SiteSettingsStore> = {
   name: "siteSettings",
   storage: createJSONStorage(() => localStorage),
 };
