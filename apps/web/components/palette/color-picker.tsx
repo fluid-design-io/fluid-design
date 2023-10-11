@@ -8,6 +8,7 @@ import ColorPickerModal from "./color-picker-modal";
 import { CopyIcon, Palette } from "lucide-react";
 import { useToast } from "@ui/components/ui/use-toast";
 import { textAnimation } from "@/lib/animation";
+import ToastCopied from "../toast-copied";
 
 function ColorPicker({
   color,
@@ -82,7 +83,7 @@ function ColorPicker({
               });
             }}
           >
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence mode="popLayout" initial={false}>
               <motion.span
                 key={`color-picker-value-${colorString}`}
                 className={cn(

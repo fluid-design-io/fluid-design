@@ -83,7 +83,10 @@ function SixtyThirtyTenPalettes({ className }: { className?: string }) {
         className,
       )}
     >
-      <AnimatePresence mode={performance === "high" ? "popLayout" : "wait"}>
+      <AnimatePresence
+        mode={performance === "high" ? "popLayout" : "wait"}
+        initial={false}
+      >
         {mainPalettes.map((palettes, i) => (
           <motion.div
             key={`sixty-thirty-ten-palette-${i}-${palettes[0]?.color}`}

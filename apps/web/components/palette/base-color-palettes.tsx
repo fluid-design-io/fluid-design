@@ -73,6 +73,7 @@ function BaseColorPalettes() {
           >
             <AnimatePresence
               mode={performance === "high" ? "popLayout" : "wait"}
+              initial={false}
             >
               {reversed.map((color, i) => {
                 const colorString = colorHelper.toHex(color.color);

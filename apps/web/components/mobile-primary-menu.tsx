@@ -24,7 +24,7 @@ function MobilePrimaryMenu({ disabled }: { disabled: boolean }) {
           size="sm"
           disabled={disabled}
         >
-          <ChevronUp className="h-4 w-4" />
+          <ChevronUp className="h-4 w-4 sm:rotate-180" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[9.7rem]">

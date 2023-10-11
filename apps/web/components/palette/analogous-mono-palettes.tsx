@@ -17,7 +17,8 @@ import useStore from "@/store/useStore";
 
 function AnalogousMonochromaticPalettes({ className }: { className?: string }) {
   const store = useStore(useColorStore, (state) => state);
-  if (!store) return null;
+  console.log(store);
+  if (!store) return <p>Why...</p>;
   const { baseColors, colorMode } = store;
   return (
     <div className={cn("grid grid-cols-2 gap-4", className)}>
@@ -70,7 +71,10 @@ const PillPalette = memo(
           "@md/section-secondary:col-span-1",
         )}
       >
-        <AnimatePresence mode={performance === "high" ? "popLayout" : "wait"}>
+        <AnimatePresence
+          mode={performance === "high" ? "popLayout" : "wait"}
+          initial={false}
+        >
           {colors.map((color, i) => {
             const c = color.toHexString();
             const isDark = tinycolor(color).isDark();

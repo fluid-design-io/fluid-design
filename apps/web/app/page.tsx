@@ -4,7 +4,6 @@ import { Metadata, ResolvingMetadata } from "next";
 import { BaseColors } from "@/types/app";
 
 import dynamic from "next/dynamic";
-import PaletteInitializer from "@/components/palette/palette-initializer";
 import { colorHelper } from "@/lib/colorHelper";
 
 const PerformanceChecker = dynamic(
@@ -55,7 +54,6 @@ export default function Page({ searchParams }: Props) {
       <ColorPalette />
       <div className="mt-24" />
       <PaletteVisualizer />
-      <PaletteInitializer />
       <PerformanceChecker />
     </div>
   );
