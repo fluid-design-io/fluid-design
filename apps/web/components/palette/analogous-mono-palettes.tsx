@@ -16,10 +16,7 @@ import { textAnimation } from "@/lib/animation";
 import useStore from "@/store/useStore";
 
 function AnalogousMonochromaticPalettes({ className }: { className?: string }) {
-  const store = useStore(useColorStore, (state) => state);
-  console.log(store);
-  if (!store) return <p>Why...</p>;
-  const { baseColors, colorMode } = store;
+  const { baseColors, colorMode } = useColorStore();
   return (
     <div className={cn("grid grid-cols-2 gap-4", className)}>
       <PillPalette color={baseColors.primary} type="mono" mode={colorMode} />

@@ -31,56 +31,6 @@ export type ColorStore = {
   updateBaseColor: (newBaseColor: keyof BaseColors, newColor: RawColor) => void;
 };
 
-const queryParamStorage: StateStorage = {
-  getItem: (key): string => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const storedValue = searchParams.get(key) ?? "";
-    return storedValue || null;
-  },
-  setItem: (key, value): void => {
-    const parsedValue = JSON.parse(value);
-
-    // Extract and filter baseColors
-    const { primary, secondary, accent } = parsedValue.state?.baseColors || {};
-
-    // Create a filtered version of the state
-    const filteredState = JSON.stringify({
-      state: {
-        baseColors: { primary, secondary, accent },
-      },
-      version: parsedValue.version,
-    });
-
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set(key, filteredState);
-    window.history.replaceState({}, "", `?${searchParams.toString()}`);
-  },
-  removeItem: (key): void => {
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.delete(key);
-    window.history.replaceState({}, "", `?${searchParams.toString()}`);
-  },
-};
-
-let storageOptions: PersistOptions<ColorStore> = {
-  name: "colors",
-  storage: createJSONStorage(() => queryParamStorage),
-  onRehydrateStorage: (state) => {
-    console.log("hydration starts");
-    // optional
-    return ({ baseColors, generatePalette }: ColorStore, error) => {
-      if (baseColors) {
-        console.log("baseColors exist");
-        generatePalette(true);
-      } else {
-        console.log("baseColors do not exist");
-        generatePalette(false);
-      }
-      console.log("hydration ends");
-    };
-  },
-};
-
 let localAndUrlStore = (set, get) => ({
   colorMode: ColorMode.HEX,
   baseColors: undefined,
@@ -155,9 +105,7 @@ let localAndUrlStore = (set, get) => ({
 });
 
 // Zustand store definition
-export const useColorStore = create<ColorStore>()(
-  devtools(persist(localAndUrlStore, storageOptions)),
-);
+export const useColorStore = create<ColorStore>()(devtools(localAndUrlStore));
 
 /* Another store for site settings */
 

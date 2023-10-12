@@ -1,9 +1,11 @@
+"use client";
+
 import { colorHelper } from "@/lib/colorHelper";
 import { useColorStore, useSiteSettingsStore } from "@/store/store";
 import { BaseColorTypes, BaseColors, RawColor } from "@/types/app";
 import { cn } from "@ui/lib/utils";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import ColorPickerModal from "./color-picker-modal";
 import { CopyIcon, Palette } from "lucide-react";
 import { useToast } from "@ui/components/ui/use-toast";
@@ -11,17 +13,13 @@ import { textAnimation } from "@/lib/animation";
 import ToastCopied from "../toast-copied";
 
 function ColorPicker({
-  color,
-  onChange,
   type,
   className,
 }: {
-  color: RawColor;
-  onChange: (newBaseColor: keyof BaseColors, newColor: RawColor) => void;
   type: BaseColorTypes;
   className?: string;
 }) {
-  const { baseColors, colorMode } = useColorStore();
+  const { baseColors, colorMode, updateBaseColor } = useColorStore();
   const { performance } = useSiteSettingsStore();
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -149,7 +147,7 @@ function ColorPicker({
         <ColorPickerModal
           onClose={() => setIsOpen(false)}
           colorString={colorString}
-          onChange={onChange}
+          onChange={updateBaseColor}
           type={type}
         />
       )}

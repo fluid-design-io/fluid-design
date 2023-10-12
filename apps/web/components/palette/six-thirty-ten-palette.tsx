@@ -29,13 +29,12 @@ const getColorNames = async (colors: string[]) => {
 function SixtyThirtyTenPalettes({ className }: { className?: string }) {
   const [colorNames, setColorNames] = useState(["", "", ""]);
   const [mounted, setMounted] = useState(false);
-  const store = useStore(useColorStore, (state) => state);
+  const { colorPalettes } = useColorStore();
   const settings = useStore(useSiteSettingsStore, (state) => state);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (!mounted) return;
-    const { colorPalettes } = store;
     if (Object.values(colorPalettes).every((palette) => palette.length === 0)) {
       console.log(`colorPalettes`, colorPalettes);
       return;
@@ -48,14 +47,14 @@ function SixtyThirtyTenPalettes({ className }: { className?: string }) {
     ]).then((names) => {
       setColorNames(names);
     });
-  }, [mounted, store]);
+  }, [mounted, colorPalettes]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!store || !settings) return <p>Loading...</p>;
-  const { colorPalettes, colorMode } = store;
+  if (!settings) return <p>Loading...</p>;
+
   const { performance } = settings;
   const mainPalettes = Object.values(colorPalettes);
   const boxStyle = [
