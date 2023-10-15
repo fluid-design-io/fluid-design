@@ -87,4 +87,19 @@
   .site-padding-full {
     @apply -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8;
   }
+  .skip-main-wrap {
+    /* @apply absolute left-[-999px] top-auto z-[-999] h-1 w-1 overflow-hidden; */
+    @apply absolute inset-x-0 z-[-999] h-1 w-1 overflow-hidden opacity-0 transition-opacity duration-500;
+  }
+  .skip-main-wrap:focus,
+  .skip-main-wrap:focus-visible,
+  .skip-main-wrap:focus-within {
+    @apply top-4 z-[999] mx-auto h-auto w-full max-w-lg opacity-100 outline-none overflow-visible;
+  }
+  .skip-main-wrap .skip-main {
+    @apply w-full rounded-lg border-4 border-border bg-background py-4 px-2 text-foreground shadow-lg shadow-primary/40 outline-none;
+  }
+  .skip-main-wrap .skip-btn {
+    @apply outline-none text-muted-foreground rounded px-2 py-1 hover:bg-primary focus:bg-primary hover:text-primary-foreground focus:text-primary-foreground;
+  }
 }

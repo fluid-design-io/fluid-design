@@ -12,11 +12,13 @@ function ColorPickerModal({
   colorString,
   onChange,
   type,
+  prefix = "",
 }: {
   onClose: () => void;
   colorString: string;
   onChange: (newBaseColor: keyof BaseColors, newColor: RawColor) => void;
   type: BaseColorTypes;
+  prefix?: string;
 }) {
   const [_color, setColor] = useState(colorString); // internal state
   const submitRef = useRef<HTMLButtonElement>(null);
@@ -89,13 +91,17 @@ function ColorPickerModal({
       <div onClick={onClose} className="fixed inset-0 h-full w-full" />
       <motion.div
         layout
-        layoutId={`color-picker-${type}`}
+        layoutId={`color-picker-${type}${prefix ? "-" + prefix : ""}`}
         className={cn(
-          "relative flex flex-col gap-4 rounded-xl border border-border bg-white/75 text-start transition-colors duration-1000 ease-in-out dark:bg-black/75",
+          "relative flex flex-col gap-4 overflow-hidden border border-border bg-white/75 text-start transition-colors duration-1000 ease-in-out dark:bg-black/75",
+          { "rounded-xl": !prefix },
         )}
+        initial={prefix ? { borderRadius: 120 } : {}}
+        animate={prefix ? { borderRadius: 12 } : {}}
+        exit={prefix ? { borderRadius: 120 } : {}}
       >
         <motion.h4
-          layoutId={`color-picker-title-${type}`}
+          layoutId={`color-picker-title-${type}${prefix ? "-" + prefix : ""}`}
           className="z-[2] px-4 pt-4 capitalize text-gray-800 dark:text-gray-100"
         >
           {type} Color
@@ -121,7 +127,9 @@ function ColorPickerModal({
             className=""
           >
             <motion.input
-              layoutId={`color-picker-value-${type}`}
+              layoutId={`color-picker-value-${type}${
+                prefix ? "-" + prefix : ""
+              }`}
               ref={inputRef}
               type="text"
               name="color"

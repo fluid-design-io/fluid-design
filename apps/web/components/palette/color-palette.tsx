@@ -1,6 +1,8 @@
 import PaletteHeader from "@/components/palette/palette-header";
 
-import PaletteBody from "./palette-body";
+import dynamic from "next/dynamic";
+
+const PaletteBody = dynamic(() => import("@/components/palette/palette-body"));
 
 function ColorPalette() {
   return (

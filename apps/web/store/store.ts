@@ -104,8 +104,15 @@ let localAndUrlStore = (set, get) => ({
   },
 });
 
+const localColorStorageOptions: PersistOptions<ColorStore> = {
+  name: "colorStore",
+  storage: createJSONStorage(() => localStorage),
+};
+
 // Zustand store definition
-export const useColorStore = create<ColorStore>()(devtools(localAndUrlStore));
+export const useColorStore = create<ColorStore>()(
+  devtools(persist(localAndUrlStore, localColorStorageOptions)),
+);
 
 /* Another store for site settings */
 
@@ -120,7 +127,7 @@ export type SiteSettingsStore = {
   setPerformance: (performance: Performance) => void;
 };
 
-let localStorageOptions: PersistOptions<SiteSettingsStore> = {
+const localSettingsStorageOptions: PersistOptions<SiteSettingsStore> = {
   name: "siteSettings",
   storage: createJSONStorage(() => localStorage),
 };
@@ -132,7 +139,7 @@ export const useSiteSettingsStore = create<SiteSettingsStore>()(
         performance: Performance.medium,
         setPerformance: (performance) => set({ performance }),
       }),
-      localStorageOptions,
+      localSettingsStorageOptions,
     ),
   ),
 );

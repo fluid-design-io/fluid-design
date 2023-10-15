@@ -1,14 +1,19 @@
 import "@ui/styles/globals.css";
 import type { Metadata } from "next";
 import { Comfortaa, Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/core/theme-provider";
 import { cn } from "ui/lib/utils";
-import { ModeToggle } from "@/components/dark-mode-toggle";
 import { Toaster } from "@ui/components/toaster";
-import { Button } from "@ui/components/ui/button";
-import { GithubIcon } from "lucide-react";
-import Link from "next/link";
-import { Fragment } from "react";
+import SiteHeader from "@/components/core/site-header";
+import { generateColorPalette } from "@/lib/colorCalculator";
+import { BaseColorTypes, ColorMode } from "@/types/app";
+import { generateBaseColors } from "@/lib/generateBaseColors";
+import { useColorStore } from "@/store/store";
+import ColorStoreInitializer from "./color-store-initializer";
+import PerformanceChecker from "@/components/core/performance-checker";
+import Toolbar from "@/components/core/toobar";
+import StyleSheetInitializer from "./stylesheet-initializer";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const comfortaa = Comfortaa({
@@ -23,43 +28,60 @@ export const metadata: Metadata = {
   },
   description: "Mordern color palette generator",
   viewport:
-    "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no",
+    "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
 };
 
-export default function RootLayout({
+const getServerColors = async () => {
+  const newBaseColors = generateBaseColors();
+  const cookieStore = cookies();
+  const mode = cookieStore.get("colorMode");
+  // short-hand
+  const [primaryPalette, secondaryPalette, accentPalette, grayPalette] = [
+    "primary",
+    "secondary",
+    "accent",
+    "gray",
+  ].map((color) =>
+    generateColorPalette({
+      color: color === "gray" ? newBaseColors.primary : newBaseColors[color],
+      type: color as BaseColorTypes,
+      colorMode: mode ? (mode.value as ColorMode) : ColorMode.HEX,
+    }),
+  );
+  return {
+    baseColors: newBaseColors,
+    colorPalettes: {
+      primary: primaryPalette,
+      secondary: secondaryPalette,
+      accent: accentPalette,
+      gray: grayPalette,
+    },
+    colorMode: mode ? (mode.value as ColorMode) : ColorMode.HEX,
+  };
+};
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { baseColors, colorPalettes, colorMode } = await getServerColors();
+  useColorStore.setState({
+    baseColors,
+    colorPalettes,
+    colorMode,
+  });
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.variable, comfortaa.variable)}>
+        <div id="skip-nav" />
+        <ColorStoreInitializer {...{ baseColors, colorPalettes, colorMode }} />
+        <StyleSheetInitializer />
+        <PerformanceChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="site-padding relative z-20 mx-auto flex w-full max-w-[120rem] items-center justify-between py-2">
-            <Link
-              className="flex items-center font-comfortaa font-thin tracking-widest"
-              href="/"
-            >
-              Fluid Colors
-            </Link>
-            <div className="flex items-center justify-end gap-4">
-              <Button variant="ghost" size="icon" asChild>
-                <Link
-                  href="https://fluid-color.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Github"
-                >
-                  <Fragment>
-                    <div className="sr-only">Github</div>
-                    <GithubIcon className="h-5 w-5" />
-                  </Fragment>
-                </Link>
-              </Button>
-            </div>
-          </div>
+          <SiteHeader />
+          <Toolbar />
           {children}
-
           <Toaster />
         </ThemeProvider>
       </body>

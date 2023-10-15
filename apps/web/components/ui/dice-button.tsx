@@ -14,8 +14,14 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import MobilePrimaryMenu from "./mobile-primary-menu";
 import { cn } from "@ui/lib/utils";
+
+import dynamic from "next/dynamic";
+
+const MobilePrimaryMenu = dynamic(
+  () => import("@/components/ui/mobile-primary-menu"),
+  { ssr: false },
+);
 
 export const DiceButton = () => {
   const store = useStore(useColorStore, (state) => state);
@@ -32,12 +38,22 @@ export const DiceButton = () => {
       return;
     }
     setFace(newFace);
-    store.generatePalette();
-    // delay 1000ms
+    // find #palette-body and add a .coloring class
+    const paletteBody = document?.getElementById("palette-body");
+    if (paletteBody) {
+      paletteBody.classList.add("coloring");
+    }
     setLoading(true);
+    // delay 1000ms
     setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+      store.generatePalette();
+      setTimeout(() => {
+        if (paletteBody) {
+          paletteBody.classList.remove("coloring");
+        }
+        setLoading(false);
+      }, 700);
+    }, 300);
   };
   return (
     <div className="inline-flex">

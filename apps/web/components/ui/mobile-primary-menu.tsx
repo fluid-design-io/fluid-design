@@ -9,6 +9,7 @@ import {
 } from "@ui/components/ui/dropdown-menu";
 import { cn } from "@ui/lib/utils";
 import { ChevronUp, Download, ImagePlus, LucideIcon, Menu } from "lucide-react";
+import primaryToolbarMenu from "./primary-toolbar-menu";
 
 function MobilePrimaryMenu({ disabled }: { disabled: boolean }) {
   return (
@@ -30,20 +31,11 @@ function MobilePrimaryMenu({ disabled }: { disabled: boolean }) {
       <DropdownMenuContent align="end" className="min-w-[9.7rem]">
         <DropdownMenuLabel>Tools</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <MenuItem
-            title="Upload Image"
-            description="Generate a color palette from an image"
-            icon={ImagePlus}
-          />
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <MenuItem
-            title="Download"
-            description="Download the current palette as a PNG"
-            icon={Download}
-          />
-        </DropdownMenuItem>
+        {primaryToolbarMenu.map(({ title, description, icon: Icon }) => (
+          <DropdownMenuItem key={`mobile-primary-menu-${title}`}>
+            <MenuItem title={title} description={description} icon={Icon} />
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

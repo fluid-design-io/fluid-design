@@ -1,4 +1,3 @@
-import chroma from "chroma-js";
 import { COLOR_LENGTH } from "./colorStepMap";
 import { findClosestColors } from "./findColosestHues";
 import { lightnessFormula } from "./lightnessFormula";
@@ -91,11 +90,11 @@ export const generateColorPalette = ({
   colorMode: ColorMode;
 }): ColorValue[] =>
   Array.from({ length: COLOR_LENGTH }, (_, i) => {
-    const rawColor = chroma(color);
+    const rawColor = tinycolor(color);
     let calculatedColor = rawColor;
     const step = i;
-    const sat = rawColor.hsl()[1];
-    const lig = rawColor.hsl()[2];
+    const sat = rawColor.toHsl().s;
+    const lig = rawColor.toHsl().l;
     if (type === "gray") {
       const oklchConverter = converter("oklch");
       const okhslConverter = converter("okhsl");
@@ -107,15 +106,17 @@ export const generateColorPalette = ({
         (COLOR_LENGTH - 1 - i) * ((1 / COLOR_LENGTH) * 0.95) +
         1 / COLOR_LENGTH / 2;
       s = 0.02 + sat * 0.25;
-      calculatedColor = chroma(formatHsl({ l, s, h, mode: "okhsl" }));
+      calculatedColor = tinycolor(formatHsl({ l, s, h, mode: "okhsl" }));
     } else {
-      let hue = Math.round(rawColor.hsl()[0] * 10) / 10;
+      let hue = Math.round(rawColor.toHsl().h * 10) / 10;
       // if hue is Nan, set it to 0
       if (isNaN(hue)) {
-        calculatedColor = rawColor.set(
-          "lch.l",
-          (COLOR_LENGTH - 1 - i) * 8.85 + 5,
-        );
+        const lch = calculatedColor.toLch();
+        calculatedColor = tinycolor({
+          l: (COLOR_LENGTH - 1 - i) * 8.85 + 5,
+          c: lch.c,
+          h: lch.h,
+        });
       } else {
         hue === 360 ? (hue = 0.001) : hue;
         hue === 0 ? (hue = 0.001) : hue;
@@ -124,13 +125,10 @@ export const generateColorPalette = ({
         const formula = getUnionFormula(hue, sat, lig);
         const { saturation, lightness } = formula(step);
         const colorString = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        calculatedColor = chroma(colorString);
+        calculatedColor = tinycolor(colorString);
       }
     }
-    const convertedColor = colorHelper.toColorMode(
-      calculatedColor.css("hsl"),
-      colorMode,
-    );
+    const convertedColor = colorHelper.toColorMode(calculatedColor, colorMode);
     return {
       step: colorStep(step),
       color: convertedColor,

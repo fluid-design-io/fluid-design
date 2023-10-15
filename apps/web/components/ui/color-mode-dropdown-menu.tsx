@@ -8,12 +8,21 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@ui/components/ui/dropdown-menu";
-import { cn } from "@ui/lib/utils";
 import { useColorStore } from "@/store/store";
 import { ColorMode } from "@/types/app";
 import { ChevronDownIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 function ColorModeDropdownMenu() {
+  const [mounted, setMounted] = useState(false);
   const { colorMode, setColorMode } = useColorStore();
+  const handleChangeColorMode = async (mode: ColorMode) => {
+    setColorMode(mode);
+    // call server to set colormode cookie
+    await fetch("/api/color-mode", {
+      method: "POST",
+      body: JSON.stringify({ mode }),
+    });
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,13 +31,13 @@ function ColorModeDropdownMenu() {
           className="flex items-center justify-center gap-1.5 text-sm uppercase"
         >
           <span>{colorMode}</span>
-          <ChevronDownIcon className="h-3.5 w-3.5" />
+          {/* <ChevronDownIcon className="h-3.5 w-3.5" /> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[8.75rem]">
         <DropdownMenuRadioGroup
-          value={colorMode || ColorMode.HEX}
-          onValueChange={setColorMode}
+          value={colorMode}
+          onValueChange={handleChangeColorMode}
         >
           {Object.values(ColorMode).map((mode) => {
             return (

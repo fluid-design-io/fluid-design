@@ -5,8 +5,7 @@ import {
   useColorStore,
   useSiteSettingsStore,
 } from "@/store/store";
-import useStore from "@/store/useStore";
-import { ColorValue } from "@/types/app";
+import { BaseColorTypes, ColorValue } from "@/types/app";
 import { AnimatePresence, useReducedMotion } from "framer-motion";
 import React, { memo, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
@@ -28,13 +27,11 @@ const getColorNames = async (colors: string[]) => {
 };
 function SixtyThirtyTenPalettes({ className }: { className?: string }) {
   const [colorNames, setColorNames] = useState(["", "", ""]);
-  const [mounted, setMounted] = useState(false);
-  const { colorPalettes } = useColorStore();
-  const settings = useStore(useSiteSettingsStore, (state) => state);
+  const { colorPalettes, baseColors } = useColorStore();
+  const { performance } = useSiteSettingsStore();
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!mounted) return;
     if (Object.values(colorPalettes).every((palette) => palette.length === 0)) {
       console.log(`colorPalettes`, colorPalettes);
       return;
@@ -47,15 +44,8 @@ function SixtyThirtyTenPalettes({ className }: { className?: string }) {
     ]).then((names) => {
       setColorNames(names);
     });
-  }, [mounted, colorPalettes]);
+  }, [colorPalettes]);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!settings) return <p>Loading...</p>;
-
-  const { performance } = settings;
   const mainPalettes = Object.values(colorPalettes);
   const boxStyle = [
     "border-primary/10 text-primary/30 selection:bg-foreground/10 selection:text-primary contrast-more:text-foreground",
@@ -86,20 +76,24 @@ function SixtyThirtyTenPalettes({ className }: { className?: string }) {
         mode={performance === "high" ? "popLayout" : "wait"}
         initial={false}
       >
-        {mainPalettes.map((palettes, i) => (
-          <motion.div
-            key={`sixty-thirty-ten-palette-${i}-${palettes[0]?.color}`}
-            {...textAnimation(shouldReduceMotion, animationDelay(i), {
-              performance,
-            })}
-          >
-            <SixtyThirtyTenPalette
-              palettes={palettes}
-              className={boxStyle[i]}
-              colorName={colorNames[i]}
-            />
-          </motion.div>
-        ))}
+        {
+          // map over base colors
+          ["primary", "secondary", "accent", "gray"].map((key, i) => (
+            <motion.div
+              key={`sixty-thirty-ten-palette-${i}-${key}`}
+              {...textAnimation(shouldReduceMotion, animationDelay(i), {
+                performance,
+              })}
+              suppressHydrationWarning
+            >
+              <SixtyThirtyTenPalette
+                type={key as BaseColorTypes}
+                className={boxStyle[i]}
+                colorName={colorNames[i]}
+              />
+            </motion.div>
+          ))
+        }
       </AnimatePresence>
     </div>
   );
@@ -114,55 +108,62 @@ function SixtyThirtyTenPalettes({ className }: { className?: string }) {
  */
 const SixtyThirtyTenPalette = memo(
   ({
-    palettes,
+    type,
     className,
     colorName,
   }: {
-    palettes: ColorValue[];
+    type: BaseColorTypes;
     className?: string;
     colorName: string;
   }) => {
-    const { resolvedTheme } = useTheme();
-    const isDark = resolvedTheme === "dark";
-    const colorSixty = isDark ? palettes[9]?.color : palettes[1]?.color;
-    const colorThirty = isDark ? palettes[8]?.color : palettes[2]?.color;
-    const colorTen = isDark ? palettes[5]?.color : palettes[5]?.color;
+    const colorSixty = {
+      primary: "bg-[hsl(var(--primary-900))] dark:bg-[hsl(var(--primary-100))]",
+      secondary:
+        "bg-[hsl(var(--secondary-900))] dark:bg-[hsl(var(--secondary-100))]",
+      accent: "bg-[hsl(var(--accent-900))] dark:bg-[hsl(var(--accent-100))]",
+      gray: "bg-[hsl(var(--gray-900))] dark:bg-[hsl(var(--gray-100))]",
+    };
+    const colorThirty = {
+      primary: "bg-[hsl(var(--primary-800))] dark:bg-[hsl(var(--primary-200))]",
+      secondary:
+        "bg-[hsl(var(--secondary-800))] dark:bg-[hsl(var(--secondary-200))]",
+      accent: "bg-[hsl(var(--accent-800))] dark:bg-[hsl(var(--accent-200))]",
+      gray: "bg-[hsl(var(--gray-800))] dark:bg-[hsl(var(--gray-200))]",
+    };
+    const colorTen = {
+      primary: "bg-[hsl(var(--primary-500))] dark:bg-[hsl(var(--primary-500))]",
+      secondary:
+        "bg-[hsl(var(--secondary-500))] dark:bg-[hsl(var(--secondary-500))]",
+      accent: "bg-[hsl(var(--accent-500))] dark:bg-[hsl(var(--accent-500))]",
+      gray: "bg-[hsl(var(--gray-500))] dark:bg-[hsl(var(--gray-500))]",
+    };
     return (
       <div
         className={cn(
           "relative flex aspect-[28/9] h-full min-h-[4rem] w-full overflow-hidden rounded-lg border",
           "@md/section-secondary:aspect-[9/21]",
-          "@md/section-secondary:flex-col @xl/section-secondary:aspect-[9/16]",
+          "@md/section-secondary:flex-col @xl/section-secondary:aspect-[9/14]",
           "@2xl/section-secondary:aspect-auto @2xl/section-secondary:rounded-2xl",
           className,
         )}
       >
         <div
           className={cn(
-            "absolute start-0 top-0 p-4 font-sans text-lg font-extralight transition-colors delay-300 duration-700",
+            "absolute start-0 top-0 p-4 font-sans text-lg font-extralight text-background/70 transition-colors delay-300 duration-700",
             "contrast-more:font-medium contrast-more:text-foreground/80 contrast-more:hover:text-foreground",
           )}
         >
           {colorName}
         </div>
         <div
-          className="flex-[0.6] transition-colors"
-          style={{
-            backgroundColor: colorSixty,
-          }}
+          className={cn("flex-[0.6] transition-colors", colorSixty[type])}
         ></div>
         <div className="flex flex-[0.4] @md/section-secondary:flex-col">
           <div
-            className="flex-[0.75] transition-colors"
-            style={{
-              backgroundColor: colorThirty,
-            }}
+            className={cn("flex-[0.75] transition-colors", colorThirty[type])}
           ></div>
           <div
-            className="flex-[0.25] transition-colors"
-            style={{
-              backgroundColor: colorTen,
-            }}
+            className={cn("flex-[0.25] transition-colors", colorTen[type])}
           ></div>
         </div>
       </div>

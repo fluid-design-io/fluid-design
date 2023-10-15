@@ -1,16 +1,20 @@
 "use client";
 
 import { colorHelper } from "@/lib/colorHelper";
-import { useColorStore, useSiteSettingsStore } from "@/store/store";
+import {
+  Performance,
+  useColorStore,
+  useSiteSettingsStore,
+} from "@/store/store";
 import { BaseColorTypes, BaseColors, RawColor } from "@/types/app";
 import { cn } from "@ui/lib/utils";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ColorPickerModal from "./color-picker-modal";
 import { CopyIcon, Palette } from "lucide-react";
 import { useToast } from "@ui/components/ui/use-toast";
 import { textAnimation } from "@/lib/animation";
-import ToastCopied from "../toast-copied";
+import ToastCopied from "../ui/toast-copied";
 
 function ColorPicker({
   type,
@@ -23,9 +27,10 @@ function ColorPicker({
   const { performance } = useSiteSettingsStore();
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
-  const colorString = colorHelper.toColorMode(baseColors[type], colorMode);
+  const colorString = colorHelper.toColorMode(baseColors?.[type], colorMode);
   const foregroundColor = colorHelper.toForeground(colorString);
   const shouldReduceMotion = useReducedMotion();
+
   const animationDelay = () => {
     switch (type) {
       case "primary":
@@ -45,7 +50,7 @@ function ColorPicker({
           // general
           "overflow-hidden",
           // min width - horizontal
-          "flex aspect-[3/1] max-h-40 w-full items-end justify-stretch rounded-2xl border border-border",
+          "flex aspect-[2.75/1] max-h-44 w-full items-end justify-stretch rounded-2xl border border-border",
           // small - vertical
           "@md/section-primary:aspect-[1/1.618] @md/section-primary:max-h-none @md/section-primary:flex-col-reverse @md/section-primary:items-stretch @md/section-primary:justify-start @md/section-primary:gap-6",
         )}
@@ -72,6 +77,7 @@ function ColorPicker({
               "flex items-center justify-between focus:outline-none",
             )}
             aria-label={`Click to copy ${type} color`}
+            title={`Click to copy ${type} color`}
             type="button"
             onClick={() => {
               navigator.clipboard.writeText(colorString);
@@ -92,6 +98,7 @@ function ColorPicker({
                 {...textAnimation(shouldReduceMotion, animationDelay(), {
                   performance,
                 })}
+                suppressHydrationWarning
               >
                 {colorString}
               </motion.span>
@@ -100,7 +107,7 @@ function ColorPicker({
             <span
               className={cn(
                 "absolute inset-0 z-[9]",
-                "group-hover/color-button:bg-muted group-focus/color-button:bg-muted",
+                "group-hover/color-button:bg-background group-focus/color-button:bg-background",
                 "-mx-2 -my-2 rounded-[0.9rem] px-2 py-2 transition",
                 "ring-inset group-hover/color-button:ring-1 group-hover/color-button:ring-primary group-focus/color-button:ring-1 group-focus/color-button:ring-primary",
               )}
@@ -116,6 +123,7 @@ function ColorPicker({
           )}
           type="button"
           aria-label={`Click to change ${type} color`}
+          title={`Click to change ${type} color`}
           style={{
             backgroundColor: colorString,
           }}
@@ -124,7 +132,7 @@ function ColorPicker({
           <span>
             <Palette
               className={cn(
-                "mt-4 h-8 w-8 opacity-0 transition-opacity group-hover/picker-button:opacity-100",
+                "mt-4 h-8 w-8 opacity-0 transition-opacity group-hover/picker-button:opacity-100 group-focus-visible/picker-button:opacity-100",
               )}
               style={{
                 color: foregroundColor,
@@ -133,7 +141,7 @@ function ColorPicker({
           </span>
           <span
             className={cn(
-              "mt-1 touch-none select-none text-center text-xs opacity-0 transition-opacity delay-0 group-hover/picker-button:opacity-100 group-hover/picker-button:delay-1000",
+              "mt-1 touch-none select-none text-center text-xs opacity-0 transition-opacity delay-0 group-hover/picker-button:opacity-100 group-hover/picker-button:delay-1000 group-focus-visible/picker-button:opacity-100",
             )}
             style={{
               color: foregroundColor,

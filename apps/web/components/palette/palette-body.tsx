@@ -7,7 +7,10 @@ import SixtyThirtyTenPalettes from "./six-thirty-ten-palette";
 
 function PaletteBody() {
   return (
-    <div className="grid grid-cols-12 place-content-stretch gap-4 pt-4 sm:pt-8 md:gap-5">
+    <main
+      className="grid grid-cols-12 place-content-stretch gap-4 pt-4 sm:pt-8 md:gap-5"
+      id="palette-body"
+    >
       <div
         className={cn(
           "col-span-12 flex flex-col gap-4 md:col-span-5 md:gap-5",
@@ -30,7 +33,7 @@ function PaletteBody() {
         <SixtyThirtyTenPalettes />
         <AnalogousMonochromaticPalettes className="md:hidden" />
       </div>
-    </div>
+    </main>
   );
 }
 

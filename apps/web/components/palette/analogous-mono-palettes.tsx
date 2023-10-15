@@ -13,14 +13,13 @@ import { colorHelper } from "@/lib/colorHelper";
 import { Copy } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { textAnimation } from "@/lib/animation";
-import useStore from "@/store/useStore";
 
 function AnalogousMonochromaticPalettes({ className }: { className?: string }) {
   const { baseColors, colorMode } = useColorStore();
   return (
     <div className={cn("grid grid-cols-2 gap-4", className)}>
-      <PillPalette color={baseColors.primary} type="mono" mode={colorMode} />
-      <PillPalette color={baseColors.primary} type="analog" mode={colorMode} />
+      <PillPalette color={baseColors?.primary} type="mono" mode={colorMode} />
+      <PillPalette color={baseColors?.primary} type="analog" mode={colorMode} />
     </div>
   );
 }
@@ -62,6 +61,7 @@ const PillPalette = memo(
     };
     return (
       <div
+        id="analogous-mono-palette"
         className={cn(
           "col-span-2 flex flex-col gap-3 md:gap-4",
           "@md/section-primary:col-span-1",
@@ -91,6 +91,7 @@ const PillPalette = memo(
                 {...textAnimation(shouldReduceMotion, animationDelay(i), {
                   performance,
                 })}
+                suppressHydrationWarning
               >
                 <motion.code key={`${type}-${c}-text-${i}`}>
                   {colorHelper.toColorMode(color, mode)}

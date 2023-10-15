@@ -1,44 +1,61 @@
-import { colorHelper } from "@/lib/colorHelper";
 import { colorStepMap } from "@/lib/colorStepMap";
 import { useColorStore } from "@/store/store";
 import { BaseColorTypes } from "@/types/app";
 import { cn } from "@ui/lib/utils";
 import React from "react";
-import PaletteButton from "./base-palette-button";
 import ColorString from "./color-string";
 
+import PaletteButton from "./base-palette-button";
+
 function BaseColorPalettes() {
-  const { colorPalettes, colorMode } = useColorStore.getState();
+  const { colorPalettes } = useColorStore.getState();
+  const animation = (i, type) => {
+    let baseDelay = 0.12;
+    switch (type) {
+      case "primary":
+        baseDelay += 0;
+        break;
+      case "secondary":
+        baseDelay += 0.06;
+        break;
+      case "accent":
+        baseDelay += 0.12;
+        break;
+      case "gray":
+        baseDelay += 0.18;
+        break;
+      default:
+        baseDelay += 0;
+        break;
+    }
+    let springDelay = Math.round((Math.pow(1.2, i) - 0.8) * 100) / 100;
+    return baseDelay + springDelay * 0.06;
+  };
   return (
     <div className="grid gap-4 @xs/section-secondary:grid-cols-2 @md/section-secondary:grid-cols-4 @2xl/section-secondary:grid-cols-1">
       {Object.keys(colorPalettes).map((type: BaseColorTypes) => {
-        // ! This is a hack to reverse the order of the color palettes then reverse again with the grid order
-        // ! We do this because the <code> element needs to be on top when hovered
-        // ! We can't use position due to framer-motion animation
-        let reversed = colorPalettes[type].slice();
-        reversed.reverse();
         return (
           <div
+            id={`${type}-color-palettes`}
             className={cn(
               "grid grid-flow-row grid-cols-1 gap-1.5",
               "@2xl/section-secondary:grid-cols-11",
             )}
             key={`base-color-palette-${type}`}
           >
-            {reversed.map((color, i) => {
-              const colorString = colorHelper.toHex(color.color);
-              const step = colorPalettes[type].length - i - 1;
+            {colorPalettes[type].map((_, i) => {
+              const step = i;
               return (
                 <div
                   className="flex flex-col bg-background transition-colors"
-                  key={`base-color-palette-${type}-${colorString}`}
+                  key={`base-color-palette-${type}-${step}`}
                   style={{
                     order: step,
                   }}
                 >
                   <PaletteButton
                     {...{
-                      animation: undefined,
+                      animation: animation(step, type),
                       type,
                       step: step,
                     }}
@@ -53,17 +70,26 @@ function BaseColorPalettes() {
                     <div className="font-comfortaa font-bold text-foreground/80">
                       {colorStepMap[i]}
                     </div>
-                    <code
-                      className={cn(
-                        "line-clamp-1 text-muted-foreground/80 transition-colors duration-1000 @md/section-secondary:w-[-webkit-fill-available]",
-                        "hover:w-max hover:overflow-visible hover:bg-background hover:transition-none",
-                        "hover:-mx-1 hover:-my-0.5 hover:rounded hover:px-1 hover:py-0.5",
-                        "hover:text-muted-foreground hover:ring-1 hover:ring-inset hover:ring-border",
-                        "contrast-more:font-medium contrast-more:text-foreground/80 contrast-more:hover:text-foreground",
-                      )}
-                    >
-                      <ColorString color={color.raw} />
-                    </code>
+                    <div className="relative">
+                      <div
+                        className={cn(
+                          "line-clamp-1 text-muted-foreground/80 transition-colors duration-1000 @md/section-secondary:w-[-webkit-fill-available]",
+                          "hover:w-max hover:overflow-visible hover:bg-background hover:transition-none",
+                          "hover:-mx-1 hover:-my-0.5 hover:rounded hover:px-1 hover:py-0.5",
+                          "hover:text-muted-foreground hover:ring-1 hover:ring-inset hover:ring-border",
+                          "contrast-more:font-medium contrast-more:text-foreground/80 contrast-more:hover:text-foreground",
+                          "hover:absolute hover:left-0 hover:top-0 hover:z-10 hover:shadow-sm",
+                        )}
+                      >
+                        <ColorString
+                          {...{
+                            type,
+                            step: step,
+                            animation: animation(step, type),
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               );
