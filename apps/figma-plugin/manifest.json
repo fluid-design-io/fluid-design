@@ -1,0 +1,24 @@
+{
+  "name": "Fluid Color Palettes",
+  "id": "1295084891998805434",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "permissions": [
+    "payments"
+  ],
+  "capabilities": [],
+  "enableProposedApi": true,
+  "editorType": [
+    "figma"
+  ],
+  "networkAccess": {
+    "allowedDomains": [
+      "https://fluid-colors.vercel.app"
+    ],
+    "reasoning": "Plugin queries palettes from the web application",
+    "devAllowedDomains": [
+      "http://localhost:3000"
+    ]
+  }
+}

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import tinycolor from "tinycolor2";
 import jwt from "jsonwebtoken";
-import { BaseColors, RawColor } from "@/types/app";
+import { BaseColorTypes, BaseColors, ColorMode, RawColor } from "@/types/app";
+import { generateColorPalette } from "@/lib/colorCalculator";
 
 const headers = (origin: string) => ({
   "Access-Control-Allow-Origin": origin || "*",
@@ -19,33 +19,9 @@ export async function OPTIONS(request: Request) {
   });
 }
 
-export async function POST(request: Request) {
-  const { baseColors } = await request.json();
-  const authSecret = process.env.FIGMA_AUTH_SECRET;
-  // generate a bearer token using jwt.io
-  const token = jwt.sign(
-    {
-      // this is the data we want to encode
-      // we can encode anything, but we want to encode the base colors
-      // so we can use it in the figma plugin
-      ...baseColors,
-    },
-    authSecret,
-    {
-      // this is the secret key
-      // we can use the same secret key in the figma plugin to decode the token
-      // and get the base colors
-      expiresIn: "7d",
-    },
-  );
-
-  const url = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
-
-  return new Response(`${url}/api/figma-plugin?token=${token}`);
-}
-
 export async function GET(req: Request) {
   const origin = req.headers.get("origin");
+
   const { searchParams } = new URL(req.url);
   const token = searchParams.get("token");
   const authSecret = process.env.FIGMA_AUTH_SECRET;
@@ -84,25 +60,34 @@ export async function GET(req: Request) {
       },
     );
   }
-  const v = (color: string | RawColor) => tinycolor(color).isValid();
-  if (!v(primary) || !v(secondary) || !v(accent)) {
-    return NextResponse.json(
-      {
-        data: null,
-        error: {
-          message: "Invalid primary, secondary or accent color",
-        },
-      },
-      {
-        status: 400,
-        headers: headers(origin),
-      },
-    );
-  }
+  // !TODO: get mode from query params
+  const mode = ColorMode.HSL;
+  const [primaryPalette, secondaryPalette, accentPalette, grayPalette] = [
+    "primary",
+    "secondary",
+    "accent",
+    "gray",
+  ].map((color) =>
+    generateColorPalette({
+      color: color === "gray" ? baseColors.primary : baseColors[color],
+      type: color as BaseColorTypes,
+      colorMode: mode,
+    }),
+  );
+  console.log(`SUCCCESSFULLY GENERATED PALETTES`);
   return NextResponse.json(
     {
-      data: { primary, secondary, accent },
       error: null,
+      data: {
+        baseColors,
+        colorPalettes: {
+          primary: primaryPalette,
+          secondary: secondaryPalette,
+          accent: accentPalette,
+          gray: grayPalette,
+        },
+        colorMode: mode,
+      },
     },
     {
       headers: headers(origin),

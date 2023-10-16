@@ -9,7 +9,7 @@ export default function VisHeroSection() {
     <section className="relative isolate w-full bg-background py-12 transition-colors md:py-24 lg:py-32 xl:py-40">
       <div
         className={cn(
-          "pointer-events-none absolute bg-gradient-to-b opacity-10 mix-blend-normal blur-[120px] dark:opacity-[0.2]",
+          "pointer-events-none absolute bg-gradient-to-b opacity-10 mix-blend-normal blur-[120px] dark:opacity-[0.15]",
           "left-1/2 top-[10vh] -translate-x-1/2 sm:top-1/2 sm:-translate-y-2/3",
           "h-[145vh] w-[75vw]",
           "sm:h-[33vw] sm:w-[33vw]",
