@@ -2,7 +2,6 @@ import { ConfirmedPalettes } from "../app/store/store";
 import { BASE_URL } from "../lib/constants";
 import {
   ColorPalettes,
-  ColorValue,
   CreatePaletteOptions,
   PluginStatus,
   RawColor,
@@ -540,13 +539,13 @@ export const createPalettes = async ({
     };
     baseColorFrame.appendChild(title);
     //* for each base color
-    Object.keys(BASE_PALETTES_TO_GENERATE).forEach((baseColor, i) => {
+    Object.keys(BASE_PALETTES_TO_GENERATE).forEach((baseColor) => {
       const baseColorPalette = colorPalettes[baseColor];
       //* create a baseColor frame
       const colorFrame = createFrame(baseColor);
       colorFrame.layoutSizingHorizontal = "HUG";
       //* for each step
-      baseColorPalette.forEach(({ step, color, raw }, j) => {
+      baseColorPalette.forEach(({ step, color, raw }) => {
         const paletteFrame = createBasePaletteFrame({
           paletteName: `${baseColor}-${step}`,
           colorRect: {

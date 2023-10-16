@@ -10,7 +10,6 @@ import {
 } from "@ui/components/ui/card";
 import { Button } from "@ui/components/ui/button";
 import { Crown, Loader2Icon, Palette } from "lucide-react";
-import { Input } from "@ui/components/ui/input";
 import { PluginStatus, Step } from "../../typings/core";
 import { useAppStore } from "../store/store";
 import { cn } from "@ui/lib/utils";

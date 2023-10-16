@@ -23,7 +23,7 @@ function SelectPalettesView({ onConfirm }: { onConfirm: () => void }) {
         <CardTitle className="flex items-center justify-between text-sm">
           Select Palettes
           <Switch
-            onChange={(c) => {
+            onChange={(c: boolean) => {
               if (c) {
                 Object.keys(confirmedPalettes).forEach(
                   (key: keyof ConfirmedPalettes) => {

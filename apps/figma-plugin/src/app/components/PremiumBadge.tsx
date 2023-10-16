@@ -26,7 +26,7 @@ function PremiumBadge() {
 export const PremiumBadgeIcon = ({ className }: { className?: string }) => (
   <div
     className={cn(
-      "flex items-center justify-center bg-white/30 dark:bg-white/5",
+      "flex items-center justify-center bg-white/80",
       "select-none rounded-md border border-border px-2.5 py-0.5 text-[0.675rem] font-bold uppercase tracking-wide shadow-sm",
       className,
     )}

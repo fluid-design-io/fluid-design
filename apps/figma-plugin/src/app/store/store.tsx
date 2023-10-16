@@ -55,7 +55,7 @@ export type AppState = {
 };
 
 export const useAppStore = create<AppState>()(
-  devtools((set, get) => ({
+  devtools((set) => ({
     step: Step.URL,
     baseColors: {
       primary: undefined,
