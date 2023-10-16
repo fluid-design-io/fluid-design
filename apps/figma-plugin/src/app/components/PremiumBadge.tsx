@@ -26,19 +26,19 @@ function PremiumBadge() {
 export const PremiumBadgeIcon = ({ className }: { className?: string }) => (
   <div
     className={cn(
-      "flex items-center justify-center bg-white/30",
+      "flex items-center justify-center bg-white/30 dark:bg-white/5",
       "select-none rounded-md border border-border px-2.5 py-0.5 text-[0.675rem] font-bold uppercase tracking-wide shadow-sm",
       className,
     )}
   >
     <div
       className={cn(
-        "bg-gradient-to-r from-gray-500 to-gray-950 bg-clip-text text-transparent dark:from-gray-600 dark:to-gray-400",
+        "bg-gradient-to-r from-gray-500 to-gray-950 bg-clip-text text-transparent dark:from-gray-400 dark:to-gray-200",
       )}
     >
       Premium
     </div>
-    <Crown className="ml-1.5 inline-block h-3 w-3 text-gray-950" />
+    <Crown className="ml-1.5 inline-block h-3 w-3 text-gray-950 dark:text-gray-100" />
   </div>
 );
 

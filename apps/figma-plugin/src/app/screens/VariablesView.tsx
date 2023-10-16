@@ -14,9 +14,10 @@ import { Input } from "@ui/components/ui/input";
 import { PluginStatus, Step } from "../../typings/core";
 import { useAppStore } from "../store/store";
 import { cn } from "@ui/lib/utils";
-import { SwitchGroup } from "../components/Switch";
+import { Switch, SwitchGroup } from "../components/ui/Switch";
 import { PremiumBadgeIcon } from "../components/PremiumBadge";
 import PaidVsFree from "../components/PaidVsFree";
+import CollectionNameComboBox from "../components/CollectionNameComboBox";
 
 function VariablesView() {
   const {
@@ -30,7 +31,14 @@ function VariablesView() {
     setGenerateOptions,
   } = useAppStore();
 
-  const disabled = !generateOptions.collectionName;
+  const disabled = () => {
+    if (!generateOptions.collectionName) return true;
+    if (
+      Object.values(confirmedPalettes).every((v) => !v) &&
+      !generateOptions.enabled
+    )
+      return true;
+  };
 
   const postCreatePalette = () =>
     parent.postMessage(
@@ -66,13 +74,23 @@ function VariablesView() {
 
   if (step !== Step.VARIABLES) return null;
   return (
-    <Card className="animate-in fade-in-0 relative flex w-full flex-1 flex-col pb-0 duration-300">
+    <Card className="animate-in fade-in-0 relative flex w-full flex-1 flex-col border-border pb-0 duration-300">
       {!isPaidFeature && (
         <PremiumBadgeIcon className="absolute right-2.5 top-2.5" />
       )}
       <form onSubmit={handleSubmit} className="m-0 flex flex-1 flex-col p-0">
         <CardHeader className="p-4 pb-0">
-          <CardTitle className="text-sm">Palette Variables</CardTitle>
+          <CardTitle className="flex items-center justify-between text-sm">
+            Palette Variables
+            <Switch
+              onChange={(c) =>
+                setGenerateOptions({ ...generateOptions, enabled: c })
+              }
+              value={generateOptions.enabled}
+              disabled={false}
+              id={"enabled"}
+            />
+          </CardTitle>
           <CardDescription className="text-xs">
             Automatically generate variables for your palettes.
           </CardDescription>
@@ -93,7 +111,7 @@ function VariablesView() {
                 >
                   Collection Name
                 </label>
-                <Input
+                {/* <Input
                   id="collectionName"
                   value={generateOptions.collectionName}
                   onChange={(e) => {
@@ -103,8 +121,9 @@ function VariablesView() {
                     });
                   }}
                   placeholder="Collection Name"
-                  disabled={!isPaidFeature}
-                />
+                  disabled={!isPaidFeature || !generateOptions.enabled}
+                /> */}
+                <CollectionNameComboBox />
               </div>
               <SwitchGroup
                 title="Dark Mode"
@@ -113,6 +132,7 @@ function VariablesView() {
                 }
                 value={generateOptions.darkMode}
                 description="Generate dark mode variables"
+                disabled={!generateOptions.enabled}
               />
               <SwitchGroup
                 title="Add Spacing Variables"
@@ -121,6 +141,7 @@ function VariablesView() {
                 }
                 value={generateOptions.addSpacing}
                 description="Generate 16 spacing variables"
+                disabled={!generateOptions.enabled}
               />
             </div>
           </CardContent>
@@ -160,7 +181,7 @@ function VariablesView() {
                 className="w-full"
                 size="sm"
                 type="submit"
-                disabled={loading || disabled}
+                disabled={loading || disabled()}
               >
                 {loading ? (
                   <Loader2Icon className="h-4 w-4 animate-spin" />

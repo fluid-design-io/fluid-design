@@ -29,9 +29,11 @@ export enum PluginStatus {
   CREATE_PALETTES = "create-palettes",
   PAID_FEATURE = "paid-feature",
   UPGRADE = "upgrade",
+  GET_USER_EXISTING_COLLECTIONS = "get-user-existing-collections",
 }
 
 export type CreatePaletteOptions = {
+  enabled?: boolean;
   collectionName?: string;
   darkMode?: boolean;
   addSpacing?: boolean;

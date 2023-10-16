@@ -5,7 +5,7 @@ import { upgradeToPremium } from "./upgradePremium";
 
 figma.showUI(__html__, { themeColors: true, width: 376, height: 480 });
 
-figma.payments.setPaymentStatusInDevelopment({ type: "UNPAID" });
+// figma.payments.setPaymentStatusInDevelopment({ type: "UNPAID" });
 
 figma.ui.onmessage = async (msg) => {
   const type = msg.type as PluginStatus;
@@ -30,6 +30,15 @@ figma.ui.onmessage = async (msg) => {
       figma.ui.postMessage({
         type: PluginStatus.UPGRADE,
         message: isPaid,
+      });
+    } else if (type === PluginStatus.GET_USER_EXISTING_COLLECTIONS) {
+      const collections = figma.variables.getLocalVariableCollections();
+      figma.ui.postMessage({
+        type: PluginStatus.GET_USER_EXISTING_COLLECTIONS,
+        message: collections.map((collection) => ({
+          id: collection.id,
+          name: collection.name,
+        })),
       });
     } else if (type === PluginStatus.CLOSE) {
       figma.closePlugin();

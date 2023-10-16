@@ -19,7 +19,6 @@ function Toolbar() {
         <ModeToggle />
       </div>
       <div className="flex items-center justify-end gap-4">
-        {/* //TODO Desktop buttons */}
         <DesktopPreviewToolbarButtons />
         <DiceButton />
       </div>

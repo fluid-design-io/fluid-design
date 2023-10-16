@@ -9,9 +9,14 @@ export function createCollection(name, enableDarkMode = true) {
   console.log("enableDarkMode", enableDarkMode);
   if (enableDarkMode) {
     collection.renameMode(modeId, "Light");
-    darkModeId = collection.addMode("Dark");
+    try {
+      darkModeId = collection.addMode("Dark");
+    } catch (error) {
+      collection.remove();
+      throw error;
+    }
   }
-  return { collection, modeId, darkModeId };
+  return { collection, modeId, darkModeId, collectionId: collection.id };
 }
 
 export function createToken({
@@ -70,7 +75,7 @@ export function generateColorVariables({
   body,
   options: { darkMode },
 }) {
-  const { collection, modeId, darkModeId } = createCollection(
+  const { collection, modeId, darkModeId, collectionId } = createCollection(
     fileName || "Fluid Colors",
     darkMode,
   );
@@ -89,6 +94,7 @@ export function generateColorVariables({
     });
   });
   processAliases({ collection, modeId, darkModeId, aliases, tokens });
+  return collectionId;
 }
 
 export function processAliases({

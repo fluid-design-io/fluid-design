@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/Tabs";
 import { Tier } from "../../typings/core";
 import { TierCard } from "./TierCard";
 import { BASE_URL } from "../../lib/constants";
@@ -16,7 +16,7 @@ export const features = [
   },
   {
     name: "Brand palettes (18 palettes)",
-    tiers: { [Tier.FREE]: false, [Tier.PREMIUM]: true },
+    tiers: { [Tier.FREE]: true, [Tier.PREMIUM]: true },
     description: "Create brand palettes from your base colors.",
     descriptionImage: `${BASE_URL}/assets/figma-plugin/images/brand-palettes.png`,
   },
@@ -36,7 +36,8 @@ export const features = [
       [Tier.FREE]: false,
       [Tier.PREMIUM]: true,
     },
-    description: "Create spacing variables that follows the 8px grid system.",
+    description:
+      "Create proportional spacing variables that follows Tailwind CSS convention.",
   },
   {
     name: "Dark mode variables",
@@ -45,7 +46,7 @@ export const features = [
       [Tier.PREMIUM]: "Figma Team",
     },
     description:
-      "To create more than one variable mode, the document needs to be in a paid external team, or upload it to a team in another organization.",
+      "Mode is limited by the current file's pricing tier(Figma). To create more than one variable mode, the document needs to be in a paid external team, or upload it to a team in another organization.",
   },
 ];
 
@@ -62,7 +63,7 @@ function PaidVsFree() {
   };
   return (
     <div className="px-4 pb-4">
-      <div className="mt-2 rounded bg-gray-900 p-2.5 text-xs text-background">
+      <div className="mt-2 rounded bg-gray-900 p-2.5 text-xs text-background dark:bg-gray-100">
         One-Time Payment, Zero Subscriptions! For the price of your daily coffee
         ☕.
       </div>

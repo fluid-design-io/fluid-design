@@ -10,12 +10,18 @@ import {
   TooltipTrigger,
 } from "@ui/components/tooltip";
 import { usePathname } from "next/navigation";
+import { cn } from "@ui/lib/utils";
 
 function DesktopPreviewToolbarButtons() {
   const pathname = usePathname();
   const acitvePath = pathname.split("/")[1];
   return (
-    <div className="flex h-10 items-center space-x-1 rounded-md border bg-background p-1 shadow-sm">
+    <div
+      className={cn(
+        "hidden lg:flex",
+        "h-10 items-center space-x-1 rounded-md border bg-background p-1 shadow-sm",
+      )}
+    >
       {primaryToolbarMenu.map(({ title, description, icon: Icon }) => {
         // hide "Download" if not in root path
         if (title === "Download" && acitvePath !== "") return null;

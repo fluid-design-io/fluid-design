@@ -69,11 +69,11 @@ export const useAppStore = create<AppState>()(
       secondary: true,
       accent: true,
       gray: true,
-      // true if isPaidFeature
-      brand: false,
+      brand: true,
     },
     generateOptions: {
-      collectionName: "Fluid Colors",
+      enabled: true,
+      collectionName: "My Color Palette",
       darkMode: true,
       addSpacing: true,
     },
