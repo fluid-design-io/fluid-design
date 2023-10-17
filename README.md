@@ -1,109 +1,53 @@
-# Turborepo starter with shadcn/ui#
+<div  align="center">
 
-![Static Badge](https://img.shields.io/badge/shadcn%2Fui-latest-blue?link=https%3A%2F%2Fgithub.com%2Fshadcn%2Fui)
+<img  src="https://user-images.githubusercontent.com/13263720/165000315-67bfd426-a45d-4706-998e-ad99926b4a45.png"  alt="drawing"  width="120"/>
 
-This is Turborepo starter with shadcn/ui pre-configured.
+<h1>Color UI Generator 🎨</h1>  
+</div>
 
-> **Note**
-> This example uses `pnpm` as package manager.
+![color UI generator cover](https://user-images.githubusercontent.com/13263720/229339496-d6733470-69a1-4b39-8096-f1ae6f41efaf.png)
 
-[npm version](https://github.com/dan5py/turborepo-shadcn-ui/tree/npm)
 
-## Using this example
+## Features
 
-Clone the repository:
+- 🆕 Updated to TailwindCSS V3.3.0+ with new 950 color step.
 
-```sh
-git clone https://github.com/dan5py/turborepo-shadcn-ui.git
-```
+- 🎨 Mordern & minimal UI design
 
-Install dependencies:
+- 🔴🟢🟣 Ability to generate color palettes, analogous & monochromatic colors from primary, secondary & tertiary colors
 
-```sh
-cd turborepo-shadcn-ui
-pnpm install
-```
+- 📷 Save the entire UI as png, you can then use it as a color template for your UI designs
 
-### Add ui components
+- 📋 Copy individual colors to clipboard
 
-Use the pre-made script:
+- 📱 Fully mobile friendly
 
-```sh
-pnpm ui:add <component-name>
-```
+- 🌞🌜 Supports light/Dark mode
 
-> This works just like the add command in the `shadcn/ui` CLI.
 
-## What's inside?
+https://user-images.githubusercontent.com/13263720/165003250-60a8b74d-05f9-4000-8448-28ea93d4e1ae.mp4
 
-This Turborepo includes the following packages/apps:
+## Demo
 
-### Apps and Packages
+[Website](https://fluid-colors.vercel.app/)
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications (🚀 powered by **shadcn/ui**)
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+## Getting Started
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### 1. Change the name
 
-### Utilities
+You can change the `Awesome Color` to any name, e.g. `Brand Green`, `Company Blue`, `My Favorite Color` etc.
 
-This Turborepo has some additional tools already setup for you:
+### 2. Change the colors 🎨
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+Click each `Color Area` from `Base Colors` to change colors
 
-### Build
+https://user-images.githubusercontent.com/13263720/165012924-b3b47869-b602-4c5f-b25a-4a14b3a05d07.mp4
 
-To build all apps and packages, run the following command:
 
-```sh
-cd turborepo-shadcn-ui
-pnpm build
-```
+### 3. Save it
 
-### Develop
+Click on the `Export As PNG` button to save to your computer! Use it anywhere :)
 
-To develop all apps and packages, run the following command:
+## About
 
-```sh
-cd turborepo-shadcn-ui
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd turborepo-shadcn-ui
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```sh
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
-
-Learn more about shadcn/ui:
-
-- [Documentation](https://ui.shadcn.com/docs)
+Read more about the project [here](https://fluid-colors.vercel.app/#tabs)
