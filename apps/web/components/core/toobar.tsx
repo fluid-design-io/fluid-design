@@ -15,8 +15,8 @@ function Toolbar() {
       )}
     >
       <div className="flex items-center justify-end gap-4">
-        <ColorModeDropdownMenu />
         <ModeToggle />
+        <ColorModeDropdownMenu />
       </div>
       <div className="flex items-center justify-end gap-4">
         <DesktopPreviewToolbarButtons />

@@ -3,14 +3,14 @@ import { GithubIcon } from "lucide-react";
 import Link from "next/link";
 import React, { Fragment } from "react";
 import SiteHeaderTabs from "./site-header-tabs";
-import FluidColor from "../svg/fluid-color";
+import FluidColorLogo from "../svg/fluid-color";
 import { cn } from "@ui/lib/utils";
 
 function SiteHeader() {
   return (
     <div className="site-padding relative z-20 mx-auto grid w-full max-w-[120rem] grid-cols-5 items-center justify-between py-2">
       <Link className="flex items-center" href="/" aria-label="Fluid Colors">
-        <FluidColor className="h-6 w-6" />
+        <FluidColorLogo className="h-6 w-6" />
         <span
           className={cn(
             "ml-2 hidden font-light tracking-wide md:block",
