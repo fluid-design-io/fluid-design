@@ -11,7 +11,13 @@ import { hslToHex, generateColorVariables, hslToRgbFloat } from "./helper";
 
 export const createPalettes = async ({
   url,
-  options: { collectionName, darkMode, addSpacing, enabled: variablesEnabled },
+  options: {
+    collectionName,
+    darkMode,
+    addSpacing,
+    enabled: variablesEnabled,
+    collectionId: existingCollectionId,
+  },
   confirmedPalettes,
   isPaidFeature,
 }: {
@@ -43,48 +49,47 @@ export const createPalettes = async ({
   const { colorPalettes } = data as {
     colorPalettes: ColorPalettes;
   };
-  const spacing = addSpacing
-    ? {
-        spacing: {
-          $type: "number",
-          0: { $value: 0 },
-          px: { $value: 1 },
-          "0_5": { $value: 2 },
-          1: { $value: 4 },
-          "1_5": { $value: 6 },
-          2: { $value: 8 },
-          "2_5": { $value: 10 },
-          3: { $value: 12 },
-          "3_5": { $value: 14 },
-          4: { $value: 16 },
-          5: { $value: 20 },
-          6: { $value: 24 },
-          7: { $value: 28 },
-          8: { $value: 32 },
-          9: { $value: 36 },
-          10: { $value: 40 },
-          11: { $value: 44 },
-          12: { $value: 48 },
-          14: { $value: 56 },
-          16: { $value: 64 },
-          20: { $value: 80 },
-          24: { $value: 96 },
-          28: { $value: 112 },
-          32: { $value: 128 },
-          36: { $value: 144 },
-          40: { $value: 160 },
-          44: { $value: 176 },
-          48: { $value: 192 },
-          52: { $value: 208 },
-          56: { $value: 224 },
-          60: { $value: 240 },
-          64: { $value: 256 },
-          72: { $value: 288 },
-          80: { $value: 320 },
-          96: { $value: 384 },
-        },
-      }
-    : null;
+  const spacing = {
+    $type: "number",
+    0: { $value: 0 },
+    px: { $value: 1 },
+    "0_5": { $value: 2 },
+    1: { $value: 4 },
+    "1_5": { $value: 6 },
+    2: { $value: 8 },
+    "2_5": { $value: 10 },
+    3: { $value: 12 },
+    "3_5": { $value: 14 },
+    4: { $value: 16 },
+    5: { $value: 20 },
+    6: { $value: 24 },
+    7: { $value: 28 },
+    8: { $value: 32 },
+    9: { $value: 36 },
+    10: { $value: 40 },
+    11: { $value: 44 },
+    12: { $value: 48 },
+    14: { $value: 56 },
+    16: { $value: 64 },
+    20: { $value: 80 },
+    24: { $value: 96 },
+    28: { $value: 112 },
+    32: { $value: 128 },
+    36: { $value: 144 },
+    40: { $value: 160 },
+    44: { $value: 176 },
+    48: { $value: 192 },
+    52: { $value: 208 },
+    56: { $value: 224 },
+    60: { $value: 240 },
+    64: { $value: 256 },
+    72: { $value: 288 },
+    80: { $value: 320 },
+    96: { $value: 384 },
+  };
+
+  type Spacing = `spacing/${keyof Omit<typeof spacing, "$type">}`;
+
   const body = {
     color: {
       // converted structure
@@ -164,7 +169,7 @@ export const createPalettes = async ({
         },
       },
     },
-    ...spacing,
+    ...(addSpacing ? { spacing } : {}),
   };
 
   const brandPalette = {
@@ -192,38 +197,52 @@ export const createPalettes = async ({
   console.log("body", body);
 
   // ------------------ VARIABLES ------------------
-  let collectionId;
+  const IS_UPDATING_COLLECTION = !!existingCollectionId;
+  let collectionId = existingCollectionId;
   let variables: Variable[] = [];
 
   if (isPaidFeature && variablesEnabled) {
     await checkAndRunPremiumFeature(() => {
-      try {
-        collectionId = generateColorVariables({
-          fileName: collectionName,
-          body,
-          options: {
-            darkMode,
-          },
-        });
-      } catch (error) {
-        console.log(error);
-        if (error.message.includes("Limited to")) {
-          figma.notify("This document is limited to 1 mode", {
-            timeout: 5000,
-          });
+      //* IF COLLECTION ID IS PROVIDED, UPDATE THE EXISTING COLLECTION
+      if (IS_UPDATING_COLLECTION) {
+        console.log("⏭️ Skipping collection creation");
+        // !TODO: update color variables
+        // updateColorVariables({
+        //   body,
+        //   collectionId,
+        //   options: {
+        //     darkMode,
+        //   },
+        // });
+      } else {
+        try {
           collectionId = generateColorVariables({
             fileName: collectionName,
             body,
             options: {
-              darkMode: false,
+              darkMode,
             },
           });
-          return;
-        } else {
-          figma.notify("Something went wrong", {
-            error: true,
-          });
-          return;
+        } catch (error) {
+          console.log(error);
+          if (error.message.includes("Limited to")) {
+            figma.notify("This document is limited to 1 mode", {
+              timeout: 5000,
+            });
+            collectionId = generateColorVariables({
+              fileName: collectionName,
+              body,
+              options: {
+                darkMode: false,
+              },
+            });
+            return;
+          } else {
+            figma.notify("Something went wrong", {
+              error: true,
+            });
+            return;
+          }
         }
       }
     });
@@ -237,6 +256,7 @@ export const createPalettes = async ({
     boundVariables: SolidPaint["boundVariables"];
   };
 
+  // ------------------ FUNCTION: DYNAMIC COLORS ------------------
   const dynamicColor = ({
     raw,
     colorName,
@@ -264,6 +284,70 @@ export const createPalettes = async ({
     }
   };
 
+  // ------------------ FUNCTION: DYNAMIC VARIABLES ------------------
+  type OmittedVariableBindabledNodeFieldKeys =
+    | "fills"
+    | "componentProperties"
+    | "strokes";
+  type BoundVariableKeys<T> = keyof Omit<
+    T,
+    OmittedVariableBindabledNodeFieldKeys
+  >;
+
+  type VariableBindableNodeFieldFor<T> = T extends FrameNode
+    ? BoundVariableKeys<FrameNode["boundVariables"]>
+    : T extends RectangleNode
+    ? BoundVariableKeys<RectangleNode["boundVariables"]>
+    : T extends TextNode
+    ? BoundVariableKeys<TextNode["boundVariables"]>
+    : T extends ComponentNode
+    ? BoundVariableKeys<ComponentNode["boundVariables"]>
+    : T extends InstanceNode
+    ? BoundVariableKeys<InstanceNode["boundVariables"]>
+    : never;
+
+  const dynamicVariable = <
+    T extends
+      | FrameNode
+      | RectangleNode
+      | TextNode
+      | ComponentNode
+      | InstanceNode,
+  >(
+    node: T,
+    {
+      boundVariable,
+      variableName,
+    }: {
+      boundVariable: VariableBindableNodeFieldFor<T>;
+      variableName: Spacing;
+    },
+  ) => {
+    const staticVariable = () => {
+      const spacingVariableKey = variableName.split("/")[1];
+      const variable = spacing[spacingVariableKey].$value;
+      try {
+        node[`${variableName}`] = variable;
+      } catch (error) {
+        console.error(
+          `error setting variable ${variableName} with value`,
+          error,
+        );
+      }
+    };
+    if (isPaidFeature) {
+      const id = getVariableByName(variableName).id;
+      if (addSpacing) {
+        node.setBoundVariable(boundVariable, id);
+      } else {
+        staticVariable();
+      }
+    } else {
+      staticVariable();
+    }
+  };
+
+  // ------------------ GET VARIABLES ------------------
   if (collectionId) {
     const variableIds =
       figma.variables.getVariableCollectionById(collectionId).variableIds;
@@ -350,10 +434,20 @@ export const createPalettes = async ({
     f.name = name;
     f.layoutMode = layoutMode;
     f.counterAxisSizingMode = "AUTO";
-    f.itemSpacing = 4;
     f.primaryAxisSizingMode = "AUTO";
     f.primaryAxisAlignItems = "CENTER";
-    f.verticalPadding = 0;
+    dynamicVariable(f, {
+      boundVariable: "itemSpacing",
+      variableName: "spacing/1",
+    });
+    dynamicVariable(f, {
+      boundVariable: "paddingTop",
+      variableName: "spacing/0",
+    });
+    dynamicVariable(f, {
+      boundVariable: "paddingBottom",
+      variableName: "spacing/0",
+    });
     f.fills = [];
     return f;
   };
@@ -369,8 +463,10 @@ export const createPalettes = async ({
     paletteFrame.counterAxisSizingMode = "AUTO";
     paletteFrame.primaryAxisSizingMode = "AUTO";
     paletteFrame.primaryAxisAlignItems = "CENTER";
-    paletteFrame.itemSpacing = 2;
-    paletteFrame.verticalPadding = 0;
+    dynamicVariable(paletteFrame, {
+      boundVariable: "itemSpacing",
+      variableName: "spacing/0_5",
+    });
     paletteFrame.fills = [];
 
     //* create a rectangle
@@ -413,7 +509,17 @@ export const createPalettes = async ({
   }) => {
     const rect = figma.createRectangle();
     rect.name = name;
-    rect.cornerRadius = 7;
+    [
+      "topLeftRadius",
+      "topRightRadius",
+      "bottomLeftRadius",
+      "bottomRightRadius",
+    ].forEach((radius) => {
+      dynamicVariable(rect, {
+        boundVariable: radius as any,
+        variableName: "spacing/2",
+      });
+    });
     rect.resize(width, height);
     rect.fills = [
       {
@@ -491,20 +597,42 @@ export const createPalettes = async ({
     !confirmedPalettes.secondary &&
     !confirmedPalettes.accent &&
     !confirmedPalettes.gray;
+  console.log(`✅ creating base palette? ${!SKIP_BASE_PALETTE}`);
   if (!SKIP_BASE_PALETTE) {
     baseColorFrame = figma.createFrame();
     baseColorFrame.x = CENTER_OFFSET.x;
     baseColorFrame.y = CENTER_OFFSET.y;
-    baseColorFrame.cornerRadius = 28;
+    [
+      "topLeftRadius",
+      "topRightRadius",
+      "bottomLeftRadius",
+      "bottomRightRadius",
+    ].forEach((radius: VariableBindableNodeFieldFor<FrameNode>) => {
+      dynamicVariable(baseColorFrame, {
+        boundVariable: radius,
+        variableName: "spacing/7",
+      });
+    });
     baseColorFrame.name = collectionName;
     baseColorFrame.layoutMode = "VERTICAL";
     baseColorFrame.counterAxisSizingMode = "AUTO";
     baseColorFrame.layoutSizingHorizontal = "HUG";
     baseColorFrame.layoutSizingVertical = "HUG";
-    baseColorFrame.itemSpacing = 8;
-    baseColorFrame.horizontalPadding = PADDING * 4;
-    baseColorFrame.paddingTop = PADDING * 2;
-    baseColorFrame.paddingBottom = PADDING * 4;
+    dynamicVariable(baseColorFrame, {
+      boundVariable: "itemSpacing",
+      variableName: "spacing/2",
+    });
+    ["paddingLeft", "paddingRight", "paddingBottom"].forEach((padding) => {
+      dynamicVariable(baseColorFrame, {
+        boundVariable: padding as VariableBindableNodeFieldFor<FrameNode>,
+        variableName: "spacing/16",
+      });
+    });
+    dynamicVariable(baseColorFrame, {
+      boundVariable: "paddingTop",
+      variableName: "spacing/8",
+    });
+
     baseColorFrame.fills = [
       {
         type: "SOLID",
@@ -571,7 +699,7 @@ export const createPalettes = async ({
     figma.currentPage.appendChild(baseColorFrame);
   }
   // ------------------ BRAND PALETTE ------------------
-
+  console.log(`✅ creating brand palette? ${confirmedPalettes.brand}`);
   await new Promise((resolve) => setTimeout(resolve, 300));
   //* if brand color palette is selected
   if (confirmedPalettes.brand) {
@@ -583,15 +711,37 @@ export const createPalettes = async ({
     brandColorFrame.name = "Brand Colors";
     brandColorFrame.x = -BRAND_FRAME_WIDTH - PADDING * 4 * 3 + CENTER_OFFSET.x;
     brandColorFrame.y = CENTER_OFFSET.y;
-    brandColorFrame.cornerRadius = 28;
+    [
+      "topLeftRadius",
+      "topRightRadius",
+      "bottomLeftRadius",
+      "bottomRightRadius",
+    ].forEach((radius: VariableBindableNodeFieldFor<FrameNode>) => {
+      dynamicVariable(brandColorFrame, {
+        boundVariable: radius,
+        variableName: "spacing/7",
+      });
+    });
     brandColorFrame.layoutMode = "VERTICAL";
     brandColorFrame.counterAxisSizingMode = "AUTO";
     brandColorFrame.layoutSizingHorizontal = "HUG";
     brandColorFrame.layoutSizingVertical = "HUG";
-    brandColorFrame.itemSpacing = 4;
-    brandColorFrame.horizontalPadding = PADDING * 4;
-    brandColorFrame.paddingTop = PADDING * 2;
-    brandColorFrame.paddingBottom = PADDING * 4;
+    dynamicVariable(brandColorFrame, {
+      boundVariable: "itemSpacing",
+      variableName: "spacing/1",
+    });
+    ["paddingLeft", "paddingRight", "paddingBottom"].forEach(
+      (padding: VariableBindableNodeFieldFor<FrameNode>) => {
+        dynamicVariable(brandColorFrame, {
+          boundVariable: padding,
+          variableName: "spacing/16",
+        });
+      },
+    );
+    dynamicVariable(brandColorFrame, {
+      boundVariable: "paddingTop",
+      variableName: "spacing/8",
+    });
     brandColorFrame.fills = [
       {
         type: "SOLID",
@@ -696,6 +846,15 @@ export const createPalettes = async ({
       baseColorFrame ? [baseColorFrame] : [],
     );
   }
-
+  console.log(`✅ COMPLETE`);
+  if (IS_UPDATING_COLLECTION) {
+    figma.notify("Updated color variables", {
+      timeout: 5000,
+    });
+  } else {
+    figma.notify("Created color variables", {
+      timeout: 5000,
+    });
+  }
   figma.ui.postMessage({ type: PluginStatus.COMPLETED });
 };

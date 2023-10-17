@@ -7,12 +7,14 @@ import { BASE_URL } from "../../lib/constants";
 
 export const features = [
   {
-    name: "Base color palettes",
+    name: "Customize palettes",
     tiers: { [Tier.FREE]: true, [Tier.PREMIUM]: true },
   },
   {
-    name: "Customize palettes",
+    name: "Base color palettes",
     tiers: { [Tier.FREE]: true, [Tier.PREMIUM]: true },
+    description: "Create base palettes from your base colors.",
+    descriptionImage: `${BASE_URL}/assets/figma-plugin/images/base-palettes.png`,
   },
   {
     name: "Brand palettes (18 palettes)",
@@ -38,6 +40,17 @@ export const features = [
     },
     description:
       "Create proportional spacing variables that follows Tailwind CSS convention.",
+    descriptionImage: `${BASE_URL}/assets/figma-plugin/images/dynamic-spacing-variables.gif`,
+  },
+  {
+    name: "Variable-based palettes",
+    tiers: {
+      [Tier.FREE]: false,
+      [Tier.PREMIUM]: true,
+    },
+    description:
+      "The entire color palette uses variables instead of hard-coded colors/numbers.\n - palettes\n - texts\n - borders\n - cornerRadius\n - spacings\n",
+    descriptionImage: `${BASE_URL}/assets/figma-plugin/images/variable-based-palettes.gif`,
   },
   {
     name: "Dark mode variables",
@@ -63,7 +76,7 @@ function PaidVsFree() {
   };
   return (
     <div className="px-4 pb-4">
-      <div className="mt-2 rounded bg-gray-900 p-2.5 text-xs text-background dark:bg-gray-100">
+      <div className="mt-2 rounded bg-gray-800 p-2.5 text-xs text-background dark:bg-gray-200">
         One-Time Payment, Zero Subscriptions! For the price of your daily coffee
         ☕.
       </div>

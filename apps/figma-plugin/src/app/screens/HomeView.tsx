@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import { Loader2, ChevronRight } from "lucide-react";
 import { PluginStatus, Step } from "../../typings/core";
 import { BASE_URL } from "../../lib/constants";
+import VersionInfo from "../components/VersionInfo";
 
 function HomeView({ handleClose }: { handleClose: () => void }) {
   const { urlInput, loading, setUrlInput, step } = useAppStore();
@@ -67,14 +68,16 @@ function HomeView({ handleClose }: { handleClose: () => void }) {
         </form>
       </div>
       <Button
-        variant="ghost"
+        variant="link"
         size="sm"
         onClick={handleClose}
-        className="flex-shrink-0 text-xs text-muted-foreground"
+        className="z-10 flex-shrink-0 text-xs text-muted-foreground"
         disabled={loading}
       >
         Close Plugin
       </Button>
+
+      <VersionInfo />
     </div>
   );
 }

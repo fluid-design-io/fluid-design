@@ -2,6 +2,7 @@ import {
   BaseColorTypes,
   BaseColors,
   CreatePaletteOptions,
+  CustomVariableCollection,
   Step,
 } from "../../typings/core";
 import { create } from "zustand";
@@ -41,6 +42,7 @@ export type AppState = {
   generateOptions: CreatePaletteOptions;
   isPaidFeature: boolean;
   urlInput: string;
+  collections: CustomVariableCollection[];
   setStep: (step: Step) => void;
   setBaseColors: (baseColors: BaseColors) => void;
   setLoading: (loading: boolean) => void;
@@ -48,9 +50,14 @@ export type AppState = {
   setGenerateOptions: (generateOptions: CreatePaletteOptions) => void;
   setIsPaidFeature: (isPaidFeature: boolean) => void;
   setUrlInput: (urlInput: string) => void;
+  setCollections: (collections: CustomVariableCollection[]) => void;
   updateConfirmedPalette: (
     type: keyof ConfirmedPalettes,
     value: boolean,
+  ) => void;
+  updateGenerateOptions: (
+    type: keyof CreatePaletteOptions,
+    value: boolean | string,
   ) => void;
 };
 
@@ -74,11 +81,13 @@ export const useAppStore = create<AppState>()(
     generateOptions: {
       enabled: true,
       collectionName: "My Color Palette",
+      collectionId: undefined,
       darkMode: true,
       addSpacing: true,
     },
     urlInput:
-      "http://localhost:3000/api/figma-plugin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcmltYXJ5Ijp7ImgiOjM0OC4zNCwicyI6MC43MywibCI6MC41MiwiYSI6MX0sInNlY29uZGFyeSI6eyJoIjozMi4zNCwicyI6MC41OCwibCI6MC42OCwiYSI6MX0sImFjY2VudCI6eyJoIjo5NS4zNCwicyI6MC4zMywibCI6MC43NiwiYSI6MX0sImlhdCI6MTY5NzM0OTA3OCwiZXhwIjoxNjk3OTUzODc4fQ.aYP3Kxp43pcoyQHFVDSv7Lt5EziNQQ6xs8YoP2J8IAw",
+      "http://localhost:3000/api/figma-plugin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcmltYXJ5Ijp7ImgiOjI1Ni4wOSwicyI6MSwibCI6MC43MiwiYSI6MX0sInNlY29uZGFyeSI6eyJoIjo0NS4wOSwicyI6MC44NSwibCI6MC41MywiYSI6MX0sImFjY2VudCI6eyJoIjo0LjA5LCJzIjowLjYsImwiOjAuMzUsImEiOjF9LCJpYXQiOjE2OTc0ODE1OTQsImV4cCI6MTY5ODA4NjM5NH0.YtdyHv738b8T_vf5IwlvOTtumrUPn5_RztxSdNxqWN0",
+    collections: [],
     setStep: (step) => set(() => ({ step })),
     setBaseColors: (baseColors) => set(() => ({ baseColors })),
     setLoading: (loading) => set(() => ({ loading })),
@@ -87,10 +96,17 @@ export const useAppStore = create<AppState>()(
     setGenerateOptions: (generateOptions) => set(() => ({ generateOptions })),
     setIsPaidFeature: (isPaidFeature) => set(() => ({ isPaidFeature })),
     setUrlInput: (urlInput) => set(() => ({ urlInput })),
+    setCollections: (collections) => set(() => ({ collections })),
     updateConfirmedPalette: (type, value) =>
       set(
         produce((state) => {
           state.confirmedPalettes[type] = value;
+        }),
+      ),
+    updateGenerateOptions: (type, value) =>
+      set(
+        produce((state) => {
+          state.generateOptions[type] = value;
         }),
       ),
   })),

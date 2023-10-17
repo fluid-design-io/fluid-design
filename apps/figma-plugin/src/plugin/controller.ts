@@ -3,7 +3,7 @@ import { createPalettes } from "./create-palettes";
 import { fetchPalettes } from "./fetch-palettes";
 import { upgradeToPremium } from "./upgradePremium";
 
-figma.showUI(__html__, { themeColors: true, width: 376, height: 480 });
+figma.showUI(__html__, { themeColors: true, width: 376, height: 496 });
 
 // figma.payments.setPaymentStatusInDevelopment({ type: "UNPAID" });
 
@@ -38,6 +38,7 @@ figma.ui.onmessage = async (msg) => {
         message: collections.map((collection) => ({
           id: collection.id,
           name: collection.name,
+          count: collection.variableIds.length,
         })),
       });
     } else if (type === PluginStatus.CLOSE) {

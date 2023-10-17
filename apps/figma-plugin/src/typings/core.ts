@@ -35,6 +35,12 @@ export enum PluginStatus {
 export type CreatePaletteOptions = {
   enabled?: boolean;
   collectionName?: string;
+  /**
+   * If collectionId is provided, the plugin will update the palettes to the existing collection
+   * instead of creating a new collection.
+   * @default undefined
+   */
+  collectionId?: string;
   darkMode?: boolean;
   addSpacing?: boolean;
 };
@@ -69,3 +75,10 @@ export enum Tier {
   FREE = "FREE",
   PREMIUM = "PREMIUM",
 }
+
+export type CustomVariableCollection = {
+  searchId: string;
+  id: string;
+  name: string;
+  count: number;
+};

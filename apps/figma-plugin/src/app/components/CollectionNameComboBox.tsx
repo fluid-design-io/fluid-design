@@ -12,21 +12,26 @@ import {
 } from "./ui/Command";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
 import { useAppStore } from "../store/store";
-import { PluginStatus } from "../../typings/core";
-
-interface CustomVariableCollection extends VariableCollection {
-  searchId: string;
-}
+import { CustomVariableCollection, PluginStatus } from "../../typings/core";
+import { Plus } from "lucide-react";
+import { Badge } from "@ui/components/ui/badge";
 
 function CollectionNameComboBox() {
-  const { setLoading } = useAppStore();
-  const [collections, setCollections] = React.useState<
-    CustomVariableCollection[]
-  >([]);
+  const { setLoading, generateOptions, updateGenerateOptions, collections } =
+    useAppStore();
   const [activeCollection, setActiveCollection] =
     React.useState<CustomVariableCollection>();
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<string>("");
+  const [input, setInput] = React.useState<string>("");
+
+  const handleCreateNewCollection = () => {
+    updateGenerateOptions("collectionId", undefined);
+    updateGenerateOptions("collectionName", input);
+    setActiveCollection(undefined);
+    setValue(input);
+    setOpen(false);
+  };
 
   React.useEffect(() => {
     setLoading(true);
@@ -34,21 +39,7 @@ function CollectionNameComboBox() {
       { pluginMessage: { type: PluginStatus.GET_USER_EXISTING_COLLECTIONS } },
       "*",
     );
-  }, []);
-  React.useEffect(() => {
-    // This is how we read messages sent from the plugin controller
-    window.onmessage = (event) => {
-      const { type, message } = event.data.pluginMessage;
-      switch (type) {
-        case PluginStatus.GET_USER_EXISTING_COLLECTIONS:
-          setLoading(false);
-          setCollections(
-            message.map((c) => ({ ...c, searchId: c.id + c.name })),
-          );
-          console.log(message);
-          break;
-      }
-    };
+    !value && setValue(generateOptions.collectionName);
   }, []);
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -57,46 +48,96 @@ function CollectionNameComboBox() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="relative w-full justify-between"
+          disabled={!generateOptions?.enabled}
         >
           {value ? value : "Select a collection..."}
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <div className="flex items-center space-x-3">
+            {!generateOptions?.collectionId && (
+              <Badge className="pointer-events-none h-6 text-[0.675rem]">
+                NEW
+              </Badge>
+            )}
+            {activeCollection?.count && (
+              <Badge
+                className="pointer-events-none h-6 text-[0.675rem] text-foreground/75"
+                variant="outline"
+              >
+                {activeCollection.count}{" "}
+                {activeCollection.count > 1 ? "variables" : "variable"}
+              </Badge>
+            )}
+            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[20rem] p-0">
+      <PopoverContent className="w-[19.5rem] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." className="h-9" />
-          <CommandEmpty>
-            <Button value={value} onSelect={() => {}}>
-              Create new {value}
-            </Button>
-          </CommandEmpty>
+          <CommandInput
+            id="collection"
+            placeholder="Search or type to create new one..."
+            className="h-9"
+            value={input}
+            onValueChange={(e) => setInput(e)}
+          />
+          <CommandEmpty>No collection found.</CommandEmpty>
           <CommandGroup>
-            <CommandItem value={value} onSelect={() => {}}>
-              Create new {value}
-            </CommandItem>
+            {input.length > 0 && (
+              <CommandItem
+                value={input}
+                onSelect={handleCreateNewCollection}
+                className="flex items-center justify-between space-x-1.5"
+              >
+                <div>
+                  <span className="font-semibold">{input}</span>
+                </div>
+                <div className="flex items-center justify-center space-x-1.5 text-foreground/80">
+                  <span>New</span>
+                  <Plus className="h-4 w-4" />
+                </div>
+              </CommandItem>
+            )}
             {collections.map((collection, i) => (
               <CommandItem
                 key={collection.searchId + `-${i}`}
                 value={collection.searchId}
                 onSelect={(selected) => {
-                  setValue(
-                    selected === collection.id ? undefined : collection.name,
+                  const isSame =
+                    selected === activeCollection?.searchId.toLowerCase();
+                  console.log(
+                    "selected",
+                    selected,
+                    activeCollection?.searchId.toLowerCase(),
+                    "isSame",
+                    isSame,
                   );
-                  console.log(`selected: ${selected}`);
-                  setActiveCollection(collection);
+                  setValue(
+                    isSame ? generateOptions?.collectionName : collection.name,
+                  );
+                  setActiveCollection(isSame ? undefined : collection);
+                  updateGenerateOptions(
+                    "collectionId",
+                    isSame ? undefined : collection.id,
+                  );
                   setOpen(false);
                 }}
+                className="flex items-center justify-between"
               >
-                {collection.name}
-                <CheckIcon
-                  className={cn(
-                    "ml-auto h-4 w-4",
-                    activeCollection && activeCollection?.id === collection.id
-                      ? "opacity-100"
-                      : "opacity-0",
-                  )}
-                />
+                <div>{collection.name}</div>
+                <div className="flex items-center justify-center space-x-1.5 text-foreground/80">
+                  <span>
+                    {collection.count}
+                    {collection.count > 1 ? " variables" : " variable"}
+                  </span>
+                  <CheckIcon
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      activeCollection && activeCollection?.id === collection.id
+                        ? "opacity-100"
+                        : "opacity-0",
+                    )}
+                  />
+                </div>
               </CommandItem>
             ))}
           </CommandGroup>

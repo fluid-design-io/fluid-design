@@ -9,8 +9,14 @@ import HomeView from "../screens/HomeView";
 import CompletedView from "../screens/CompletedView";
 
 function Main() {
-  const { setLoading, setIsPaidFeature, setBaseColors, step, setStep } =
-    useAppStore();
+  const {
+    setLoading,
+    setIsPaidFeature,
+    setBaseColors,
+    step,
+    setStep,
+    setCollections,
+  } = useAppStore();
 
   const handleClose = () => {
     parent.postMessage({ pluginMessage: { type: PluginStatus.CLOSE } }, "*");
@@ -50,6 +56,13 @@ function Main() {
         case PluginStatus.UPGRADE:
           setIsPaidFeature(message);
           setLoading(false);
+          break;
+        case PluginStatus.GET_USER_EXISTING_COLLECTIONS:
+          setLoading(false);
+          setCollections(
+            message.map((c) => ({ ...c, searchId: c.id + c.name })),
+          );
+          console.log(message);
           break;
         default:
           console.log("Unknown type:", type);

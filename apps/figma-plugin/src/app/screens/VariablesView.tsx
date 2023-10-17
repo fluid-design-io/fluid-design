@@ -74,21 +74,22 @@ function VariablesView() {
   if (step !== Step.VARIABLES) return null;
   return (
     <Card className="animate-in fade-in-0 relative flex w-full flex-1 flex-col border-border pb-0 duration-300">
-      {!isPaidFeature && (
-        <PremiumBadgeIcon className="absolute right-2.5 top-2.5" />
-      )}
       <form onSubmit={handleSubmit} className="m-0 flex flex-1 flex-col p-0">
         <CardHeader className="p-4 pb-0">
           <CardTitle className="flex items-center justify-between text-sm">
-            Palette Variables
-            <Switch
-              onChange={(c) =>
-                setGenerateOptions({ ...generateOptions, enabled: c })
-              }
-              value={generateOptions.enabled}
-              disabled={false}
-              id={"enabled"}
-            />
+            <span>Palette Variables</span>
+            {!isPaidFeature && <PremiumBadgeIcon className="ms-2" />}
+
+            {isPaidFeature && (
+              <Switch
+                onChange={(c) =>
+                  setGenerateOptions({ ...generateOptions, enabled: c })
+                }
+                value={generateOptions.enabled}
+                disabled={false}
+                id={"enabled"}
+              />
+            )}
           </CardTitle>
           <CardDescription className="text-xs">
             Automatically generate variables for your palettes.
@@ -106,9 +107,9 @@ function VariablesView() {
               <div className="flex flex-col space-y-1">
                 <label
                   className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  htmlFor="collectionName"
+                  htmlFor="collection"
                 >
-                  Collection Name
+                  Collection
                 </label>
                 {/* <Input
                   id="collectionName"
@@ -175,6 +176,11 @@ function VariablesView() {
                 )}
               </Button>
             )}
+            {disabled() && (
+              <p className="pb-2 text-center text-[0.7rem] text-destructive">
+                You need to enable at least one feature to proceed.
+              </p>
+            )}
             {isPaidFeature && (
               <Button
                 className="w-full"
@@ -186,7 +192,9 @@ function VariablesView() {
                   <Loader2Icon className="h-4 w-4 animate-spin" />
                 ) : (
                   <Fragment>
-                    Create Palettes
+                    {generateOptions?.collectionId && generateOptions?.enabled
+                      ? "Update Palettes"
+                      : "Create Palettes"}
                     <Palette className="ml-2 h-4 w-4" />
                   </Fragment>
                 )}

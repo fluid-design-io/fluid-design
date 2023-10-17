@@ -33,7 +33,7 @@ export const TierCard = ({ tier }: { tier: any }) => {
                         {feature.tiers[tier.name]} description
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent className="mx-4 max-w-[20rem] border border-foreground/60 bg-foreground text-muted shadow">
+                    <TooltipContent className="mr-7 max-w-[20rem] border border-foreground/60 bg-foreground text-muted shadow">
                       {feature.descriptionImage && (
                         <img
                           src={feature.descriptionImage}
@@ -41,7 +41,7 @@ export const TierCard = ({ tier }: { tier: any }) => {
                           className="w-full overflow-hidden rounded py-1"
                         />
                       )}
-                      <p className="text-xs font-normal">
+                      <p className="whitespace-pre-wrap text-xs font-normal">
                         {feature.description}
                       </p>
                     </TooltipContent>

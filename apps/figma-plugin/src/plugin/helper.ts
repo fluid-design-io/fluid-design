@@ -59,15 +59,41 @@ export function createVariable({
     name: key,
     value: {
       type: "VARIABLE_ALIAS",
-      id: `${token.id}`,
+      id: token.id,
     },
     valueDark: tokenDark
       ? {
           type: "VARIABLE_ALIAS",
-          id: `${tokenDark.id}`,
+          id: tokenDark.id,
         }
       : null,
   });
+}
+
+export function updateVariable({
+  modeId,
+  darkModeId,
+  valueKey,
+  valueKeyDark = null,
+  tokens,
+}) {
+  const token = tokens[valueKey];
+  let tokenDark = null;
+  if (!!valueKeyDark) {
+    tokenDark = tokens[valueKeyDark];
+  }
+  const existingToken = figma.variables.getVariableById(token.id);
+  console.log("existingToken", existingToken);
+  existingToken.setValueForMode(modeId, {
+    type: "VARIABLE_ALIAS",
+    id: token.id,
+  });
+  if (valueKeyDark !== null) {
+    existingToken.setValueForMode(darkModeId, {
+      type: "VARIABLE_ALIAS",
+      id: tokenDark.id,
+    });
+  }
 }
 
 export function generateColorVariables({
@@ -103,6 +129,7 @@ export function processAliases({
   darkModeId,
   aliases,
   tokens,
+  isUpdate = false,
 }) {
   aliases = Object.values(aliases);
   let generations = aliases.length;
@@ -112,14 +139,23 @@ export function processAliases({
       const token = tokens[valueKey];
       if (token) {
         aliases.splice(i, 1);
-        tokens[key] = createVariable({
-          collection,
-          modeId,
-          darkModeId,
-          key,
-          valueKey,
-          tokens,
-        });
+        if (isUpdate) {
+          tokens[key] = updateVariable({
+            modeId,
+            darkModeId,
+            valueKey,
+            tokens,
+          });
+        } else {
+          tokens[key] = createVariable({
+            collection,
+            modeId,
+            darkModeId,
+            key,
+            valueKey,
+            tokens,
+          });
+        }
       }
     }
     generations--;
@@ -140,6 +176,17 @@ export function traverseToken({
   object,
   tokens,
   aliases,
+  existingVariables = [],
+}: {
+  collection: VariableCollection;
+  modeId: string;
+  darkModeId: string;
+  type: string;
+  key: string;
+  object: any;
+  tokens: any;
+  aliases: any;
+  existingVariables?: Variable[];
 }) {
   type = type || object.$type;
   // if key is a meta field, move on
@@ -166,7 +213,11 @@ export function traverseToken({
           .replace(/\./g, "/")
           .replace(/[\{\}]/g, "");
       }
+      // alias color/brand/accent-foreground color/accent/900 color/accent/100
+      //                |                             |               |
+      //               key                         valueKey      valueKeyDark
       console.log("alias", key, valueKey, valueKeyDark);
+      // if the alias is already in the tokens, we can create the variable
       if (tokens[valueKey]) {
         tokens[key] = createVariable({
           collection,
@@ -178,6 +229,7 @@ export function traverseToken({
           tokens,
         });
       } else {
+        // otherwise, we need to add it to the aliases
         aliases[key] = {
           key,
           type,
@@ -185,25 +237,33 @@ export function traverseToken({
         };
       }
     } else if (type === "color") {
-      tokens[key] = createToken({
-        collection,
-        modeId,
-        darkModeId,
-        type: "COLOR",
-        name: key,
-        value: parseColor(object.$light),
-        valueDark: parseColor(object.$dark),
-      });
+      if (existingVariables.filter((v) => v.name === key).length > 0) {
+        tokens[key] = existingVariables.filter((v) => v.name === key)[0];
+      } else {
+        tokens[key] = createToken({
+          collection,
+          modeId,
+          darkModeId,
+          type: "COLOR",
+          name: key,
+          value: parseColor(object.$light),
+          valueDark: parseColor(object.$dark),
+        });
+      }
     } else if (type === "number") {
-      tokens[key] = createToken({
-        collection,
-        modeId,
-        darkModeId,
-        type: "FLOAT",
-        name: key,
-        value: object.$value,
-        valueDark: object.$value,
-      });
+      if (existingVariables.filter((v) => v.name === key).length > 0) {
+        tokens[key] = existingVariables.filter((v) => v.name === key)[0];
+      } else {
+        tokens[key] = createToken({
+          collection,
+          modeId,
+          darkModeId,
+          type: "FLOAT",
+          name: key,
+          value: object.$value,
+          valueDark: object.$value,
+        });
+      }
     } else {
       console.log("unsupported type", type, object);
     }
@@ -219,6 +279,7 @@ export function traverseToken({
           object: object2,
           tokens,
           aliases,
+          existingVariables,
         });
       }
     });
