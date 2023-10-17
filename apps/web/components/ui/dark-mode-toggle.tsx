@@ -49,7 +49,7 @@ export function ModeToggle({
           )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[8.75rem]">
+      <DropdownMenuContent align="start" className="w-[8.75rem]">
         <DropdownMenuRadioGroup
           value={theme || "system"}
           onValueChange={setTheme}
