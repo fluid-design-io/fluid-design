@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "release": "release-it"
+    "lint": "next lint"
   },
   "dependencies": {
     "culori": "^3.2.0",
