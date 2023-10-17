@@ -7,7 +7,12 @@ import {
   RawColor,
 } from "../typings/core";
 import { checkAndRunPremiumFeature } from "./checkPremiumTier";
-import { hslToHex, generateColorVariables, hslToRgbFloat } from "./helper";
+import {
+  hslToHex,
+  generateColorVariables,
+  hslToRgbFloat,
+  GenerateColorVariablesMode,
+} from "./helper";
 
 export const createPalettes = async ({
   url,
@@ -207,13 +212,15 @@ export const createPalettes = async ({
       if (IS_UPDATING_COLLECTION) {
         console.log("⏭️ Skipping collection creation");
         // !TODO: update color variables
-        // updateColorVariables({
-        //   body,
-        //   collectionId,
-        //   options: {
-        //     darkMode,
-        //   },
-        // });
+        generateColorVariables({
+          fileName: collectionName,
+          body,
+          options: {
+            darkMode,
+            mode: GenerateColorVariablesMode.UPDATE,
+            collectionId: existingCollectionId,
+          },
+        });
       } else {
         try {
           collectionId = generateColorVariables({
@@ -221,6 +228,7 @@ export const createPalettes = async ({
             body,
             options: {
               darkMode,
+              mode: GenerateColorVariablesMode.CREATE,
             },
           });
         } catch (error) {
@@ -234,6 +242,7 @@ export const createPalettes = async ({
               body,
               options: {
                 darkMode: false,
+                mode: GenerateColorVariablesMode.CREATE,
               },
             });
             return;

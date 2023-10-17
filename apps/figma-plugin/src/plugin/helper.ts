@@ -1,5 +1,7 @@
 // source: https://github.com/figma/plugin-samples/blob/master/variables-import-export/code.js
 
+import { stringify } from "querystring";
+
 // console.clear();
 
 export function createCollection(name, enableDarkMode = true) {
@@ -96,15 +98,58 @@ export function updateVariable({
   }
 }
 
+export enum GenerateColorVariablesMode {
+  CREATE = "CREATE",
+  UPDATE = "UPDATE",
+}
+
 export function generateColorVariables({
   fileName,
   body,
-  options: { darkMode },
+  options: { darkMode, mode, collectionId: existingCollectionId },
+}: {
+  fileName: string;
+  body: any;
+  options: {
+    darkMode: boolean;
+    mode: GenerateColorVariablesMode;
+    collectionId?: string;
+  };
 }) {
-  const { collection, modeId, darkModeId, collectionId } = createCollection(
-    fileName || "Fluid Colors",
-    darkMode,
-  );
+  let collection: VariableCollection;
+  let modeId;
+  let darkModeId;
+  let collectionId = existingCollectionId;
+  let existingVariables: Variable[] = [];
+  if (mode === GenerateColorVariablesMode.CREATE) {
+    const res = createCollection(fileName || "Fluid Colors", darkMode);
+    collection = res.collection;
+    modeId = res.modeId;
+    darkModeId = res.darkModeId;
+    collectionId = res.collectionId;
+  } else {
+    console.log(`✅ Updating existing collection ${collectionId}`);
+    collection = figma.variables.getVariableCollectionById(collectionId);
+    existingVariables = figma.variables
+      .getLocalVariables()
+      .filter((v) => collection.variableIds.includes(v.id));
+    modeId = collection.modes?.[0].modeId;
+    if (darkMode) {
+      darkModeId = collection.modes?.[1]?.modeId || undefined;
+    }
+    console.log(
+      `✅ Found ${existingVariables.length} variables in collection`,
+      existingVariables[0],
+    );
+    if (!modeId) {
+      figma.notify(
+        "This collection does not have any modes, please create a new collection.",
+        {
+          error: true,
+        },
+      );
+    }
+  }
   const aliases = {};
   const tokens = {};
   Object.entries(body).forEach(([key, object]) => {
@@ -117,9 +162,18 @@ export function generateColorVariables({
       object,
       tokens,
       aliases,
+      existingVariables,
     });
   });
-  processAliases({ collection, modeId, darkModeId, aliases, tokens });
+  console.log(`✅ Found ${Object.keys(tokens).length} tokens`, tokens);
+  processAliases({
+    collection,
+    modeId,
+    darkModeId,
+    aliases,
+    tokens,
+    isUpdate: mode === GenerateColorVariablesMode.UPDATE,
+  });
   return collectionId;
 }
 
@@ -132,6 +186,7 @@ export function processAliases({
   isUpdate = false,
 }) {
   aliases = Object.values(aliases);
+  console.log(`Is update? ${isUpdate}`, aliases);
   let generations = aliases.length;
   while (aliases.length && generations > 0) {
     for (let i = 0; i < aliases.length; i++) {
@@ -219,15 +274,21 @@ export function traverseToken({
       console.log("alias", key, valueKey, valueKeyDark);
       // if the alias is already in the tokens, we can create the variable
       if (tokens[valueKey]) {
-        tokens[key] = createVariable({
-          collection,
-          modeId,
-          darkModeId,
-          key,
-          valueKey,
-          valueKeyDark,
-          tokens,
-        });
+        // check if the variable already exists
+        if (existingVariables.filter((v) => v.name === key).length > 0) {
+          tokens[key] = existingVariables.filter((v) => v.name === key)[0];
+          console.log(`✅ Found existing variable ${key}`);
+        } else {
+          tokens[key] = createVariable({
+            collection,
+            modeId,
+            darkModeId,
+            key,
+            valueKey,
+            valueKeyDark,
+            tokens,
+          });
+        }
       } else {
         // otherwise, we need to add it to the aliases
         aliases[key] = {
@@ -239,6 +300,10 @@ export function traverseToken({
     } else if (type === "color") {
       if (existingVariables.filter((v) => v.name === key).length > 0) {
         tokens[key] = existingVariables.filter((v) => v.name === key)[0];
+        tokens[key].setValueForMode(modeId, parseColor(object.$light));
+        if (object.$dark && darkModeId) {
+          tokens[key].setValueForMode(darkModeId, parseColor(object.$dark));
+        }
       } else {
         tokens[key] = createToken({
           collection,
@@ -253,6 +318,10 @@ export function traverseToken({
     } else if (type === "number") {
       if (existingVariables.filter((v) => v.name === key).length > 0) {
         tokens[key] = existingVariables.filter((v) => v.name === key)[0];
+        tokens[key].setValueForMode(modeId, object.$value);
+        if (object.$dark && darkModeId) {
+          tokens[key].setValueForMode(darkModeId, object.$value);
+        }
       } else {
         tokens[key] = createToken({
           collection,
