@@ -26,7 +26,7 @@ function SiteHeader() {
       <div className="flex items-center justify-end">
         <Button variant="ghost" size="icon" asChild>
           <Link
-            href="https://fluid-color.vercel.app/"
+            href="https://fluid-colors.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Github"
