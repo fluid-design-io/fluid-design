@@ -61,7 +61,7 @@ export async function GET(req: Request) {
     );
   }
   // !TODO: get mode from query params
-  const mode = ColorMode.HSL;
+  const mode = ColorMode.HEX;
   const [primaryPalette, secondaryPalette, accentPalette, grayPalette] = [
     "primary",
     "secondary",
