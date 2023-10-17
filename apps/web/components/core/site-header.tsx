@@ -9,7 +9,11 @@ import { cn } from "@ui/lib/utils";
 function SiteHeader() {
   return (
     <div className="site-padding relative z-20 mx-auto grid w-full max-w-[120rem] grid-cols-5 items-center justify-between py-2">
-      <Link className="flex items-center" href="/" aria-label="Fluid Colors">
+      <Link
+        className="flex items-center"
+        href="https://github.com/fluid-design-io/fluid-design"
+        aria-label="Fluid Colors"
+      >
         <FluidColorLogo className="h-6 w-6" />
         <span
           className={cn(

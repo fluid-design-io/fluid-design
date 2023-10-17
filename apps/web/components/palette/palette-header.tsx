@@ -13,7 +13,7 @@ function PaletteHeader() {
 
       <div className="flex items-center justify-start gap-1.5 text-xs text-muted-foreground sm:ms-4">
         <Palette className="h-2.5 w-2.5" />
-        <p>fluid-design-io/fluid-colors</p>
+        <p>fluid-design-io/fluid-design</p>
       </div>
     </div>
   );
