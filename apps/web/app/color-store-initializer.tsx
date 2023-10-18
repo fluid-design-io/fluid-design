@@ -1,6 +1,7 @@
 "use client";
 
 import { useColorStore } from "@/store/store";
+import { useSearchParams } from "next/navigation";
 import { useRef } from "react";
 
 function ColorStoreInitializer({ ...props }) {

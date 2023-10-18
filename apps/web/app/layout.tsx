@@ -14,6 +14,7 @@ import PerformanceChecker from "@/components/core/performance-checker";
 import Toolbar from "@/components/core/toobar";
 import StyleSheetInitializer from "./stylesheet-initializer";
 import { cookies } from "next/headers";
+import { getServerColors } from "@/lib/getServerColors";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const comfortaa = Comfortaa({
@@ -26,38 +27,25 @@ export const metadata: Metadata = {
     default: "Fluid Colors",
     template: "%s | Fluid Colors",
   },
-  description: "Mordern color palette generator",
+  description: "Next-gen color palette generator",
   viewport:
     "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
-};
-
-const getServerColors = async () => {
-  const newBaseColors = generateBaseColors();
-  const cookieStore = cookies();
-  const mode = cookieStore.get("colorMode");
-  // short-hand
-  const [primaryPalette, secondaryPalette, accentPalette, grayPalette] = [
-    "primary",
-    "secondary",
-    "accent",
-    "gray",
-  ].map((color) =>
-    generateColorPalette({
-      color: color === "gray" ? newBaseColors.primary : newBaseColors[color],
-      type: color as BaseColorTypes,
-      colorMode: mode ? (mode.value as ColorMode) : ColorMode.HEX,
-    }),
-  );
-  return {
-    baseColors: newBaseColors,
-    colorPalettes: {
-      primary: primaryPalette,
-      secondary: secondaryPalette,
-      accent: accentPalette,
-      gray: grayPalette,
+  openGraph: {
+    images: ["/og-default.jpg"],
+  },
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: false,
+      noimageindex: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
-    colorMode: mode ? (mode.value as ColorMode) : ColorMode.HEX,
-  };
+  },
 };
 
 export default async function RootLayout({
