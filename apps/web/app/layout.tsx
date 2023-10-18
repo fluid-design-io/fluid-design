@@ -5,16 +5,14 @@ import { ThemeProvider } from "@/components/core/theme-provider";
 import { cn } from "ui/lib/utils";
 import { Toaster } from "@ui/components/toaster";
 import SiteHeader from "@/components/core/site-header";
-import { generateColorPalette } from "@/lib/colorCalculator";
-import { BaseColorTypes, ColorMode } from "@/types/app";
-import { generateBaseColors } from "@/lib/generateBaseColors";
 import { useColorStore } from "@/store/store";
 import ColorStoreInitializer from "./color-store-initializer";
 import PerformanceChecker from "@/components/core/performance-checker";
 import Toolbar from "@/components/core/toobar";
 import StyleSheetInitializer from "./stylesheet-initializer";
-import { cookies } from "next/headers";
 import { getServerColors } from "@/lib/getServerColors";
+
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const comfortaa = Comfortaa({
@@ -72,6 +70,7 @@ export default async function RootLayout({
           {children}
           <Toaster />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

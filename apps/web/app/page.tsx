@@ -33,17 +33,24 @@ export async function generateMetadata(
 
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
+  const seoDescription = colors
+    ? `Generated with Fluid Colors: ${paletteColors}`
+    : "Unleash the Power of Dynamic, Variable-Based Color Palettes";
+  const ogImages = [opengraphImage, ...previousImages];
   return {
     title: colors ? "Check out this palette" : "Color Palette Generator",
-    description: colors
-      ? `Generated with Fluid Colors: ${paletteColors}`
-      : "Unleash the Power of Dynamic, Variable-Based Color Palettes",
+    description: seoDescription,
     openGraph: {
-      images: [opengraphImage, ...previousImages],
+      images: ogImages,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: colors ? "Check out this palette" : "Color Palette Generator",
+      description: seoDescription,
+      images: ogImages,
     },
   };
 }
-
 export default async function Page({ searchParams }: Props) {
   return (
     <div className="site-padding mx-auto flex w-full max-w-[120rem] flex-1 flex-col pb-20 sm:pb-24">
