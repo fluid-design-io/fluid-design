@@ -23,8 +23,8 @@ Welcome to Fluid Color Palettes, where beautiful color palettes meet dynamic fun
 - [x] RAW
 - [x] Tailwind CSS
 - [x] @shadcn/ui
-- [ ] React Native Paper
-- [x] Figma plugin
+- [x] React Native Paper
+- [-] Figma plugin [WIP]
 - [ ] Webflow plugin
 
 ## 🕸️ Website
