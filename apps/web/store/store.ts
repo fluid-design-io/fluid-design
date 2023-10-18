@@ -61,13 +61,16 @@ let localAndUrlStore = (set, get) => ({
         state.colorPalettes.gray = grayPalette;
       }),
     );
-    const { colorPalettes } = get();
-    updateCSSVariables({
-      primary: type === "primary" ? newPalette : colorPalettes.primary,
-      secondary: type === "secondary" ? newPalette : colorPalettes.secondary,
-      accent: type === "accent" ? newPalette : colorPalettes.accent,
-      gray: grayPalette,
-    });
+    const { colorPalettes, baseColors } = get();
+    updateCSSVariables(
+      {
+        primary: type === "primary" ? newPalette : colorPalettes.primary,
+        secondary: type === "secondary" ? newPalette : colorPalettes.secondary,
+        accent: type === "accent" ? newPalette : colorPalettes.accent,
+        gray: grayPalette,
+      },
+      baseColors,
+    );
   },
   generatePalette: (existing = false) => {
     const newBaseColors = existing ? get().baseColors : generateBaseColors();
@@ -95,12 +98,16 @@ let localAndUrlStore = (set, get) => ({
         };
       }),
     );
-    updateCSSVariables({
-      primary: primaryPalette,
-      secondary: secondaryPalette,
-      accent: accentPalette,
-      gray: grayPalette,
-    });
+    const { baseColors } = get();
+    updateCSSVariables(
+      {
+        primary: primaryPalette,
+        secondary: secondaryPalette,
+        accent: accentPalette,
+        gray: grayPalette,
+      },
+      baseColors,
+    );
   },
 });
 
