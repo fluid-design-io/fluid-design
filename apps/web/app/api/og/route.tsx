@@ -3,7 +3,8 @@ import { ImageResponse } from "next/server";
 // App router includes @vercel/og.
 // No need to install it.
 
-export const runtime = "edge";
+//! DOSE IT MAKE A DIFFERENCE? edge vs node?
+// export const runtime = "edge";
 export const alt = "Fluid Colors";
 export const size = {
   width: 1200,
