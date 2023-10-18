@@ -1,6 +1,12 @@
 import ColorPickerFab from "@/components/core/color-picker-fab";
 import PaletteVisualizer from "@/components/palette/palette-visualizer";
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Visualizer",
+  description: "Visualize your color palette with interactive components",
+};
 
 export default function VisualizerPage() {
   return (

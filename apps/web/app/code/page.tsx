@@ -1,47 +1,60 @@
 import ColorPickerFab from "@/components/core/color-picker-fab";
 import ShadcnLogo from "@/components/svg/shadcn-logo";
 import TailwindCssLogo from "@/components/svg/tailwindcss-logo";
-import { Button } from "@ui/components/ui/button";
 import { Card } from "@ui/components/ui/card";
 import { Code2, Figma } from "lucide-react";
 import CodeGenerateButton from "./generate-button";
-import { CSSType } from "@/lib/generateCssVariables";
+import { CodeGenerateType, CodeButtonTitle } from "@/lib/generateVariables";
 import ReactNativePaperLogo from "@/components/svg/react-native-paper-logo";
 import WebflowLogo from "@/components/svg/webflow-logo";
+import { Metadata } from "next";
+import { Badge } from "@ui/components/ui/badge";
+
+type CodeButtonType = {
+  title: CodeButtonTitle;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  type: CodeGenerateType;
+  available?: boolean;
+};
+
+export const metadata: Metadata = {
+  title: "Code Generator",
+  description: "Generate code for your favorite framework",
+};
 
 export default function CodeGenPage() {
-  const buttons = [
+  const buttons: CodeButtonType[] = [
     {
-      title: "Raw",
+      title: CodeButtonTitle.RAW,
       icon: Code2,
-      type: CSSType.RAW,
+      type: CodeGenerateType.CODEGEN,
     },
     {
-      title: "Tailwind CSS",
+      title: CodeButtonTitle.TAILWINDCSS,
       icon: TailwindCssLogo,
-      type: CSSType.TAILWINDCSS,
+      type: CodeGenerateType.CODEGEN,
     },
     {
-      title: "shadcn/ui",
+      title: CodeButtonTitle.SHADCN,
       icon: ShadcnLogo,
-      type: CSSType.SHADCN,
+      type: CodeGenerateType.CODEGEN,
     },
     {
-      title: "Figma Plugin",
+      title: CodeButtonTitle.FIGMA,
       icon: Figma,
-      type: CSSType.FIGMA,
+      type: CodeGenerateType.PLUGIN,
     },
     {
-      title: "React Native Paper",
+      title: CodeButtonTitle.REACT_NATIVE_PAPER,
       icon: ReactNativePaperLogo,
-      type: CSSType.REACT_NATIVE_PAPER,
       available: false,
+      type: CodeGenerateType.CODEGEN,
     },
     {
-      title: "Webflow",
+      title: CodeButtonTitle.WEBFLOW,
       icon: WebflowLogo,
-      type: CSSType.WEBFLOW,
       available: false,
+      type: CodeGenerateType.PLUGIN,
     },
   ];
   return (
@@ -69,6 +82,20 @@ const CardButton = ({ title, icon: Icon, type, available = true }) => (
       </h3>
     </div>
     <Icon className="pointer-events-none absolute bottom-0 right-0 z-[2] h-64 w-64 translate-x-1/4 translate-y-1/4 object-contain text-primary/80 opacity-5 dark:opacity-10" />
-    <CodeGenerateButton type={type} available={available} />
+    <CodeGenerateButton
+      {...{
+        title,
+        type,
+        available,
+      }}
+    />
+    {type === CodeGenerateType.PLUGIN && (
+      <Badge
+        className="pointer-events-none absolute right-4 top-0 z-10"
+        variant="outline"
+      >
+        Plugin
+      </Badge>
+    )}
   </Card>
 );
