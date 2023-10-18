@@ -14,7 +14,8 @@ function ToolbarUploadImage() {
   const menuItem = primaryToolbarMenu["Upload Image"];
   return (
     <Dialog>
-      <DialogTrigger>
+      {/* //TODO Add function */}
+      <DialogTrigger disabled>
         <DesktopPreviewToolbarIcon {...menuItem} />
       </DialogTrigger>
       <DialogContent>

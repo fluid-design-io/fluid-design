@@ -14,7 +14,8 @@ function ToolbarDownloadBasePalette() {
   const menuItem = primaryToolbarMenu.Download;
   return (
     <Dialog>
-      <DialogTrigger>
+      {/* //TODO Add function */}
+      <DialogTrigger disabled>
         <DesktopPreviewToolbarIcon {...menuItem} />
       </DialogTrigger>
       <DialogContent>
