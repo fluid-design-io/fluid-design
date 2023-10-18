@@ -65,6 +65,7 @@ function BaseColorPalettes() {
                       "mt-1.5 flex flex-col items-start justify-start text-xs tabular-nums",
                       "@xs/section-secondary:flex-row @xs/section-secondary:items-center @xs/section-secondary:justify-between",
                       "@md/section-secondary:flex-col @md/section-secondary:items-start @md/section-secondary:justify-start",
+                      "@md/section-secondary:min-h-[2.0625rem]",
                     )}
                   >
                     <div className="font-comfortaa font-bold text-foreground/80">
@@ -78,7 +79,7 @@ function BaseColorPalettes() {
                           "hover:-mx-1 hover:-my-0.5 hover:rounded hover:px-1 hover:py-0.5",
                           "hover:text-muted-foreground hover:ring-1 hover:ring-inset hover:ring-border",
                           "contrast-more:font-medium contrast-more:text-foreground/80 contrast-more:hover:text-foreground",
-                          "hover:absolute hover:left-0 hover:top-0 hover:z-10 hover:shadow-sm",
+                          "@md/section-secondary:hover:absolute @md/section-secondary:hover:left-0 @md/section-secondary:hover:top-0 @md/section-secondary:hover:z-10 @md/section-secondary:hover:shadow-sm",
                         )}
                       >
                         <ColorString

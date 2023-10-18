@@ -1,6 +1,10 @@
 "use client";
 
-import { CSSType, generateCssVariables } from "@/lib/generateCssVariables";
+import {
+  CodeButtonTitle,
+  CodeGenerateType,
+  generateCssVariables,
+} from "@/lib/generateVariables";
 import { Button } from "@ui/components/ui/button";
 import {
   Dialog,
@@ -17,11 +21,31 @@ import { ScrollArea } from "@ui/components/scroll-area";
 import { Copy, CopyCheck } from "lucide-react";
 import { useToast } from "@ui/components/ui/use-toast";
 
+const copyDescription = (title: CodeButtonTitle) => {
+  switch (title) {
+    case CodeButtonTitle.RAW:
+      return "Copy and paste this code in your CSS file";
+    case CodeButtonTitle.TAILWINDCSS:
+      return "Copy and paste this code in your tailwind.config.js file";
+    case CodeButtonTitle.SHADCN:
+      return "Copy and paste this code in your global.css file";
+    case CodeButtonTitle.REACT_NATIVE_PAPER:
+      return "Copy and paste this code in your theme.js file";
+    case CodeButtonTitle.WEBFLOW:
+      return "Copy and paste this code in your Webflow project";
+    case CodeButtonTitle.FIGMA:
+      return "Copy and paste this url in Figma plugin, the link is valid for 7 days";
+    default:
+      return "Copy and paste this code in your CSS file";
+  }
+};
 function CodeGenerateButton({
+  title,
   type,
   available,
 }: {
-  type: CSSType;
+  title: CodeButtonTitle;
+  type: CodeGenerateType;
   available: boolean;
 }) {
   const [isCopied, setIsCopied] = useState(false);
@@ -40,31 +64,11 @@ function CodeGenerateButton({
       setIsCopied(false);
     }, 2000);
   };
-  const copyDescription = () => {
-    switch (type) {
-      case CSSType.RAW:
-        return "Copy and paste this code in your CSS file";
-      case CSSType.TAILWINDCSS:
-        return "Copy and paste this code in your tailwind.config.js file";
-      case CSSType.SHADCN:
-        return "Copy and paste this code in your global.css file";
-      case CSSType.REACT_NATIVE_PAPER:
-        return "Copy and paste this code in your theme.js file";
-      case CSSType.WEBFLOW:
-        return "Copy and paste this code in your Webflow project";
-      case CSSType.FIGMA:
-        return "Copy and paste this url in Figma plugin, the link is valid for 7 days";
-      default:
-        return "Copy and paste this code in your CSS file";
-    }
-  };
+
   const generate = async () => {
-    const c = await generateCssVariables({ type, colorPalettes, baseColors });
+    const c = await generateCssVariables({ title, colorPalettes, baseColors });
     setCode(c);
   };
-  useEffect(() => {
-    generate();
-  }, [colorPalettes, type]);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -73,6 +77,7 @@ function CodeGenerateButton({
             variant="outline"
             size="sm"
             className="relative z-10 backdrop-blur-sm"
+            onClick={generate}
           >
             Generate
           </Button>
@@ -90,7 +95,7 @@ function CodeGenerateButton({
       <DialogContent className="block max-h-[min(60rem,calc(100dvh-2rem))] overflow-y-auto overflow-x-hidden sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>{type}</DialogTitle>
-          <DialogDescription>{copyDescription()}</DialogDescription>
+          <DialogDescription>{copyDescription(title)}</DialogDescription>
         </DialogHeader>
         <div className="relative mb-4 py-4">
           <Button

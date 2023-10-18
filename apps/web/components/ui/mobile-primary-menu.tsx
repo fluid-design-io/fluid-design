@@ -31,11 +31,11 @@ function MobilePrimaryMenu({ disabled }: { disabled: boolean }) {
       <DropdownMenuContent align="end" className="min-w-[9.7rem]">
         <DropdownMenuLabel>Tools</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {primaryToolbarMenu.map(({ title, description, icon: Icon }) => (
+        {/* {primaryToolbarMenu.map(({ title, description, icon: Icon }) => (
           <DropdownMenuItem key={`mobile-primary-menu-${title}`}>
             <MenuItem title={title} description={description} icon={Icon} />
           </DropdownMenuItem>
-        ))}
+        ))} */}
       </DropdownMenuContent>
     </DropdownMenu>
   );
