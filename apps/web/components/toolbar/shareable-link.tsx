@@ -16,16 +16,23 @@ import { colorHelper } from "@/lib/colorHelper";
 import { Skeleton } from "@ui/components/ui/skeleton";
 import { cn } from "ui/lib/utils";
 import Image from "next/image";
+import { useToast } from "ui/components/ui/use-toast";
 
 function ToolbarShareableLink() {
   const menuItem = primaryToolbarMenu.Share;
   const { baseColors } = useColorStore();
   const [open, setOpen] = useState(false);
   const [colors, setColors] = useState("");
+  const { toast } = useToast();
   const [loadingSocialPreview, setLoadingSocialPreview] = useState(true);
   const handleCopy = () => {
-    navigator.clipboard.writeText(colors);
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_URL}/?colors=${colors}`,
+    );
     setOpen(false);
+    toast({
+      title: "Copied to clipboard!",
+    });
   };
   useEffect(() => {
     if (!baseColors) return;
@@ -52,9 +59,12 @@ function ToolbarShareableLink() {
 
             <Image
               src={`${process.env.NEXT_PUBLIC_URL}/api/og?colors=${colors}`}
-              className={cn("absolute inset-0 h-full w-full object-cover")}
+              className={cn(
+                "absolute inset-0 h-full w-full object-cover transition-opacity",
+                loadingSocialPreview ? "opacity-0" : "opacity-100",
+              )}
               alt="Social preview"
-              // onLoad={() => setLoadingSocialPreview(false)}
+              onLoad={() => setLoadingSocialPreview(false)}
               width={288}
               height={151}
             />
