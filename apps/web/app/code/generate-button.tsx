@@ -128,7 +128,7 @@ function CodeGenerateButton({
               }}
             >
               {/* make it a span */}
-              {code.split("\n").map((line, index) => (
+              {code?.split("\n").map((line, index) => (
                 <span
                   className="inline-block min-h-[1rem] w-full px-4 py-[0.125rem] text-background dark:text-foreground"
                   key={index}

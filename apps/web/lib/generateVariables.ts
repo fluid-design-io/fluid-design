@@ -8,6 +8,7 @@ import {
 import { colorStepMap } from "./colorStepMap";
 import { colorHelper } from "./colorHelper";
 import generateFigmaUrlToken from "./code-gen/generate-figma-url-token";
+import generateRNPTokens from "./code-gen/generate-rnp-tokens";
 
 export enum CodeGenerateType {
   CODEGEN = "codegen",
@@ -163,7 +164,7 @@ export const generateCssVariables = async ({
     case CodeButtonTitle.SHADCN:
       return generateShadcnCss(colorPalettes);
     case CodeButtonTitle.REACT_NATIVE_PAPER:
-      return "";
+      return generateRNPTokens(colorPalettes);
     case CodeButtonTitle.FIGMA:
       return await generateFigmaUrlToken(baseColors);
     case CodeButtonTitle.WEBFLOW:

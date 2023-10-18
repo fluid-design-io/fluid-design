@@ -47,7 +47,6 @@ export default function CodeGenPage() {
     {
       title: CodeButtonTitle.REACT_NATIVE_PAPER,
       icon: ReactNativePaperLogo,
-      available: false,
       type: CodeGenerateType.CODEGEN,
     },
     {

@@ -13,14 +13,18 @@ import { Button } from "ui/components/ui/button";
 import { Copy } from "lucide-react";
 import { useColorStore } from "@/store/store";
 import { colorHelper } from "@/lib/colorHelper";
+import { Skeleton } from "@ui/components/ui/skeleton";
+import { cn } from "ui/lib/utils";
+import Image from "next/image";
 
 function ToolbarShareableLink() {
   const menuItem = primaryToolbarMenu.Share;
   const { baseColors } = useColorStore();
   const [open, setOpen] = useState(false);
-  const [src, setSrc] = useState("");
+  const [colors, setColors] = useState("");
+  const [loadingSocialPreview, setLoadingSocialPreview] = useState(true);
   const handleCopy = () => {
-    navigator.clipboard.writeText(src);
+    navigator.clipboard.writeText(colors);
     setOpen(false);
   };
   useEffect(() => {
@@ -29,17 +33,39 @@ function ToolbarShareableLink() {
       .map((color) => colorHelper.toHex(color))
       .join(",");
     search = encodeURIComponent(search);
-    const url = `${process.env.NEXT_PUBLIC_URL}/?colors=${search}`;
-    setSrc(url);
+    setColors(search);
   }, [!!open]);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
         <DesktopPreviewToolbarIcon {...menuItem} />
       </PopoverTrigger>
-      <PopoverContent className="w-[max(24rem,80%)]" align="end">
+      <PopoverContent className="w-[18rem] sm:w-[24rem]" align="end">
+        <div className="relative">
+          <div
+            className={cn(
+              "mb-4 overflow-hidden rounded-md",
+              "aspect-[120/63] w-[16rem] rounded-md sm:w-[22rem]",
+            )}
+          >
+            <Skeleton className="h-full w-full" />
+
+            <Image
+              src={`${process.env.NEXT_PUBLIC_URL}/api/og?colors=${colors}`}
+              className={cn("absolute inset-0 h-full w-full object-cover")}
+              alt="Social preview"
+              // onLoad={() => setLoadingSocialPreview(false)}
+              width={288}
+              height={151}
+            />
+          </div>
+        </div>
         <div className="flex space-x-2">
-          <Input className="h-8" value={src} readOnly />
+          <Input
+            className="h-8"
+            value={`${process.env.NEXT_PUBLIC_URL}/?colors=${colors}`}
+            readOnly
+          />
           <Button className="h-8" size="icon" onClick={handleCopy}>
             <Copy className="h-4 w-4" />
           </Button>

@@ -11,6 +11,12 @@ export type RawColor = {
   a: number;
 };
 
+export type RGB = {
+  r: number;
+  g: number;
+  b: number;
+};
+
 export type BaseColorTypes = "primary" | "secondary" | "accent" | "gray";
 
 export type BaseColors = Record<BaseColorTypes, RawColor>;

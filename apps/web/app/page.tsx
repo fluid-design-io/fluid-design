@@ -34,8 +34,10 @@ export async function generateMetadata(
   // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
   return {
-    title: "Check out this palette",
-    description: `Generated with Fluid Colors: ${paletteColors}`,
+    title: colors ? "Check out this palette" : "Color Palette Generator",
+    description: colors
+      ? `Generated with Fluid Colors: ${paletteColors}`
+      : "Unleash the Power of Dynamic, Variable-Based Color Palettes",
     openGraph: {
       images: [opengraphImage, ...previousImages],
     },

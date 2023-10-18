@@ -1,4 +1,4 @@
-import { BaseColors, ColorMode, RawColor } from "@/types/app";
+import { BaseColors, ColorMode, RGB, RawColor } from "@/types/app";
 import tinycolor from "tinycolor2";
 
 const toHex = (color: string | RawColor): string =>
@@ -7,6 +7,7 @@ const toRgba = (color: string | RawColor): string =>
   tinycolor(color).toRgbString();
 const toHsla = (color: string | RawColor): string =>
   tinycolor(color).toHslString();
+const toRgb = (color: string | RawColor): RGB => tinycolor(color).toRgb();
 
 const toColorMode = (color: any, mode: ColorMode): string => {
   if (!tinycolor(color).isValid) return "#000";
@@ -55,6 +56,7 @@ const colorStringToBaseColors = (
 export const colorHelper = {
   toHex,
   toRgba,
+  toRgb,
   toHsla,
   toColorMode,
   toForeground,
