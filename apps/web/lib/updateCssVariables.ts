@@ -1,9 +1,10 @@
 import { BaseColors, ColorPalettes } from "@/types/app";
 import {
-  CSSType,
+  CodeButtonTitle,
+  CodeGenerateType,
   generateCssVariables,
   getColorHsl,
-} from "./generateCssVariables";
+} from "./generateVariables";
 
 export async function updateCSSVariables(
   colorPalettes: ColorPalettes,
@@ -21,7 +22,7 @@ export async function updateCSSVariables(
   // Build the CSS text
   const cssText = `
       ${await generateCssVariables({
-        type: CSSType.SHADCN,
+        title: CodeButtonTitle.SHADCN,
         colorPalettes,
         baseColors,
       })}
@@ -41,7 +42,7 @@ export async function updateCSSVariables(
       }
       /* Custom constant variables */
       ${await generateCssVariables({
-        type: CSSType.RAW,
+        title: CodeButtonTitle.RAW,
         colorPalettes,
         baseColors,
       })}
