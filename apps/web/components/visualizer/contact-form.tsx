@@ -27,7 +27,7 @@ import { Globe, Mail, Phone } from "lucide-react";
 
 export default function VisContactForm() {
   return (
-    <div className="relative isolate bg-background transition-colors">
+    <div className="relative isolate flex-1 bg-background transition-colors">
       <div className="mx-auto grid max-w-[86rem] grid-cols-1 lg:grid-cols-2">
         <div className="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
@@ -166,6 +166,7 @@ export default function VisContactForm() {
                   <div className="space-y-2">
                     <Label>Pronoun</Label>
                     <Select>
+                      {/* //! THIS CHEVRON ICON BREAKS SSR */}
                       <SelectTrigger aria-label="Pronoun">
                         <SelectValue placeholder="Select your pronoun" />
                       </SelectTrigger>

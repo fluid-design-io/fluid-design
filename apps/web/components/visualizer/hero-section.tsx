@@ -60,7 +60,7 @@ export default function VisHeroSection() {
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
-                  <div className="bg-background-50 rounded-full border border-border/50 p-2">
+                  <div className="rounded-full border border-border/50 p-2">
                     <svg
                       className="h-6 w-6 p-1 text-foreground opacity-75"
                       fill="none"
@@ -87,7 +87,7 @@ export default function VisHeroSection() {
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
-                  <div className="bg-background-50 rounded-full border border-border/50 p-2">
+                  <div className="rounded-full border border-border/50 p-2">
                     <svg
                       className="h-6 w-6 p-1 text-foreground opacity-75"
                       fill="none"
@@ -139,7 +139,7 @@ export default function VisHeroSection() {
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
-                  <div className="bg-background-50 rounded-full border border-border/50 p-2">
+                  <div className="rounded-full border border-border/50 p-2">
                     <svg
                       className="h-6 w-6 p-1 text-foreground opacity-75"
                       fill="none"
@@ -165,7 +165,7 @@ export default function VisHeroSection() {
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
-                  <div className="bg-background-50 rounded-full border border-border/50 p-2">
+                  <div className="rounded-full border border-border/50 p-2">
                     <svg
                       className="h-6 w-6 p-1 text-foreground opacity-75"
                       fill="none"

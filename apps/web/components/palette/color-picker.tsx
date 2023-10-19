@@ -1,12 +1,8 @@
 "use client";
 
 import { colorHelper } from "@/lib/colorHelper";
-import {
-  Performance,
-  useColorStore,
-  useSiteSettingsStore,
-} from "@/store/store";
-import { BaseColorTypes, BaseColors, RawColor } from "@/types/app";
+import { useColorStore, useSiteSettingsStore } from "@/store/store";
+import { BaseColorTypes } from "@/types/app";
 import { cn } from "@ui/lib/utils";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";

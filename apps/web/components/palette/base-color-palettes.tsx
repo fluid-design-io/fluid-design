@@ -3,12 +3,12 @@ import { useColorStore } from "@/store/store";
 import { BaseColorTypes } from "@/types/app";
 import { cn } from "@ui/lib/utils";
 import React from "react";
-import ColorString from "./color-string";
 
 import PaletteButton from "./base-palette-button";
+import { colorHelper } from "@/lib/colorHelper";
 
 function BaseColorPalettes() {
-  const { colorPalettes } = useColorStore.getState();
+  const { colorPalettes, colorMode } = useColorStore.getState();
   const animation = (i, type) => {
     let baseDelay = 0.12;
     switch (type) {
@@ -43,21 +43,20 @@ function BaseColorPalettes() {
             )}
             key={`base-color-palette-${type}`}
           >
-            {colorPalettes[type].map((_, i) => {
+            {colorPalettes[type].map((color, i) => {
               const step = i;
               return (
                 <div
                   className="flex flex-col bg-background transition-colors"
                   key={`base-color-palette-${type}-${step}`}
-                  style={{
-                    order: step,
-                  }}
                 >
                   <PaletteButton
                     {...{
                       animation: animation(step, type),
                       type,
                       step: step,
+                      color: color,
+                      colorMode,
                     }}
                   />
                   <div
@@ -82,13 +81,7 @@ function BaseColorPalettes() {
                           "@md/section-secondary:hover:absolute @md/section-secondary:hover:left-0 @md/section-secondary:hover:top-0 @md/section-secondary:hover:z-10 @md/section-secondary:hover:shadow-sm",
                         )}
                       >
-                        <ColorString
-                          {...{
-                            type,
-                            step: step,
-                            animation: animation(step, type),
-                          }}
-                        />
+                        {colorHelper.toColorMode(color.raw, colorMode)}
                       </div>
                     </div>
                   </div>
