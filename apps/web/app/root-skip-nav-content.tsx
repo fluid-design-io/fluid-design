@@ -16,8 +16,11 @@ const RootSkipNavContent = () => {
         <a className="skip-btn" href="#palette-body">
           Color Generator
         </a>
-        <a className="skip-btn" href="#analogous-mono-palette">
-          Analogous and Monochromatic Palettes
+        <a className="skip-btn" href="#analogous-palette">
+          Analogous Palettes
+        </a>
+        <a className="skip-btn" href="#analogous-palette">
+          Monochromatic Palettes
         </a>
         <div className="flex flex-col gap-1">
           <p className="px-2 font-medium">Color Palettes</p>
