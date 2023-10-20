@@ -194,25 +194,27 @@ export default function VisChart() {
     "w-full flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow";
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-stretch space-y-4 py-8 md:space-y-8">
-      <div className="flex h-[350px] w-full snap-x flex-row overflow-y-hidden px-4 sm:px-6 lg:px-8">
-        <div
-          className={cn(
-            cardStyle,
-            "mr-4 w-11/12 snap-start scroll-ml-4 md:mr-8",
-          )}
-        >
-          <BreakDown title="USA" unit="kg" factor={10} seed={0} />
-        </div>
-        <div
-          className={cn(
-            cardStyle,
-            "mr-4 w-11/12 snap-start scroll-ml-4 md:mr-8",
-          )}
-        >
-          <BreakDown title="China" unit="kg" factor={5} seed={1} />
-        </div>
-        <div className={cn(cardStyle, "w-11/12 snap-start scroll-ml-4")}>
-          <BreakDown title="India" unit="kg" factor={2} seed={2} />
+      <div className="w-full px-0 sm:px-2 lg:px-4">
+        <div className="flex w-full snap-x flex-row overflow-y-hidden px-4 sm:px-6 lg:px-8 [&::-webkit-scrollbar]:[-webkit-appearance:none]">
+          <div
+            className={cn(
+              cardStyle,
+              "mr-4 w-11/12 snap-start scroll-ml-4 md:mr-8",
+            )}
+          >
+            <BreakDown title="USA" unit="kg" factor={10} seed={0} />
+          </div>
+          <div
+            className={cn(
+              cardStyle,
+              "mr-4 w-11/12 snap-start scroll-ml-4 md:mr-8",
+            )}
+          >
+            <BreakDown title="China" unit="kg" factor={5} seed={1} />
+          </div>
+          <div className={cn(cardStyle, "w-11/12 snap-start scroll-ml-4")}>
+            <BreakDown title="India" unit="kg" factor={2} seed={2} />
+          </div>
         </div>
       </div>
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
