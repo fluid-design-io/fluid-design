@@ -13,6 +13,7 @@
     "culori": "^3.2.0",
     "extract-colors": "^4.0.2",
     "framer-motion": "^10.16.4",
+    "html2canvas": "^1.4.1",
     "immer": "^10.0.3",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.284.0",
