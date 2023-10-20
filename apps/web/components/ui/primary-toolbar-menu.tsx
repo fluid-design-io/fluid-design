@@ -24,7 +24,7 @@ const primaryToolbarMenu: PrimaryToolbarMenu = {
   },
   [ToolbarMenus.DOWNLOAD]: {
     title: "Download",
-    description: "Coming Soon... Download the current palette as a PNG",
+    description: "Download the current palette as a PNG",
     icon: Download,
   },
   [ToolbarMenus.SHARE]: {

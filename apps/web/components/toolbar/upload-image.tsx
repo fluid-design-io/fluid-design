@@ -7,8 +7,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@ui/components/ui/dialog";
-import DesktopPreviewToolbarIcon from "../ui/desktop-primary-toolbar-button";
 import primaryToolbarMenu from "../ui/primary-toolbar-menu";
+import ToolbarMenuItem from "./toolbar-menu-item";
 
 function ToolbarUploadImage() {
   const menuItem = primaryToolbarMenu["Upload Image"];
@@ -16,7 +16,7 @@ function ToolbarUploadImage() {
     <Dialog>
       {/* //TODO Add function */}
       <DialogTrigger disabled>
-        <DesktopPreviewToolbarIcon {...menuItem} />
+        <ToolbarMenuItem {...menuItem} />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

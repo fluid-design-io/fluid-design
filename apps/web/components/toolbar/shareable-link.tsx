@@ -12,6 +12,7 @@ import { useColorStore } from "@/store/store";
 import { colorHelper } from "@/lib/colorHelper";
 import dynamic from "next/dynamic";
 import { Skeleton } from "ui/components/ui/skeleton";
+import ToolbarMenuItem from "./toolbar-menu-item";
 
 const ShareableLinkPlugin = dynamic(
   () => import("@/components/toolbar/plugin/shareable-link.plugin"),
@@ -37,7 +38,7 @@ function ToolbarShareableLink() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger>
-        <DesktopPreviewToolbarIcon {...menuItem} />
+        <ToolbarMenuItem {...menuItem} />
       </PopoverTrigger>
       <PopoverContent className="w-[18rem] sm:w-[24rem]" align="end">
         {open && <ShareableLinkPlugin colors={colors} setOpen={setOpen} />}

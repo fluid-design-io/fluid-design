@@ -1,33 +1,39 @@
 "use client";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@ui/components/ui/dialog";
-import DesktopPreviewToolbarIcon from "../ui/desktop-primary-toolbar-button";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@ui/components/ui/popover";
+
 import primaryToolbarMenu from "../ui/primary-toolbar-menu";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+import { Skeleton } from "ui/components/ui/skeleton";
+import { usePathname } from "next/navigation";
+import ToolbarMenuItem from "./toolbar-menu-item";
+
+const DownloadBasePalettePlugin = dynamic(
+  () => import("@/components/toolbar/plugin/download-base-palette.plugin"),
+  {
+    loading: () => <Skeleton className="h-52 w-full" />,
+    ssr: false,
+  },
+);
 
 function ToolbarDownloadBasePalette() {
   const menuItem = primaryToolbarMenu.Download;
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  if (pathname !== "/") return null;
   return (
-    <Dialog>
-      {/* //TODO Add function */}
-      <DialogTrigger disabled>
-        <DesktopPreviewToolbarIcon {...menuItem} />
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Are you sure absolutely sure?</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger>
+        <ToolbarMenuItem {...menuItem} />
+      </PopoverTrigger>
+      <PopoverContent className="w-[18rem] sm:w-[24rem]" align="end">
+        {open && <DownloadBasePalettePlugin setOpen={setOpen} />}
+      </PopoverContent>
+    </Popover>
   );
 }
 

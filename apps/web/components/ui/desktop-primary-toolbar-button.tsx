@@ -29,7 +29,7 @@ const DesktopPreviewToolbarIcon = ({
             variant="ghost"
             aria-label={title}
             size="icon"
-            className="flex h-8 w-8 select-none items-center rounded-sm px-1 py-1 text-sm font-medium outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+            className="hidden h-8 w-8 select-none items-center rounded-sm px-1 py-1 text-sm font-medium outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground lg:flex"
             asChild
           >
             <div>

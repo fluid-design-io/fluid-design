@@ -38,7 +38,7 @@ function ShareableLinkPlugin({ colors, setOpen }) {
           <Image
             src={`${process.env.NEXT_PUBLIC_URL}/api/og?colors=${colors}`}
             className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity",
+              "absolute inset-0 h-full w-full rounded border object-cover transition-opacity",
               loadingSocialPreview ? "opacity-0" : "opacity-100",
             )}
             alt="Social preview"
