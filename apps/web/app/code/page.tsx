@@ -9,6 +9,7 @@ import ReactNativePaperLogo from "@/components/svg/react-native-paper-logo";
 import WebflowLogo from "@/components/svg/webflow-logo";
 import { Metadata } from "next";
 import { Badge } from "@ui/components/ui/badge";
+import TamaguiLogo from "@/components/svg/tamagui-logo";
 
 type CodeButtonType = {
   title: CodeButtonTitle;
@@ -47,6 +48,12 @@ export default function CodeGenPage() {
     {
       title: CodeButtonTitle.REACT_NATIVE_PAPER,
       icon: ReactNativePaperLogo,
+      type: CodeGenerateType.CODEGEN,
+    },
+    {
+      title: CodeButtonTitle.TAMAGUI,
+      icon: TamaguiLogo,
+      available: false,
       type: CodeGenerateType.CODEGEN,
     },
     {

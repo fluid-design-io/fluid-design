@@ -5,7 +5,7 @@ import { useColorStore } from "@/store/store";
 import { useLayoutEffect } from "react";
 
 function StyleSheetInitializer() {
-  const { colorPalettes, baseColors } = useColorStore();
+  const { colorPalettes, baseColors, colorMode } = useColorStore();
   useLayoutEffect(() => {
     if (typeof window === "undefined") {
       return;
@@ -18,6 +18,7 @@ function StyleSheetInitializer() {
         gray: colorPalettes.gray,
       },
       baseColors,
+      colorMode,
     );
   }, []);
   return null;

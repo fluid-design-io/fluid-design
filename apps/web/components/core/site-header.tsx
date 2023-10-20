@@ -8,7 +8,7 @@ import { cn } from "@ui/lib/utils";
 
 function SiteHeader() {
   return (
-    <div className="site-padding relative z-20 mx-auto grid w-full max-w-[120rem] grid-cols-5 items-center justify-between py-2">
+    <div className="site-padding relative z-20 mx-auto grid w-full max-w-[120rem] grid-cols-6 items-center justify-between py-2">
       <Link className="flex items-center" href="/" aria-label="Fluid Colors">
         <FluidColorLogo className="h-6 w-6" />
         <span
@@ -20,7 +20,7 @@ function SiteHeader() {
           Fluid Colors
         </span>
       </Link>
-      <div className="col-span-3 flex items-center justify-center">
+      <div className="col-span-4 flex items-center justify-center">
         <SiteHeaderTabs />
       </div>
       <div className="flex items-center justify-end">

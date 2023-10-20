@@ -1,4 +1,4 @@
-import { BaseColors, ColorPalettes } from "@/types/app";
+import { BaseColors, ColorMode, ColorPalettes } from "@/types/app";
 import {
   CodeButtonTitle,
   CodeGenerateType,
@@ -9,6 +9,7 @@ import {
 export async function updateCSSVariables(
   colorPalettes: ColorPalettes,
   baseColors: Omit<BaseColors, "gray">,
+  colorMode: ColorMode,
 ): Promise<void> {
   let styleElement;
   // Create or update a style element that contains the variables
@@ -25,6 +26,7 @@ export async function updateCSSVariables(
         title: CodeButtonTitle.SHADCN,
         colorPalettes,
         baseColors,
+        colorMode,
       })}
       /* Selection */
       ::selection {
@@ -45,6 +47,7 @@ export async function updateCSSVariables(
         title: CodeButtonTitle.RAW,
         colorPalettes,
         baseColors,
+        colorMode,
       })}
     `;
 

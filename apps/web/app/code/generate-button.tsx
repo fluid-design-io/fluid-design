@@ -49,7 +49,7 @@ function CodeGenerateButton({
   available: boolean;
 }) {
   const [isCopied, setIsCopied] = useState(false);
-  const { colorPalettes, baseColors } = useColorStore();
+  const { colorPalettes, baseColors, colorMode } = useColorStore();
   const { toast } = useToast();
   const [code, setCode] = useState<string>("");
   const handleCopy = () => {
@@ -66,7 +66,12 @@ function CodeGenerateButton({
   };
 
   const generate = async () => {
-    const c = await generateCssVariables({ title, colorPalettes, baseColors });
+    const c = await generateCssVariables({
+      title,
+      colorPalettes,
+      baseColors,
+      colorMode,
+    });
     setCode(c);
   };
   return (

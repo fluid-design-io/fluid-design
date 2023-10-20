@@ -21,6 +21,7 @@ export enum CodeButtonTitle {
   REACT_NATIVE_PAPER = "React Native Paper",
   WEBFLOW = "Webflow",
   FIGMA = "Figma",
+  TAMAGUI = "Tamagui",
 }
 
 export const getColorHsl = <T extends BaseColorTypes>(
@@ -117,15 +118,21 @@ ${Object.entries(tailwindCss)
   return cssText;
 };
 
-const generateTailwindCss = (colorPalettes: ColorPalettes) => {
+const generateTailwindCss = (colorPalettes: ColorPalettes, mode: ColorMode) => {
+  const sanitize = (color) => {
+    switch (mode) {
+      case ColorMode.RGB:
+        // remove rbg() and comma
+        return color.replace(/rgb\(|\)/g, "");
+      default:
+        return color;
+    }
+  };
   const text = Object.entries(colorPalettes)
     .map(([colorName, colorPalette]) => {
       let paletteSection = `\t\t${colorName}: {\n`;
       colorPalette.forEach((color) => {
-        paletteSection += `\t\t\t${color.step}: '${colorHelper.toColorMode(
-          color.raw,
-          ColorMode.HEX,
-        )}',\n`;
+        paletteSection += `\t\t\t${color.step}: "hsl(var(--${colorName}-${color.step}))",\n`;
       });
       paletteSection += "\t\t},\n";
       return paletteSection;
@@ -133,6 +140,28 @@ const generateTailwindCss = (colorPalettes: ColorPalettes) => {
     .join("");
 
   return `
+/* Define your CSS variables as channels */
+// globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    ${Object.entries(colorPalettes)
+      .map(([colorName, colorPalettes]) =>
+        colorPalettes
+          .map((color) => {
+            return `\t--${colorName}-${color.step}: ${sanitize(
+              colorHelper.toColorMode(color.raw, mode),
+            )};`;
+          })
+          .join("\n"),
+      )
+      .join("\n")}
+  }
+}
+
 /* tailwind.config.js */
 
 module.exports = {
@@ -151,16 +180,18 @@ export const generateCssVariables = async ({
   title,
   colorPalettes,
   baseColors,
+  colorMode,
 }: {
   title: CodeButtonTitle;
   colorPalettes: ColorPalettes;
   baseColors: Omit<BaseColors, "gray">;
+  colorMode: ColorMode;
 }) => {
   switch (title) {
     case CodeButtonTitle.RAW:
       return generateRawCss(colorPalettes);
     case CodeButtonTitle.TAILWINDCSS:
-      return generateTailwindCss(colorPalettes);
+      return generateTailwindCss(colorPalettes, colorMode);
     case CodeButtonTitle.SHADCN:
       return generateShadcnCss(colorPalettes);
     case CodeButtonTitle.REACT_NATIVE_PAPER:

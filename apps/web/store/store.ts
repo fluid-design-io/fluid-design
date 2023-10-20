@@ -61,7 +61,7 @@ let localAndUrlStore = (set, get) => ({
         state.colorPalettes.gray = grayPalette;
       }),
     );
-    const { colorPalettes, baseColors } = get();
+    const { colorPalettes, baseColors, colorMode } = get();
     updateCSSVariables(
       {
         primary: type === "primary" ? newPalette : colorPalettes.primary,
@@ -70,6 +70,7 @@ let localAndUrlStore = (set, get) => ({
         gray: grayPalette,
       },
       baseColors,
+      colorMode,
     );
   },
   generatePalette: (existing = false) => {
@@ -98,7 +99,7 @@ let localAndUrlStore = (set, get) => ({
         };
       }),
     );
-    const { baseColors } = get();
+    const { baseColors, colorMode } = get();
     updateCSSVariables(
       {
         primary: primaryPalette,
@@ -107,6 +108,7 @@ let localAndUrlStore = (set, get) => ({
         gray: grayPalette,
       },
       baseColors,
+      colorMode,
     );
   },
 });
