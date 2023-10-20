@@ -91,8 +91,8 @@ const OverView = () => {
           type="monotone"
           dataKey="uv"
           stackId="1"
-          stroke="hsl(var(--primary-700))"
-          fill="hsl(var(--primary-700))"
+          stroke="hsl(var(--accent-700))"
+          fill="hsl(var(--accent-700))"
           className="[&_*]:transition-colors"
         />
         <Area
@@ -107,8 +107,8 @@ const OverView = () => {
           type="monotone"
           dataKey="amt"
           stackId="1"
-          stroke="hsl(var(--accent-700))"
-          fill="hsl(var(--accent-700))"
+          stroke="hsl(var(--primary-700))"
+          fill="hsl(var(--primary-700))"
           className="[&_*]:transition-colors"
         />
       </AreaChart>
