@@ -193,33 +193,42 @@ export default function VisChart() {
   const cardStyle =
     "w-full flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow";
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-stretch space-y-4 px-4 py-8 sm:px-6 md:space-y-8 lg:px-8">
-      <ScrollArea className="w-full">
-        <div className="flex min-w-[60rem]">
-          <div className={cn(cardStyle, "mr-4 md:mr-8")}>
-            <BreakDown title="USA" unit="kg" factor={10} seed={0} />
-          </div>
-          <div className={cn(cardStyle, "mr-4 md:mr-8")}>
-            <BreakDown title="China" unit="kg" factor={5} seed={1} />
-          </div>
-          <div className={cn(cardStyle)}>
-            <BreakDown title="India" unit="kg" factor={2} seed={2} />
-          </div>
+    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-stretch space-y-4 py-8 md:space-y-8">
+      <div className="flex h-[350px] w-full snap-x flex-row overflow-y-hidden px-4 sm:px-6 lg:px-8">
+        <div
+          className={cn(
+            cardStyle,
+            "mr-4 w-11/12 snap-start scroll-ml-4 md:mr-8",
+          )}
+        >
+          <BreakDown title="USA" unit="kg" factor={10} seed={0} />
         </div>
-        <ScrollBar className="invisible md:visible" orientation="horizontal" />
-      </ScrollArea>
-      <div className={cardStyle}>
-        <div className="flex w-full flex-col items-start justify-start space-y-1.5 p-6">
-          <h2 className="text-2xl font-semibold leading-none tracking-tight">
-            Emission Overview
-          </h2>
-          <p className="w-11/12 max-w-md text-sm text-muted-foreground sm:w-4/5">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptate, quia, quos, natus voluptates quod quas quibusdam
-            exercitationem voluptatum autem quae.
-          </p>
+        <div
+          className={cn(
+            cardStyle,
+            "mr-4 w-11/12 snap-start scroll-ml-4 md:mr-8",
+          )}
+        >
+          <BreakDown title="China" unit="kg" factor={5} seed={1} />
         </div>
-        <OverView />
+        <div className={cn(cardStyle, "w-11/12 snap-start scroll-ml-4")}>
+          <BreakDown title="India" unit="kg" factor={2} seed={2} />
+        </div>
+      </div>
+      <div className="mx-auto w-full px-4 sm:px-6 lg:px-8">
+        <div className={cn(cardStyle)}>
+          <div className="flex w-full flex-col items-start justify-start space-y-1.5 p-6">
+            <h2 className="text-2xl font-semibold leading-none tracking-tight">
+              Emission Overview
+            </h2>
+            <p className="w-11/12 max-w-md text-sm text-muted-foreground sm:w-4/5">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
+              voluptate, quia, quos, natus voluptates quod quas quibusdam
+              exercitationem voluptatum autem quae.
+            </p>
+          </div>
+          <OverView />
+        </div>
       </div>
     </div>
   );
