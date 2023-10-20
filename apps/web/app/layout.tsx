@@ -13,6 +13,7 @@ import StyleSheetInitializer from "./stylesheet-initializer";
 import { getServerColors } from "@/lib/getServerColors";
 
 import { Analytics } from "@vercel/analytics/react";
+import SiteFooter from "@/components/core/site-footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const comfortaa = Comfortaa({
@@ -68,6 +69,7 @@ export default async function RootLayout({
           <SiteHeader />
           <Toolbar />
           {children}
+          <SiteFooter />
           <Toaster />
         </ThemeProvider>
         <Analytics />
