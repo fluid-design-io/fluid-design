@@ -37,7 +37,7 @@ function VisualizerNav() {
             <Link
               key={item.name}
               className={cn(
-                "flex items-center bg-blue-50/5 px-4 text-muted-foreground",
+                "flex items-center px-4 text-muted-foreground",
                 "transition-colors duration-200 hover:text-foreground/80 focus:text-foreground/80",
                 {
                   "font-semibold text-foreground": pathname === item.href,
