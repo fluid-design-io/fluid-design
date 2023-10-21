@@ -1,5 +1,6 @@
 import { Github, Youtube } from "lucide-react";
 import app from "../../../../package.json";
+import { cn } from "ui/lib/utils";
 
 const navigation = [
   {
@@ -16,7 +17,12 @@ const navigation = [
 
 function SiteFooter() {
   return (
-    <footer className="border-t border-border/30 bg-background-accent">
+    <footer
+      className={cn(
+        "border-t border-border/30 bg-background-accent",
+        "pb-[calc(8rem+env(safe-area-inset-bottom))] lg:pb-0",
+      )}
+    >
       <div className="mx-auto max-w-[120rem] px-6 py-4 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
           {navigation.map((item) => (
