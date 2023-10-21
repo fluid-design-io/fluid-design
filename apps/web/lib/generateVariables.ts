@@ -123,16 +123,30 @@ const generateTailwindCss = (colorPalettes: ColorPalettes, mode: ColorMode) => {
     switch (mode) {
       case ColorMode.RGB:
         // remove rbg() and comma
-        return color.replace(/rgb\(|\)/g, "");
+        return color.replace(/rgb\(|\)/g, "").replace(/,/g, "");
+      case ColorMode.HSL:
+        return color.replace(/hsl\(|\)/g, "").replace(/,/g, "");
       default:
         return color;
+    }
+  };
+  const configValue = (variable: string) => {
+    switch (mode) {
+      case ColorMode.RGB:
+        return `'rgb(var(--${variable}))'`;
+      case ColorMode.HSL:
+        return `'hsl(var(--${variable}))'`;
+      default:
+        return `'var(--${variable})'`;
     }
   };
   const text = Object.entries(colorPalettes)
     .map(([colorName, colorPalette]) => {
       let paletteSection = `\t\t${colorName}: {\n`;
       colorPalette.forEach((color) => {
-        paletteSection += `\t\t\t${color.step}: "hsl(var(--${colorName}-${color.step}))",\n`;
+        paletteSection += `\t\t\t${color.step}: ${configValue(
+          colorName + "-" + color.step.toString(),
+        )},\n`;
       });
       paletteSection += "\t\t},\n";
       return paletteSection;
