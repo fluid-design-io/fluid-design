@@ -198,7 +198,7 @@ export default function VisChart() {
         <div
           className={cn(
             cardStyle,
-            "mr-4 w-11/12 snap-start scroll-ml-4 sm:scroll-ml-8 md:mr-8",
+            "mr-4 w-11/12 min-w-[77vw] snap-start scroll-ml-4 sm:min-w-[320px] sm:scroll-ml-8 md:mr-8",
           )}
         >
           <BreakDown title="USA" unit="kg" factor={10} seed={0} />
@@ -206,7 +206,7 @@ export default function VisChart() {
         <div
           className={cn(
             cardStyle,
-            "mr-4 w-11/12 snap-start scroll-ml-4 sm:scroll-ml-8 md:mr-8",
+            "mr-4 w-11/12 min-w-[77vw] snap-start scroll-ml-4 sm:min-w-[320px] sm:scroll-ml-8 md:mr-8",
           )}
         >
           <BreakDown title="China" unit="kg" factor={5} seed={1} />
@@ -214,7 +214,7 @@ export default function VisChart() {
         <div
           className={cn(
             cardStyle,
-            "w-11/12 snap-start scroll-ml-4 sm:scroll-ml-8",
+            "w-11/12 min-w-[77vw] snap-start scroll-ml-4 sm:min-w-[320px] sm:scroll-ml-8",
           )}
         >
           <BreakDown title="India" unit="kg" factor={2} seed={2} />
