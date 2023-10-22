@@ -13,6 +13,10 @@ module.exports = {
       {
         hostname: 'fluid-colors.vercel.app',
       },
+      {
+        protocol: 'https',
+        hostname: 'user-images.githubusercontent.com',
+      },
     ]
   },
   transpilePackages: ["ui"],

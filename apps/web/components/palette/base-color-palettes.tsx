@@ -5,7 +5,7 @@ import { cn } from "@ui/lib/utils";
 import React from "react";
 
 import PaletteButton from "./base-palette-button";
-import { colorHelper } from "@/lib/colorHelper";
+import ColorString from "./color-string";
 
 function BaseColorPalettes() {
   const { colorPalettes, colorMode } = useColorStore.getState();
@@ -81,7 +81,13 @@ function BaseColorPalettes() {
                           "@md/section-secondary:hover:absolute @md/section-secondary:hover:left-0 @md/section-secondary:hover:top-0 @md/section-secondary:hover:z-10 @md/section-secondary:hover:shadow-sm",
                         )}
                       >
-                        {colorHelper.toColorMode(color.raw, colorMode)}
+                        <ColorString
+                          {...{
+                            step,
+                            type,
+                            animation: animation(step, type),
+                          }}
+                        />
                       </div>
                     </div>
                   </div>

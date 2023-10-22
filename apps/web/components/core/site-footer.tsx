@@ -58,7 +58,7 @@ function SiteFooter() {
               rel="noopener noreferrer"
               title="Visit Oliver's portfolio"
             >
-              Oliver Pan
+              Oliver
             </a>
             {". "}
             The source code is on{" "}

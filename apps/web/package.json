@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/typography": "^0.5.10",
     "@types/culori": "^2.0.1",
     "@types/node": "^17.0.12",
     "@types/react": "^18.2.25",

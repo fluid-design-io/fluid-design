@@ -6,12 +6,12 @@ function ColorPickerFab() {
   return (
     <div
       className={cn(
-        "fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-50 flex w-full justify-center sm:bottom-[calc(1rem+env(safe-area-inset-bottom))]",
+        "pointer-events-none fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-50 flex w-full justify-center sm:bottom-[calc(1rem+env(safe-area-inset-bottom))]",
       )}
     >
       <div
         className={cn(
-          "flex max-w-xs items-center justify-center gap-4 rounded-full border border-white/10 p-2 shadow-lg backdrop-blur-xl backdrop-brightness-105 backdrop-saturate-150 dark:border-white/5 dark:backdrop-brightness-95",
+          "pointer-events-auto flex max-w-xs items-center justify-center gap-4 rounded-full border border-white/10 p-2 shadow-lg backdrop-blur-xl backdrop-brightness-105 backdrop-saturate-150 dark:border-white/5 dark:backdrop-brightness-95",
           // "bg-background-accent/75",
         )}
         style={{
