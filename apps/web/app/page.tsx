@@ -1,6 +1,5 @@
 import ColorPalette from "../components/palette/color-palette";
 import { Metadata, ResolvingMetadata } from "next";
-import { BaseColors } from "@/types/app";
 
 import { colorHelper } from "@/lib/colorHelper";
 
