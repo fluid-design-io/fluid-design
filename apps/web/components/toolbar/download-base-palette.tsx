@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import { Skeleton } from "ui/components/ui/skeleton";
 import { usePathname } from "next/navigation";
 import ToolbarMenuItem from "./toolbar-menu-item";
+import { AnimatePresence } from "framer-motion";
 
 const DownloadBasePalettePlugin = dynamic(
   () => import("@/components/toolbar/plugin/download-base-palette.plugin"),
@@ -31,7 +32,14 @@ function ToolbarDownloadBasePalette() {
         <ToolbarMenuItem {...menuItem} />
       </PopoverTrigger>
       <PopoverContent className="w-[18rem] sm:w-[24rem]" align="end">
-        {open && <DownloadBasePalettePlugin setOpen={setOpen} />}
+        <AnimatePresence mode="wait">
+          {open && (
+            <DownloadBasePalettePlugin
+              key={`download-${open}`}
+              setOpen={setOpen}
+            />
+          )}
+        </AnimatePresence>
       </PopoverContent>
     </Popover>
   );
