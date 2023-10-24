@@ -9,6 +9,7 @@ import { Skeleton } from "ui/components/ui/skeleton";
 import { useToast } from "ui/components/ui/use-toast";
 import { cn } from "ui/lib/utils";
 import { Label } from "ui/components/ui/label";
+import { motion } from "framer-motion";
 
 type GenerateImageOptions = {
   desktopSize?: boolean;
@@ -19,14 +20,13 @@ function DownloadBasePalettePlugin({ setOpen }) {
   const [imageData, setImageData] = useState(null);
   const [desktopSize, setDesktopSize] = useState(undefined);
   const [isDesktopSize, setIsDesktopSize] = useState(false);
-  const paletteAspectRatio = useRef(1);
   const { toast } = useToast();
   const handleGenerateImage = (options: GenerateImageOptions) => {
     if (typeof desktopSize === "undefined") return;
     setisLoaded(false);
     // find #base-color-palette and capture it as an image (we'll show the preview)
-    const paletteBody = document?.getElementById("base-color-palette");
-    if (paletteBody) {
+    const paletteWrap = document?.getElementById("base-color-palette");
+    if (paletteWrap) {
       // !FIX LINE HEIGHT
       const style = document.createElement("style");
       document.head.appendChild(style);
@@ -35,10 +35,7 @@ function DownloadBasePalettePlugin({ setOpen }) {
       );
       options.desktopSize &&
         style.sheet?.insertRule("body { min-width: 1920px }");
-      const paletteBodyWidth = paletteBody.clientWidth;
-      const paletteBodyHeight = paletteBody.clientHeight;
-      paletteAspectRatio.current = paletteBodyWidth / paletteBodyHeight;
-      html2canvas(paletteBody, {
+      html2canvas(paletteWrap, {
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
@@ -91,13 +88,19 @@ function DownloadBasePalettePlugin({ setOpen }) {
           className={cn(
             "mb-4 overflow-hidden rounded-md",
             "w-[16rem] rounded-md sm:w-[22rem]",
+            !isDesktopSize &&
+              "aspect-[0.121/1] sm:aspect-[0.339/1] md:aspect-[0.653/1] lg:aspect-[1.82/1]",
+            isDesktopSize && "aspect-[1.82/1]",
           )}
-          style={{
-            aspectRatio: paletteAspectRatio.current,
-          }}
+          // style={{
+          //   aspectRatio: paletteAspectRatio.current,
+          // }}
         >
           {isLoaded ? (
-            <img
+            <motion.img
+              initial={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
               src={imageData}
               className={cn(
                 "absolute inset-0 h-full w-full rounded border object-cover transition-opacity",

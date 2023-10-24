@@ -19,7 +19,7 @@ export type PrimaryToolbarMenu = {
 const primaryToolbarMenu: PrimaryToolbarMenu = {
   [ToolbarMenus.UPLOAD_IMAGE]: {
     title: "Upload Image",
-    description: "Coming Soon... Generate a color palette from an image",
+    description: "Generate a color palette from an image",
     icon: ImagePlus,
   },
   [ToolbarMenus.DOWNLOAD]: {

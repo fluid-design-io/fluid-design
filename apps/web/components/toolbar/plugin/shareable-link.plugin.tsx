@@ -8,6 +8,7 @@ import { Skeleton } from "@ui/components/ui/skeleton";
 import { cn } from "ui/lib/utils";
 import Image from "next/image";
 import { useToast } from "ui/components/ui/use-toast";
+import { motion } from "framer-motion";
 
 function ShareableLinkPlugin({ colors, setOpen }) {
   const { toast } = useToast();
@@ -23,7 +24,12 @@ function ShareableLinkPlugin({ colors, setOpen }) {
   };
   return (
     <Fragment>
-      <div className="relative">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
+        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+        exit={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
+        className="relative"
+      >
         <div
           className={cn(
             "mb-4 overflow-hidden rounded-md",
@@ -47,7 +53,7 @@ function ShareableLinkPlugin({ colors, setOpen }) {
             height={151}
           />
         </div>
-      </div>
+      </motion.div>
       <div className="flex space-x-2">
         <Input
           className="h-8"
