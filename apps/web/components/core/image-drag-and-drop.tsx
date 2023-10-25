@@ -108,4 +108,6 @@ const ImageDragAndDrop = forwardRef(
   },
 );
 
+ImageDragAndDrop.displayName = "ImageDragAndDrop";
+
 export default ImageDragAndDrop;

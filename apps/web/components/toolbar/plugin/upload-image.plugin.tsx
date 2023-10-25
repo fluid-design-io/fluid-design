@@ -505,4 +505,7 @@ function UploadImaagePlugin() {
     </motion.div>
   );
 }
+
+UploadImaagePlugin.displayName = "UploadImaagePlugin";
+
 export default UploadImaagePlugin;
