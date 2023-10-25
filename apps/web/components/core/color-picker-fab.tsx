@@ -10,8 +10,9 @@ function ColorPickerFab() {
       )}
     >
       <div
+        id="color-picker-fab"
         className={cn(
-          "pointer-events-auto flex max-w-xs items-center justify-center gap-4 rounded-full border border-white/10 p-2 shadow-lg backdrop-blur-xl backdrop-brightness-105 backdrop-saturate-150 dark:border-white/5 dark:backdrop-brightness-95",
+          "pointer-events-auto flex max-w-xs items-center justify-center gap-4 rounded-full border border-white/10 p-2 shadow-lg backdrop-blur-xl backdrop-brightness-105 backdrop-saturate-150 transition-opacity dark:border-white/5 dark:backdrop-brightness-95",
           // "bg-background-accent/75",
         )}
         style={{

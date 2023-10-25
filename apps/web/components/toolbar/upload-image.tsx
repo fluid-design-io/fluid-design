@@ -1,25 +1,52 @@
 "use client";
+import dynamic from "next/dynamic";
 import primaryToolbarMenu from "../ui/primary-toolbar-menu";
 import ToolbarMenuItem from "./toolbar-menu-item";
 
-import { useToolStore } from "@/store/toolStore";
+import { PresistTool, useToolStore } from "@/store/toolStore";
+import { Fragment } from "react";
+import { createPortal } from "react-dom";
+import useStore from "@/store/useStore";
+import { cn } from "@ui/lib/utils";
+
+const UploadImaagePluginDialogContent = dynamic(
+  () => import("@/components/toolbar/plugin/upload-image.plugin"),
+  {
+    loading: () => null,
+    ssr: false,
+  },
+);
 
 function ToolbarUploadImage() {
-  const { setOpenImageColorExtractor, openImageColorExtractor } =
-    useToolStore();
+  const store = useStore(useToolStore, (state) => state);
   const menuItem = primaryToolbarMenu["Upload Image"];
+  const handleOpen = () => {
+    store?.openImageColorExtractor
+      ? store?.setOpenImageColorExtractor(false)
+      : store?.setOpenImageColorExtractor(true);
+  };
   return (
-    <button
-      type="button"
-      onClick={() =>
-        openImageColorExtractor
-          ? setOpenImageColorExtractor(false)
-          : setOpenImageColorExtractor(true)
-      }
-      aria-label="Upload Image"
-    >
-      <ToolbarMenuItem {...menuItem} />
-    </button>
+    <Fragment>
+      <button
+        type="button"
+        onClick={handleOpen}
+        aria-label="Upload Image"
+        className={cn(
+          store?.openImageColorExtractor &&
+            "-mx-1.5 rounded-sm bg-primary/20 px-1.5 lg:mx-0 lg:px-0",
+        )}
+      >
+        <ToolbarMenuItem {...menuItem} />
+      </button>
+      {!!store?.openImageColorExtractor &&
+        createPortal(
+          <UploadImaagePluginDialogContent
+            key={`uipd`}
+            id="upload-image-dialog"
+          />,
+          document.body,
+        )}
+    </Fragment>
   );
 }
 

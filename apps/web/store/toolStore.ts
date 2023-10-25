@@ -8,6 +8,10 @@ import {
   persist,
 } from "zustand/middleware";
 
+export enum PresistTool {
+  IMAGE_COLOR_EXTRACTOR = "imageColorExtractor",
+}
+
 export type ToolStore = {
   openImageColorExtractor: boolean;
   setOpenImageColorExtractor: (openImageColorExtractor: boolean) => void;

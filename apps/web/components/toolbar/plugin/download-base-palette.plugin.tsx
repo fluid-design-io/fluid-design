@@ -103,7 +103,7 @@ function DownloadBasePalettePlugin({ setOpen }) {
               exit={{ opacity: 0, scale: 0.97, filter: "blur(6px)" }}
               src={imageData}
               className={cn(
-                "absolute inset-0 h-full w-full rounded border object-cover transition-opacity",
+                "absolute inset-0 h-full w-full rounded border object-cover",
               )}
               alt="Social preview"
               width={288}

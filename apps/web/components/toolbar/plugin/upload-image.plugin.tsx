@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "ui/components/ui/button";
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, memo, useEffect, useRef, useState } from "react";
 import { cn } from "ui/lib/utils";
 import { useToast } from "ui/components/ui/use-toast";
 import {
@@ -21,8 +21,9 @@ import { BaseColorTypes } from "@/types/app";
 import { FinalColor } from "extract-colors/lib/types/Color";
 import { useToolStore } from "@/store/toolStore";
 import { XCircleIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 
-function UploadImaagePlugin() {
+function UploadImaagePlugin(props) {
   const { updateBaseColor, generatePalette } = useColorStore();
   const {
     setOpenImageColorExtractor,
@@ -32,6 +33,8 @@ function UploadImaagePlugin() {
   const [activeColorIndex, setActiveColorIndex] = useState(0);
   const [preview, setPreview] = useState(null);
   const { toast } = useToast();
+  const pathname = usePathname();
+  const isRoot = pathname === "/";
 
   /* Framer bottom sheet */
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -53,6 +56,11 @@ function UploadImaagePlugin() {
     [sheetHeight / 4, sheetHeight],
     [0.5, 0.92],
   );
+  const collapsePreviewOpacity = useTransform(
+    sheetYSpring,
+    [sheetHeight / 4, sheetHeight],
+    [0, isDesktopSize ? 0.8 : 0.4],
+  );
   const sheetBackdropBlur = useTransform(
     sheetYSpring,
     [sheetHeight / 4, sheetHeight],
@@ -69,6 +77,11 @@ function UploadImaagePlugin() {
     [0, sheetHeight],
     [0, -innerSheetWidth / 2 + PILL_WIDTH / 2],
   );
+  const sheetX = useTransform(
+    sheetYSpring,
+    [0, sheetHeight],
+    [0, isRoot ? 0 : 172],
+  );
   const sheetRadius = useTransform(
     sheetYSpring,
     [0, sheetHeight],
@@ -76,7 +89,7 @@ function UploadImaagePlugin() {
   );
   const sheetInnerOpacity = useTransform(
     sheetYSpring,
-    [0, sheetHeight],
+    [0, sheetHeight / 1.5],
     [1, 0],
   );
 
@@ -87,12 +100,30 @@ function UploadImaagePlugin() {
     setIsCollapsed(true);
     controls.start("collapse");
     sheetY.set(sheetHeight);
+    if (!isRoot) {
+      // find #color-picker-fab
+      const fab = document?.getElementById("color-picker-fab");
+      if (fab) {
+        // make it visible and enable pointer events
+        fab.style.opacity = "1";
+        fab.style.pointerEvents = "auto";
+      }
+    }
   };
 
   const onExpand = () => {
     setIsCollapsed(false);
     controls.start("expand");
     sheetY.set(0);
+    if (!isRoot) {
+      // find #color-picker-fab
+      const fab = document?.getElementById("color-picker-fab");
+      if (fab) {
+        // make it invisible and disable pointer events
+        fab.style.opacity = "0";
+        fab.style.pointerEvents = "none";
+      }
+    }
   };
 
   const onHidden = () => {
@@ -103,6 +134,15 @@ function UploadImaagePlugin() {
         baseColors: [],
         colors: [],
       });
+      if (!isRoot) {
+        // find #color-picker-fab
+        const fab = document?.getElementById("color-picker-fab");
+        if (fab) {
+          // make it visible and enable pointer events
+          fab.style.opacity = "1";
+          fab.style.pointerEvents = "auto";
+        }
+      }
     }, 700);
   };
 
@@ -119,14 +159,14 @@ function UploadImaagePlugin() {
   function onDrag(event, info) {
     // If the modal content is scrollable, we need to get more information.
     if (
-      scrollAreaRef.current.scrollHeight > scrollAreaRef.current.clientHeight
+      scrollAreaRef?.current?.scrollHeight >
+      scrollAreaRef?.current?.clientHeight
     ) {
       // If the modal is already collapsed or if the user has scrolled back to the top,
       // then we can allow the drag event to collapse the modal.
-      if (isCollapsed || scrollAreaRef.current.scrollTop === 0) {
+      if (isCollapsed || scrollAreaRef?.current?.scrollTop === 0) {
         const y = info.offset.y;
         if (y < 0 && !isCollapsed) {
-          console.log(`disable drag`);
           setEnableDrag(false);
           return;
         }
@@ -155,12 +195,11 @@ function UploadImaagePlugin() {
   }, []);
 
   const calcScreenDimension = () => {
-    const h = sheetRef.current.offsetHeight;
+    const h = sheetRef?.current?.offsetHeight;
     const w = window.innerWidth;
     // isCollapsed && onExpand();
     setSheetHeight(h);
     setInnerSheetWidth(w);
-    console.log(`sheet height: ${h}, sheet width: ${w}`);
   };
   useEffect(() => {
     window.addEventListener("resize", calcScreenDimension);
@@ -177,17 +216,17 @@ function UploadImaagePlugin() {
   useEffect(() => {
     if (isCollapsed) return;
     const handleFocus = (e) => {
-      if (!sheetRef.current.contains(e.target)) {
-        sheetRef.current.focus();
+      if (!sheetRef?.current?.contains(e.target)) {
+        sheetRef?.current?.focus();
       }
     };
     document.addEventListener("focus", handleFocus, true);
     document.body.style.overflow = "hidden";
-    document.body.style.pointerEvents = "none";
+    // document.body.style.pointerEvents = "none";
     return () => {
       document.removeEventListener("focus", handleFocus, true);
       document.body.style.overflow = "auto";
-      document.body.style.pointerEvents = "auto";
+      // document.body.style.pointerEvents = "auto";
     };
   }, [isCollapsed]);
 
@@ -293,6 +332,8 @@ function UploadImaagePlugin() {
         WebkitBackdropFilter: sheetFilterStyle,
         width: isDesktopSize ? sheetWidth : "100%",
         borderRadius: sheetRadius,
+        x: sheetX,
+        touchAction: "pan-y",
       }}
       drag={enableDrag ? "y" : false}
       onDrag={onDrag}
@@ -315,20 +356,47 @@ function UploadImaagePlugin() {
       dragConstraints={{ top: 0 }}
       dragElastic={isCollapsed ? 0.2 : 0}
       ref={sheetRef}
+      // expand if drop enter
+      onDragOver={() => isCollapsed && onExpand()}
+      {...props}
     >
+      {/* Handle */}
       <button
         type="button"
-        className="group absolute inset-x-0 top-0 z-10 mx-auto h-1 w-12 cursor-row-resize pt-2 md:h-1.5"
+        className={cn(
+          "group absolute inset-x-0 top-0 z-[21] mx-auto h-1 w-12 cursor-row-resize pt-2 transition-all md:h-1.5",
+          !isRoot && isCollapsed && !isDesktopSize && "left-auto right-8",
+        )}
         onClick={handleSheetPosition}
       >
         <span
           className={cn(
-            "absolute inset-0 top-2 h-1 w-full rounded-full bg-foreground/20 transition-colors sm:h-1.5",
+            "absolute inset-0 top-2 h-1 w-full rounded-full transition-colors sm:h-1.5",
             "group-hover:bg-foreground/50 group-focus:bg-foreground/50",
+            "backdrop-blur-md backdrop-brightness-75 transition-opacity",
+            isCollapsed ? "bg-foreground/20" : "bg-foreground/0",
           )}
         />
-        <span className="sr-only">Click to minimize</span>
+        <span className="sr-only">
+          Click to {isCollapsed ? "expand" : "collapse"} the sheet
+        </span>
       </button>
+      <motion.div
+        className="pointer-events-none absolute inset-x-0 top-0 z-20 mx-auto bg-background/10"
+        style={{
+          opacity: collapsePreviewOpacity,
+        }}
+      >
+        {preview && (
+          <motion.img
+            style={{
+              opacity: collapsePreviewOpacity,
+            }}
+            src={preview}
+            className="h-full w-full object-cover object-bottom"
+          />
+        )}
+      </motion.div>
       <motion.div
         className="flex items-center justify-between"
         style={{
@@ -359,7 +427,7 @@ function UploadImaagePlugin() {
       <motion.div
         className={cn(
           "mt-4 grid gap-4 sm:gap-6 lg:gap-8",
-          "max-h-[calc(100dvh-5.5rem)] overflow-y-auto overflow-x-visible px-4 pb-6 sm:px-6 lg:px-8",
+          "max-h-[calc(100dvh-8rem)] overflow-y-auto overflow-x-visible px-4 pb-6 sm:px-6 lg:px-8",
           "w-[calc(100dvw-env(safe-area-inset-right, 0px)-env(safe-area-inset-left, 0px))]",
           !!preview
             ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
@@ -373,16 +441,16 @@ function UploadImaagePlugin() {
         ref={scrollAreaRef}
         onScroll={(e) => {
           // enable drag if the user has scrolled back to the top
-          if (e.currentTarget.scrollTop === 0) {
+          if (e.currentTarget.scrollTop <= 10) {
             setEnableDrag(true);
-          } else if (e.currentTarget.scrollTop > 0) {
+          } else if (e.currentTarget.scrollTop > 10) {
             setEnableDrag(false);
           }
         }}
       >
         <div
           className={cn(
-            "min-h-64 relative isolate aspect-[3/2] max-h-[24rem] w-full sm:col-span-2 lg:col-span-1",
+            "min-h-64 relative isolate h-[20rem] w-full sm:col-span-2 lg:col-span-1",
           )}
         >
           <AnimatePresence mode="wait">
@@ -455,14 +523,10 @@ function UploadImaagePlugin() {
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold">Colors</h3>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="-mr-1"
-                  onClick={onHidden}
-                >
-                  Clear
-                </Button>
+                <p className="text-xs text-muted-foreground/70">
+                  Click to replace{" "}
+                  {["primary", "secondary", "accent"][activeColorIndex]} color
+                </p>
               </div>
 
               {!!preview && colors.length === 0 && (
@@ -508,4 +572,4 @@ function UploadImaagePlugin() {
 
 UploadImaagePlugin.displayName = "UploadImaagePlugin";
 
-export default UploadImaagePlugin;
+export default memo(UploadImaagePlugin);
