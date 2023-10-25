@@ -1,32 +1,199 @@
 "use client";
 
 import { Button } from "ui/components/ui/button";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { cn } from "ui/lib/utils";
 import { useToast } from "ui/components/ui/use-toast";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useAnimation,
+  useMotionValue,
+  useTransform,
+  useMotionTemplate,
+  useSpring,
+} from "framer-motion";
 import { extractColors } from "extract-colors";
 import ImageDragAndDrop from "@/components/core/image-drag-and-drop";
 import { useColorStore } from "@/store/store";
 import { colorHelper } from "@/lib/colorHelper";
 import { BaseColorTypes } from "@/types/app";
 import { FinalColor } from "extract-colors/lib/types/Color";
+import { useToolStore } from "@/store/toolStore";
+import { XCircleIcon } from "lucide-react";
 
-function UploadImaagePlugin({ setOpen }) {
+function UploadImaagePlugin() {
   const { updateBaseColor, generatePalette } = useColorStore();
-  const [colors, setColors] = useState([]);
-  const [imageBaseColors, setImageBaseColors] = useState([]); // [primary, secondary, accent]
+  const {
+    setOpenImageColorExtractor,
+    imageColorExtractor: { colors, baseColors: imageBaseColors },
+    updateImageColorExtractor,
+  } = useToolStore(); // [primary, secondary, accent]
   const [activeColorIndex, setActiveColorIndex] = useState(0);
-  const [imgPreview, setImgPreview] = useState(null);
+  const [preview, setPreview] = useState(null);
   const { toast } = useToast();
+
+  /* Framer bottom sheet */
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [sheetHeight, setSheetHeight] = useState(0);
+  const [innerSheetWidth, setInnerSheetWidth] = useState(0);
+  const [enableDrag, setEnableDrag] = useState(true);
+  const sheetY = useMotionValue(0);
+  const sheetYSpring = useSpring(sheetY, {
+    bounce: 0.1,
+  });
+  const sheetRef = useRef(null);
+  const scrollAreaRef = useRef(null);
+  const controls = useAnimation();
+  const PILL_WIDTH = 128;
+  const isDesktopSize = innerSheetWidth > 640;
+
+  const sheetOpacity = useTransform(
+    sheetYSpring,
+    [sheetHeight / 4, sheetHeight],
+    [0.5, 0.92],
+  );
+  const sheetBackdropBlur = useTransform(
+    sheetYSpring,
+    [sheetHeight / 4, sheetHeight],
+    [72, 12],
+  );
+
+  const sheetWidth = useTransform(
+    sheetYSpring,
+    [0, sheetHeight],
+    [innerSheetWidth, PILL_WIDTH],
+  );
+  const sheetInnerX = useTransform(
+    sheetYSpring,
+    [0, sheetHeight],
+    [0, -innerSheetWidth / 2 + PILL_WIDTH / 2],
+  );
+  const sheetRadius = useTransform(
+    sheetYSpring,
+    [0, sheetHeight],
+    [0, PILL_WIDTH / 4],
+  );
+  const sheetInnerOpacity = useTransform(
+    sheetYSpring,
+    [0, sheetHeight],
+    [1, 0],
+  );
+
+  const sheetBgStyle = useMotionTemplate`hsl(var(--background)/${sheetOpacity})`;
+  const sheetFilterStyle = useMotionTemplate`blur(${sheetBackdropBlur}px) var(--tw-backdrop-brightness) var(--tw-backdrop-saturate)`;
+
+  const onCollapse = () => {
+    setIsCollapsed(true);
+    controls.start("collapse");
+    sheetY.set(sheetHeight);
+  };
+
+  const onExpand = () => {
+    setIsCollapsed(false);
+    controls.start("expand");
+    sheetY.set(0);
+  };
+
+  const onHidden = () => {
+    controls.start("hidden");
+    setTimeout(() => {
+      setOpenImageColorExtractor(false);
+      updateImageColorExtractor({
+        baseColors: [],
+        colors: [],
+      });
+    }, 700);
+  };
+
+  function onDragEnd(event, info) {
+    const shouldColappse =
+      info.velocity.y > 20 || (info.velocity.y >= 0 && info.point.y > 45);
+    if (shouldColappse) {
+      onCollapse();
+    } else {
+      onExpand();
+    }
+  }
+
+  function onDrag(event, info) {
+    // If the modal content is scrollable, we need to get more information.
+    if (
+      scrollAreaRef.current.scrollHeight > scrollAreaRef.current.clientHeight
+    ) {
+      // If the modal is already collapsed or if the user has scrolled back to the top,
+      // then we can allow the drag event to collapse the modal.
+      if (isCollapsed || scrollAreaRef.current.scrollTop === 0) {
+        const y = info.offset.y;
+        if (y < 0 && !isCollapsed) {
+          console.log(`disable drag`);
+          setEnableDrag(false);
+          return;
+        }
+      }
+    } else {
+      // If the modal content is not scrollable, then the drag event should be allowed.
+      const y = info.offset.y;
+      if (y < 0 && !isCollapsed) return;
+      if (y > 0 && isCollapsed) return;
+      setEnableDrag(true);
+      const offset = y < 0 ? sheetHeight + y : y;
+      sheetYSpring.jump(offset);
+    }
+  }
+
+  const handleSheetPosition = () => {
+    if (isCollapsed) {
+      onExpand();
+    } else {
+      onCollapse();
+    }
+  };
+
+  useEffect(() => {
+    onExpand();
+  }, []);
+
+  const calcScreenDimension = () => {
+    const h = sheetRef.current.offsetHeight;
+    const w = window.innerWidth;
+    // isCollapsed && onExpand();
+    setSheetHeight(h);
+    setInnerSheetWidth(w);
+    console.log(`sheet height: ${h}, sheet width: ${w}`);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", calcScreenDimension);
+    calcScreenDimension();
+    return () => window.removeEventListener("resize", calcScreenDimension);
+  }, []);
+
+  // recalculate the sheet height when the content changes
+  useEffect(() => {
+    calcScreenDimension();
+  }, [preview]);
+
+  // trap focus and lock body when it's expanded
+  useEffect(() => {
+    if (isCollapsed) return;
+    const handleFocus = (e) => {
+      if (!sheetRef.current.contains(e.target)) {
+        sheetRef.current.focus();
+      }
+    };
+    document.addEventListener("focus", handleFocus, true);
+    document.body.style.overflow = "hidden";
+    document.body.style.pointerEvents = "none";
+    return () => {
+      document.removeEventListener("focus", handleFocus, true);
+      document.body.style.overflow = "auto";
+      document.body.style.pointerEvents = "auto";
+    };
+  }, [isCollapsed]);
 
   const handleDropImage = async (files: FileList) => {
     const file = files[0];
     if (!file) return;
-
-    // add file preview
-
-    setImgPreview(URL.createObjectURL(file));
 
     if (file.size > 10000000) {
       toast({
@@ -43,6 +210,7 @@ function UploadImaagePlugin({ setOpen }) {
     reader.onload = (e) => {
       const img = new Image();
       img.src = e.target.result as string;
+      setPreview(URL.createObjectURL(file));
       img.onload = async () => {
         // <-- This function is already async
         const canvas = document.createElement("canvas");
@@ -72,8 +240,10 @@ function UploadImaagePlugin({ setOpen }) {
         updateBaseColor("secondary", colorHelper.toRaw(colors[1].hex));
         updateBaseColor("accent", colorHelper.toRaw(colors[2].hex));
         generatePalette(true);
-        setImageBaseColors(colors.slice(0, 3));
-        setColors(colors.slice(3));
+        updateImageColorExtractor({
+          baseColors: colors.slice(0, 3),
+          colors: colors.slice(3),
+        });
       };
     };
 
@@ -90,134 +260,178 @@ function UploadImaagePlugin({ setOpen }) {
     const prevColors = [...colors];
     prevColors.splice(i, 1);
     prevColors.push(imageBaseColors[activeColorIndex]);
-    setColors(prevColors);
 
     // replace the color with the new one at the same index
     const prevBaseColors = [...imageBaseColors];
     prevBaseColors[activeColorIndex] = c;
-    setImageBaseColors(prevBaseColors);
+
+    updateImageColorExtractor({
+      baseColors: prevBaseColors,
+      colors: prevColors,
+    });
+
     // set the next color as active
     activeColorIndex === 2
       ? setActiveColorIndex(0)
       : setActiveColorIndex(activeColorIndex + 1);
   };
-  console.log(colors.length);
   return (
-    <div
+    <motion.div
       className={cn(
-        "mt-4 grid gap-4 sm:gap-6 lg:gap-8",
-        "max-h-[calc(100dvh-5.5rem)] overflow-y-auto overflow-x-visible px-4 pb-6 sm:px-6 lg:px-8",
-        !!imgPreview
-          ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-          : "grid-cols-1",
+        "pointer-events-auto z-40 mx-auto px-0 pb-12 backdrop-brightness-125 backdrop-saturate-150 dark:backdrop-brightness-75 md:pb-0",
       )}
+      style={{
+        backgroundColor: sheetBgStyle,
+        backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAmCAYAAACoPemuAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGF2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDEgNzkuMTQ2Mjg5OTc3NywgMjAyMy8wNi8yNS0yMzo1NzoxNCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczpwaG90b3Nob3A9Imh0dHA6Ly9ucy5hZG9iZS5jb20vcGhvdG9zaG9wLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB0aWZmOk9yaWVudGF0aW9uPSIxIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyMy0xMC0xM1QyMDo1NTo1OC0wNTowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjMtMTAtMTNUMjE6MTk6MTQtMDU6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjMtMTAtMTNUMjE6MTk6MTQtMDU6MDAiIGRjOmZvcm1hdD0iaW1hZ2UvcG5nIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOmQ3N2M2OWE4LTliZmItNDFlYy1iNmNjLWM2MGE4NTdjZDk2YyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo2YmEwNDY2Mi01ZDU2LTQ5MGUtOTU0OS01NjQ3YzIwNDQwN2MiIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo2YmEwNDY2Mi01ZDU2LTQ5MGUtOTU0OS01NjQ3YzIwNDQwN2MiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo2YmEwNDY2Mi01ZDU2LTQ5MGUtOTU0OS01NjQ3YzIwNDQwN2MiIHN0RXZ0OndoZW49IjIwMjMtMTAtMTNUMjA6NTY6NTItMDU6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyNS4xICgyMDIzMTAwMy5tLjIzNTAgNDY1NjYxZSkgIChNYWNpbnRvc2gpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpkNzdjNjlhOC05YmZiLTQxZWMtYjZjYy1jNjBhODU3Y2Q5NmMiIHN0RXZ0OndoZW49IjIwMjMtMTAtMTNUMjE6MTk6MTQtMDU6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyNS4xICgyMDIzMTAwMy5tLjIzNTAgNDY1NjYxZSkgIChNYWNpbnRvc2gpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PtN09IQAAApQSURBVFjDPdjHq1VXFAfg/Z7H2HvvvUZN7L2jIoqKigg6UgdiJv4JgmNRQiJOhQwsIGJXNPbe0myx9957iS/3W7C9cHn3nnv2Kr+y9j6v2L59e71du3aVP3z4sGLQoEGpoqIi/ffff+ndu3epXbt26fbt2+ns2bPpxx9/TK9evUp3795NvXr1Sn///Xe6c+dOGjhwYHr+/HkaOnRo2rFjR/r69Wvq0qVLKsVLV69eTZMnT041a9ZMN27ciPubN2+eGjdunKpXr56OHz8eeb777rvUtGnTWFu5cuWyOnXqfC0uXLhQ/uLFi/KRI0dW+OHPP/9MDRo0SJUqVYrkffr0SR06dEjnz5+PZK9fv049evRI5eXlEbxq1appyJAh6enTp+nx48dp4cKFkezJkyff4hw4cCB9/vw5aXzjxo2pVatWcd1f8d6+fZvq1auXHj16lD5+/FiWSq+iVEhF6aYKiLlZcVWqVPnWEYTatm1rQRowYEB837JlS2rTpk3q27dvoHj06NEoetSoUWnv3r1RbN26dSPx/fv3U+vWrQMp8du3bx/ov3z5MmKUQIm3AhXXrFmzdOXKlYqif//+6cGDB+nZs2epe/fuQYsOfvjhhwhagjW+t2jRIn358iWKfPPmTRSSi+7Xr1/6559/osgSFXFf/fr10/Xr10MWTZo0CSY6deoUDLgGUdSi3fVLly7FNU0BoQDz9OnTI8kff/yRSpSma9euBR01atQIndAHGho2bJguX76cJkyYEIs1JFhJDoGC15kzZ1JRFOm3335LPXv2jMJpqGXLloGshrFBCopHP8lAk6Y1496iUaNG0b0bdXbx4sX06dOn9P79+zCCjiSAJK2hYPPmzal3795xb1lZWSSnsX///TeEjsbZs2dHoaNHj06//vpryIMWa9euHW9iR7sm1OAvU3Tu3Dl9+PAhFTjXuWLAWK1ateD63r17AbGAaLaQONELSffr2HfCFlwT2anu2bp1azp9+nTQiwFIMJHPirh161YgSGucLx9GIh+x6+DUqVPhIjD7K/GJEycCja5du4bO6AjNHTt2DOQEgazEikOHbmlo3759QeGhQ4fSuHHjgqKdO3cGUuRB8CRx8+bNyIONkydPBguYKnAssJtq1aqV9uzZE+KlJ0VbiOJ169ZFIehQqAIl81nxkNE9cUOC1riRU+mQiQAgrnGjeA6EjuI1S05MZiYWLE8/KkWf76gVQKEKAP+wYcPiGrohQUfjx4+P7/TF3VBkBC6dNWtWWrZsWXweO3ZsOnfuXNyLag2ij+ghvWjRorRp06aQAMmUBn4qFMEN9COwhapWPUjpAsT0RMjHjh0LumgTCgRvd3AfZ5MBFKCJBWijUPF0R78cDbHff/895ptixAIASq0pVqxYkZYuXRoBdfHXX3/FjXlkcAlKQG1sCCqA4q3xWUMKdo81vgtuaJKKeN40CAD0m4XGFPOIMXHixNAdWUVhthAds73uiZnOQJwnMbQENQoYgKPyy28QR/ORI0fSpEmT4vr+/fujCNOf3iBsFm7bti2KEU9jaObmw4cPRwzxYsCqrrSRR8VeaJsxY0YUKQBKUARNyNEaVDWiUEJmkDxsN2zYELqiQb8rjsPFwIJrkpudKPfZX0UOHjw4CqbHwg2S0RYNQGP16tVp6tSp3+YT/lGxe/fuGKy+sziaBYHIvHnzgkqf6cdOoJj169cHihpcu3ZtONfpBBgol0NOCOdtUR1OF9GFF9uDW/UKAj8DcBEd4B9SKPa7oBBxH0f7blz4a2DaO2385MH5XG4dVpjFiwMZQG4NQzDmGPflMUDc3bp1s7uHaHUMAQFpDffGiiGpa7uC4WnuoReKc+fODfTF0ojfxbOt2YuhSeQkpGC5vcw4RUExEGNjFBCpBL4r0m7PedBQpCCooxcDFEICcJ5EEBkzZkwgaltTdB7M33//fax1nXvRJY6ZqQG0YoFbSUsNBep0pDA/Eigxm1UEb3DSh4C6AzdE0E3wthcoa0QMDjeAFQMB1yCtOe7TjHhyYsQLMIYtWVkjRiE5mFetWhVdLFmyJCytOI7TEVQMPrqB4PDhw0OomvAZvdzknU8rXEljpMAwJANZGnQfBuzL3O+aCaAoKGu4kIxN/QhqRxrFGA2OJYoWBH1TpkyJhBCTiJvoj3ghqQHIolnBBD1ixIhoEmrQMq/okcBp1XUIGjG+Hzx4MNgojAEPEYRK4FyGGp07dfqez+USQgqyBu20adPiVOKwSeT0ZdviOonR7ChDAnkeKtxA5laIapApMgvQpM8CSjShcrqiDXbnHjPHZ06hFduIgqCrcCcK6KIKkgqzjjzEg5jkZp37UTV//vxYgwmbvNecOXPiGmYIn+kKXVmQXQN2+52FEtuIzTkJFU6gCoSEAvylE46GvpkHefdKRqfEbZvjxvz0BWVHKGvz0QuiNGYqFDSCW8HWrFkTyChM926gs/z0pCBUoZVe0AUZCRThDWGO8zJEUc3tWNGcxzfJNeiYA9X8aEinjkvqKGwd3IIic0WheUYZejTmM10QPScKaptxnGESmlIgdIyNfOSmLbphEs37TYMaZiQoQwtLxhaWUOn+wgHNRdW6yWJBvQnT7JEAaoqGmu5/+eWX0KMgaFO8+50WFEMGJGAOakZhhrB4KDdGrIc6STCU0wlJQb3IbqI1EENLsjz1uUlhhp63BizO5jCtucg4kVhRPpt7nMeFXK0xBeanIQBAmXEgqDmjxGyL8xvovCVTnC4ViDr05plDLxwmKVS4zHX6QaWHj/xwC1k6ZQSi5moaJn56yucuDSlSMwAxT7ERiIE8HwK9idHAJGQ3C5afnthecc5dkLKWuOnG0SnvFuK5J48Ocwo69Ixyc9IDCOqhLA8q5f82YHEvqc50Khj6wEqMkOJCL/qQHFqg1znKnKWgRxbLly+PJyNPOs5vZLJ48eLY5vzPw/jhwDwJNEfP3G5caMDfgqtUnjWicvToHPfEnscFqCFqb0SPonSrGUKGksQ6RiMEOE8hthynCMWRgkmQn5IwlJ/KrRU3/kWQhQgpCeiLRrwVRAMQRQFkoAYJBStMc/RiiArK5T///HMgzjAQyI90GtWAnSI/V3hrTgN2FbELyU1vCyxWvVMlt7hu2OkeUvQGAYktzluZeeYZ03DmPP8akICzORIK4ntcU5C3tX43ouLEWkJLfEiak4UtAUUS5tOrQco1OrOAZgTJSOWp7l77G8QIfMGCBXE0MhtnzpwZc4mO6IlxDGuJ6Y8UGCf/j407oS+fNSF+DwyQyv9M47j87JefsPPh0H7qNEIn0CIDaEHVZwnQiVojCCMrV678plt6NoKwoykIQ9Bn8UlGk04XZSXayswfCyAhMNflc5IbJdAEZNHMKPTnXqJWKCcbytAVB02O1rRmI/c7Q3GvPdMA9p2+8gwtSabsp59+KitKnX11oVR5BdQMQMXYMjhUIShwns/ne1rSneLRid58loISCRjOXKcI+lSUghWJFXribgjmf1MBpzQ+yko5v/4PyslGFcA7l4kAAAAASUVORK5CYII=)`,
+        backgroundSize: "40px",
+        position: "fixed",
+        overflow: "hidden",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backdropFilter: sheetFilterStyle,
+        WebkitBackdropFilter: sheetFilterStyle,
+        width: isDesktopSize ? sheetWidth : "100%",
+        borderRadius: sheetRadius,
+      }}
+      drag={enableDrag ? "y" : false}
+      onDrag={onDrag}
+      onDragEnd={onDragEnd}
+      initial="hidden"
+      animate={controls}
+      exit="hidden"
+      transition={{
+        type: "spring",
+        damping: 40,
+        stiffness: 400,
+      }}
+      variants={{
+        hidden: { y: "100%" },
+        expand: { y: 0 },
+        collapse: {
+          y: isDesktopSize ? sheetHeight - PILL_WIDTH / 2 : sheetHeight - 116,
+        }, // to encounter the toolbar
+      }}
+      dragConstraints={{ top: 0 }}
+      dragElastic={isCollapsed ? 0.2 : 0}
+      ref={sheetRef}
     >
-      <div
-        className={cn(
-          "min-h-64 relative isolate h-[min(35vh,32rem)] w-full sm:col-span-2 lg:col-span-1",
-        )}
+      <button
+        type="button"
+        className="group absolute inset-x-0 top-0 z-10 mx-auto h-1 w-12 cursor-row-resize pt-2 md:h-1.5"
+        onClick={handleSheetPosition}
       >
-        <AnimatePresence mode="popLayout">
-          {imgPreview && (
-            <motion.img
-              key={imgPreview}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              src={imgPreview}
-              className="pointer-events-none absolute inset-0 z-[-2] h-full w-full rounded-md object-cover"
-            />
-          )}
-        </AnimatePresence>
-        <ImageDragAndDrop
-          onDrop={handleDropImage}
-          className="h-full min-h-[16rem] w-full"
-          dropAreaStyles={cn(
-            "space-y-4",
-            imgPreview && [
-              "bg-background/70 backdrop-blur-md backdrop-brightness-110 backdrop-saturate-150",
-              "absolute bottom-0 inset-x-0 flex justify-center items-center flex flex-row",
-              "[&_.drop-icon]:w-6 [&_.drop-icon]:h-6 [&_.drop-icon]:m-0",
-              "space-y-0 space-x-2",
-            ],
+        <span
+          className={cn(
+            "absolute inset-0 top-2 h-1 w-full rounded-full bg-foreground/20 transition-colors sm:h-1.5",
+            "group-hover:bg-foreground/50 group-focus:bg-foreground/50",
           )}
         />
-      </div>
-      {!!imgPreview && (
-        <Fragment>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <h3 className="text-lg font-semibold">Base Colors</h3>
-            <div className="mt-2 flex flex-wrap">
-              {imageBaseColors.map((color, index) => (
-                <motion.button
-                  layoutId={`color-${color.hex}`}
-                  key={`${color.hex}-${index}`}
-                  className={cn(
-                    "mb-2 flex h-12 w-full items-center justify-center",
-                    activeColorIndex === index
-                      ? "ring-2 ring-primary ring-offset-2"
-                      : "ring-0",
-                  )}
-                  style={{ backgroundColor: color.hex, borderRadius: 24 }}
-                  onClick={() => setActiveColorIndex(index)}
-                >
-                  <motion.span
-                    layoutId={`color-name-${color.hex}`}
-                    className={cn(
-                      "inline font-mono text-xs",
-                      color.lightness < 0.5
-                        ? "text-background"
-                        : "text-foreground",
-                    )}
-                  >
-                    {color.hex}
-                  </motion.span>
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Colors</h3>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="-mr-1"
-                onClick={() => {
-                  setColors([]);
-                  setImageBaseColors([]);
-                  setImgPreview(null);
-                }}
-              >
-                Clear
-              </Button>
-            </div>
-
-            {!!imgPreview && colors.length === 0 && (
-              <div className="mt-2">
-                <p className="text-sm text-foreground/50">
-                  There are no colors to display. Upload a new image to get
-                  started.
-                </p>
-              </div>
+        <span className="sr-only">Click to minimize</span>
+      </button>
+      <motion.div
+        className="flex items-center justify-between"
+        style={{
+          minWidth: isDesktopSize ? innerSheetWidth : 0,
+          x: isDesktopSize ? sheetInnerX : 0,
+          opacity: sheetInnerOpacity,
+        }}
+      >
+        <div className="px-6 lg:px-8">
+          <h2 className="mt-4 text-lg font-semibold">Upload Image</h2>
+          <p className="text-sm text-muted-foreground">
+            Upload an image to generate a color palette from it.
+          </p>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:mr-2"
+          onClick={onHidden}
+        >
+          <XCircleIcon
+            className="h-4 w-4 text-muted-foreground"
+            strokeWidth={2.5}
+          />
+          <span className="sr-only">Close</span>
+        </Button>
+      </motion.div>
+      <motion.div
+        className={cn(
+          "mt-4 grid gap-4 sm:gap-6 lg:gap-8",
+          "max-h-[calc(100dvh-5.5rem)] overflow-y-auto overflow-x-visible px-4 pb-6 sm:px-6 lg:px-8",
+          "w-[calc(100dvw-env(safe-area-inset-right, 0px)-env(safe-area-inset-left, 0px))]",
+          !!preview
+            ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            : "grid-cols-1",
+        )}
+        style={{
+          minWidth: isDesktopSize ? innerSheetWidth : 0,
+          x: isDesktopSize ? sheetInnerX : 0,
+          opacity: sheetInnerOpacity,
+        }}
+        ref={scrollAreaRef}
+        onScroll={(e) => {
+          // enable drag if the user has scrolled back to the top
+          if (e.currentTarget.scrollTop === 0) {
+            setEnableDrag(true);
+          } else if (e.currentTarget.scrollTop > 0) {
+            setEnableDrag(false);
+          }
+        }}
+      >
+        <div
+          className={cn(
+            "min-h-64 relative isolate aspect-[3/2] max-h-[24rem] w-full sm:col-span-2 lg:col-span-1",
+          )}
+        >
+          <AnimatePresence mode="wait">
+            {preview && (
+              <motion.img
+                key={preview}
+                initial={{ opacity: 0, scale: 0.97, filter: "blur(8px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.97, filter: "blur(8px)" }}
+                src={preview}
+                className="pointer-events-none absolute inset-0 z-[-2] h-full w-full rounded-md object-cover"
+              />
             )}
-            {colors.length > 0 && (
-              <div className="mt-2 grid grid-cols-4 flex-wrap gap-2">
-                {colors.map((color, index) => (
+          </AnimatePresence>
+          <ImageDragAndDrop
+            onDrop={handleDropImage}
+            className="h-full min-h-[16rem] w-full"
+            dropAreaStyles={cn(
+              "space-y-4",
+              preview && [
+                "bg-background/70 backdrop-blur-md backdrop-brightness-110 backdrop-saturate-150",
+                "absolute bottom-0 inset-x-0 flex justify-center items-center flex flex-row",
+                "[&_.drop-icon]:w-6 [&_.drop-icon]:h-6 [&_.drop-icon]:m-0",
+                "space-y-0 space-x-2",
+              ],
+            )}
+          />
+        </div>
+        {!!preview && (
+          <Fragment>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <h3 className="text-lg font-semibold">Base Colors</h3>
+              <div className="mt-2 flex flex-wrap">
+                {imageBaseColors.map((color, index) => (
                   <motion.button
                     layoutId={`color-${color.hex}`}
-                    key={`${color.hex}`}
-                    className="flex h-12 w-full items-center justify-center"
-                    style={{ backgroundColor: color.hex, borderRadius: 8 }}
-                    onClick={() => handleUpdateNewBaseColor(color, index)}
+                    key={`${color.hex}-${index}`}
+                    className={cn(
+                      "mb-2 flex h-12 w-full items-center justify-center",
+                      activeColorIndex === index
+                        ? "ring-2 ring-primary ring-offset-2"
+                        : "ring-0",
+                    )}
+                    style={{ backgroundColor: color.hex, borderRadius: 24 }}
+                    onClick={() => setActiveColorIndex(index)}
                   >
                     <motion.span
                       layoutId={`color-name-${color.hex}`}
@@ -233,16 +447,62 @@ function UploadImaagePlugin({ setOpen }) {
                   </motion.button>
                 ))}
               </div>
-            )}
-          </motion.div>
-        </Fragment>
-      )}
-    </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Colors</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="-mr-1"
+                  onClick={onHidden}
+                >
+                  Clear
+                </Button>
+              </div>
+
+              {!!preview && colors.length === 0 && (
+                <div className="mt-2">
+                  <p className="text-sm text-foreground/50">
+                    There are no colors to display. Upload a new image to get
+                    started.
+                  </p>
+                </div>
+              )}
+              {colors.length > 0 && (
+                <div className="mt-2 grid grid-cols-4 flex-wrap gap-2">
+                  {colors.map((color, index) => (
+                    <motion.button
+                      layoutId={`color-${color.hex}`}
+                      key={`${color.hex}`}
+                      className="flex h-12 w-full items-center justify-center"
+                      style={{ backgroundColor: color.hex, borderRadius: 8 }}
+                      onClick={() => handleUpdateNewBaseColor(color, index)}
+                    >
+                      <motion.span
+                        layoutId={`color-name-${color.hex}`}
+                        className={cn(
+                          "inline font-mono text-xs",
+                          color.lightness < 0.5
+                            ? "text-background"
+                            : "text-foreground",
+                        )}
+                      >
+                        {color.hex}
+                      </motion.span>
+                    </motion.button>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </Fragment>
+        )}
+      </motion.div>
+    </motion.div>
   );
 }
-
-function ImageToolbar() {
-  return <motion.div>Toolbar</motion.div>;
-}
-
-export { UploadImaagePlugin, ImageToolbar };
+export default UploadImaagePlugin;

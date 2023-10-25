@@ -8,8 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@ui/components/ui/dropdown-menu";
 import { cn } from "@ui/lib/utils";
-import { ChevronUp, Download, ImagePlus, LucideIcon, Menu } from "lucide-react";
-import primaryToolbarMenu from "./primary-toolbar-menu";
+import { ChevronUp } from "lucide-react";
 import { Toolbar } from "../toolbar";
 
 function MobilePrimaryMenu({ disabled }: { disabled: boolean }) {
@@ -29,11 +28,11 @@ function MobilePrimaryMenu({ disabled }: { disabled: boolean }) {
           <ChevronUp className="h-4 w-4 sm:rotate-180" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" forceMount>
         <DropdownMenuLabel>Tools</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <Toolbar>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          <DropdownMenuItem>
             <Toolbar.UploadImage />
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>

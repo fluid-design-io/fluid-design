@@ -9,7 +9,7 @@ function Toolbar() {
     <div
       className={cn(
         "mx-auto max-w-[120rem] ",
-        "relative z-40 flex select-none flex-row items-center justify-between bg-background-accent py-2 transition-colors",
+        "relative z-[41] flex select-none flex-row items-center justify-between bg-background-accent py-2 transition-colors sm:z-40",
         "fixed inset-x-0 bottom-0 w-full border-t border-t-border",
         "sm:border-t-none sm:sticky sm:inset-x-auto sm:bottom-auto sm:top-0 sm:border-none",
         "site-padding",

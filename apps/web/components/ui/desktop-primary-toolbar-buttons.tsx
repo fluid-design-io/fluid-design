@@ -1,3 +1,5 @@
+"use client";
+
 import { Toolbar } from "../toolbar";
 import { cn } from "ui/lib/utils";
 
