@@ -54,12 +54,12 @@ function UploadImaagePlugin(props) {
   const sheetOpacity = useTransform(
     sheetYSpring,
     [sheetHeight / 4, sheetHeight],
-    [0.5, 0.92],
+    [0.5, 0.7],
   );
   const collapsePreviewOpacity = useTransform(
     sheetYSpring,
     [sheetHeight / 4, sheetHeight],
-    [0, isDesktopSize ? 0.8 : 0.4],
+    [0, isDesktopSize ? 0.55 : 0.4],
   );
   const sheetBackdropBlur = useTransform(
     sheetYSpring,
@@ -85,7 +85,7 @@ function UploadImaagePlugin(props) {
   const sheetRadius = useTransform(
     sheetYSpring,
     [0, sheetHeight],
-    [0, PILL_WIDTH / 4],
+    [0, PILL_WIDTH / 5],
   );
   const sheetInnerOpacity = useTransform(
     sheetYSpring,
@@ -364,14 +364,18 @@ function UploadImaagePlugin(props) {
       <button
         type="button"
         className={cn(
-          "group absolute inset-x-0 top-0 z-[21] mx-auto h-1 w-12 cursor-row-resize pt-2 transition-all md:h-1.5",
+          "group absolute inset-x-0 top-0 z-[21] mx-auto h-1 w-12 pt-2 transition-all md:h-1.5",
           !isRoot && isCollapsed && !isDesktopSize && "left-auto right-8",
+          isCollapsed
+            ? "w-32 cursor-pointer pb-16"
+            : "cursor-row-resize pb-1.5",
         )}
         onClick={handleSheetPosition}
+        title={isCollapsed ? "Expand" : "Collapse"}
       >
         <span
           className={cn(
-            "absolute inset-0 top-2 h-1 w-full rounded-full transition-colors sm:h-1.5",
+            "absolute inset-0 top-2 mx-auto h-1 w-12 rounded-full transition-colors sm:h-1.5",
             "group-hover:bg-foreground/50 group-focus:bg-foreground/50",
             "backdrop-blur-md backdrop-brightness-75 transition-opacity",
             isCollapsed ? "bg-foreground/20" : "bg-foreground/0",
@@ -382,7 +386,7 @@ function UploadImaagePlugin(props) {
         </span>
       </button>
       <motion.div
-        className="pointer-events-none absolute inset-x-0 top-0 z-20 mx-auto bg-background/10"
+        className="pointer-events-none absolute inset-x-0 top-0 z-20 mx-auto bg-background/50"
         style={{
           opacity: collapsePreviewOpacity,
         }}
@@ -393,7 +397,7 @@ function UploadImaagePlugin(props) {
               opacity: collapsePreviewOpacity,
             }}
             src={preview}
-            className="h-full w-full object-cover object-bottom"
+            className="h-full w-full object-cover object-bottom mix-blend-luminosity grayscale-[35%]"
           />
         )}
       </motion.div>
