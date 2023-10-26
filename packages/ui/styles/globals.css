@@ -102,4 +102,21 @@
   .skip-main-wrap .skip-btn {
     @apply outline-none text-muted-foreground rounded px-2 py-1 hover:bg-primary focus:bg-primary hover:text-primary-foreground focus:text-primary-foreground;
   }
+  .animate-text {
+    @apply transition-opacity duration-500 [.coloring_&]:opacity-0 [.coloring_&]:duration-200;
+  }
+
+  /* six-thirty-ten */
+  .box-primary {
+    @apply border-primary/10 text-primary/30 selection:bg-foreground/10 selection:text-primary contrast-more:text-foreground;
+  }
+  .box-secondary {
+    @apply border-secondary/10 text-secondary-foreground/30 selection:bg-foreground/10 selection:text-secondary-foreground contrast-more:text-secondary-foreground;
+  }
+  .box-accent {
+    @apply border-accent/10 text-accent-foreground/30 selection:bg-foreground/10 selection:text-accent-foreground contrast-more:text-accent-foreground;
+  }
+  .box-border {
+    @apply border-border/10 text-foreground/30 selection:bg-foreground/10 selection:text-foreground contrast-more:text-foreground;
+  }
 }

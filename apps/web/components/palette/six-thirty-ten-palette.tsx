@@ -5,13 +5,9 @@ import {
   useColorStore,
   useSiteSettingsStore,
 } from "@/store/store";
-import { BaseColorTypes, ColorValue } from "@/types/app";
-import { AnimatePresence, useReducedMotion } from "framer-motion";
+import { BaseColorTypes } from "@/types/app";
 import React, { memo, useEffect, useState } from "react";
-import { useTheme } from "next-themes";
 import { cn } from "@ui/lib/utils";
-import { motion } from "framer-motion";
-import { textAnimation } from "@/lib/animation";
 
 const getColorNames = async (colors: string[]) => {
   const data = await fetch("/api/color-names", {
@@ -27,9 +23,7 @@ const getColorNames = async (colors: string[]) => {
 };
 function SixtyThirtyTenPalettes({ className }: { className?: string }) {
   const [colorNames, setColorNames] = useState(["", "", ""]);
-  const { colorPalettes, baseColors } = useColorStore();
-  const { performance } = useSiteSettingsStore();
-  const shouldReduceMotion = useReducedMotion();
+  const { colorPalettes } = useColorStore();
 
   useEffect(() => {
     if (Object.values(colorPalettes).every((palette) => palette.length === 0)) {
@@ -46,23 +40,7 @@ function SixtyThirtyTenPalettes({ className }: { className?: string }) {
     });
   }, [colorPalettes]);
 
-  const mainPalettes = Object.values(colorPalettes);
-  const boxStyle = [
-    "border-primary/10 text-primary/30 selection:bg-foreground/10 selection:text-primary contrast-more:text-foreground",
-    "border-secondary/10 text-secondary-foreground/30 selection:bg-foreground/10 selection:text-secondary-foreground contrast-more:text-secondary-foreground",
-    "border-accent/10 text-accent-foreground/30 selection:bg-foreground/10 selection:text-accent-foreground contrast-more:text-accent-foreground",
-    "border-border/10 text-foreground/30 selection:bg-foreground/10 selection:text-foreground contrast-more:text-foreground",
-  ];
-  const animationDelay = (i: number) => {
-    let springDelay = 0;
-    switch (performance) {
-      case Performance.low:
-        springDelay = i;
-      default:
-        springDelay = Math.pow(1.8, i) - 0.6;
-    }
-    return 0.06 * 6 + springDelay * 0.06;
-  };
+  const boxStyle = ["box-primary", "box-secondary", "box-accent", "box-border"];
   return (
     <div
       className={cn(
@@ -72,29 +50,18 @@ function SixtyThirtyTenPalettes({ className }: { className?: string }) {
         className,
       )}
     >
-      <AnimatePresence
-        mode={performance === "high" ? "popLayout" : "wait"}
-        initial={false}
-      >
-        {
-          // map over base colors
-          ["primary", "secondary", "accent", "gray"].map((key, i) => (
-            <motion.div
-              key={`sixty-thirty-ten-palette-${i}-${key}`}
-              {...textAnimation(shouldReduceMotion, animationDelay(i), {
-                performance,
-              })}
-              suppressHydrationWarning
-            >
-              <SixtyThirtyTenPalette
-                type={key as BaseColorTypes}
-                className={boxStyle[i]}
-                colorName={colorNames[i]}
-              />
-            </motion.div>
-          ))
-        }
-      </AnimatePresence>
+      {
+        // map over base colors
+        ["primary", "secondary", "accent", "gray"].map((key, i) => (
+          <div key={`sixty-thirty-ten-palette-${i}-${key}`}>
+            <SixtyThirtyTenPalette
+              type={key as BaseColorTypes}
+              className={boxStyle[i]}
+              colorName={colorNames[i]}
+            />
+          </div>
+        ))
+      }
     </div>
   );
 }
@@ -149,21 +116,31 @@ const SixtyThirtyTenPalette = memo(
       >
         <div
           className={cn(
-            "absolute start-0 top-0 p-4 font-sans text-lg font-extralight text-background/70 transition-colors delay-300 duration-700",
+            "absolute start-0 top-0 p-4 font-sans text-lg font-extralight text-background/70 delay-300 duration-700",
             "contrast-more:font-medium contrast-more:text-foreground/80 contrast-more:hover:text-foreground",
+            "animate-text !transition-all",
           )}
         >
           {colorName}
         </div>
         <div
-          className={cn("flex-[0.6] transition-colors", colorSixty[type])}
+          className={cn(
+            "flex-[0.6] transition-colors delay-300 duration-1000",
+            colorSixty[type],
+          )}
         ></div>
         <div className="flex flex-[0.4] @md/section-secondary:flex-col">
           <div
-            className={cn("flex-[0.75] transition-colors", colorThirty[type])}
+            className={cn(
+              "flex-[0.75] transition-colors delay-500 duration-1000",
+              colorThirty[type],
+            )}
           ></div>
           <div
-            className={cn("flex-[0.25] transition-colors", colorTen[type])}
+            className={cn(
+              "flex-[0.25] transition-colors delay-700 duration-1000",
+              colorTen[type],
+            )}
           ></div>
         </div>
       </div>

@@ -68,39 +68,33 @@ const PillPalette = memo(
           "@md/section-secondary:col-span-1",
         )}
       >
-        <AnimatePresence
-          mode={performance === "high" ? "popLayout" : "wait"}
-          initial={false}
-        >
-          {colors.map((color, i) => {
-            const c = color.toHexString();
-            const isDark = tinycolor(color).isDark();
-            const foregroundColor = isDark
-              ? "text-white/30 hover:text-white/70 focus:text-white/70 contrast-more:text-white/80 contrast-more:hover:text-white contrast-more:font-medium"
-              : "text-black/30 hover:text-black/70 focus:text-black/70 contrast-more:text-black/80 contrast-more:hover:text-black contrast-more:font-medium";
-            return (
-              <motion.button
-                key={`${type}-${c}-${i}`}
-                className={cn(
-                  "group/pill-btn flex h-10 w-full items-center justify-between rounded-full border border-border px-2.5 text-xs transition-colors focus:outline-none focus:ring focus:ring-accent focus:ring-opacity-50",
-                  foregroundColor,
-                )}
-                style={{ backgroundColor: c }}
-                type="button"
-                aria-label={`Copy ${c} to clipboard`}
-                {...textAnimation(shouldReduceMotion, animationDelay(i), {
-                  performance,
-                })}
-                suppressHydrationWarning
-              >
-                <motion.code key={`${type}-${c}-text-${i}`}>
-                  {colorHelper.toColorMode(color, mode)}
-                </motion.code>
-                <Copy className="h-4 w-4 opacity-0 transition-opacity group-hover/pill-btn:opacity-100 group-focus/pill-btn:opacity-100" />
-              </motion.button>
-            );
-          })}
-        </AnimatePresence>
+        {colors.map((color, i) => {
+          const c = color.toHexString();
+          const isDark = tinycolor(color).isDark();
+          const foregroundColor = isDark
+            ? "text-white/30 hover:text-white/70 focus:text-white/70 contrast-more:text-white/80 contrast-more:hover:text-white contrast-more:font-medium"
+            : "text-black/30 hover:text-black/70 focus:text-black/70 contrast-more:text-black/80 contrast-more:hover:text-black contrast-more:font-medium";
+          return (
+            <button
+              key={`${type}-${i}`}
+              className={cn(
+                "group/pill-btn flex h-10 w-full items-center justify-between rounded-full border border-border px-2.5 text-xs transition-colors duration-500 focus:outline-none focus:ring focus:ring-accent focus:ring-opacity-50",
+                foregroundColor,
+              )}
+              style={{
+                backgroundColor: c,
+                transitionDelay: `${0.44 + i * 0.06}s`,
+              }}
+              type="button"
+              aria-label={`Copy ${c} to clipboard`}
+            >
+              <motion.code key={`${type}-text-${i}`} className="animate-text">
+                {colorHelper.toColorMode(color, mode)}
+              </motion.code>
+              <Copy className="h-4 w-4 opacity-0 transition-opacity group-hover/pill-btn:opacity-100 group-focus/pill-btn:opacity-100" />
+            </button>
+          );
+        })}
       </div>
     );
   },
