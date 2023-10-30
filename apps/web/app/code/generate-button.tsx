@@ -15,9 +15,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@ui/components/dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useColorStore } from "@/store/store";
-import { ScrollArea } from "@ui/components/scroll-area";
 import { Copy, CopyCheck } from "lucide-react";
 import { useToast } from "@ui/components/ui/use-toast";
 
@@ -99,7 +98,7 @@ function CodeGenerateButton({
       </DialogTrigger>
       <DialogContent className="block max-h-[min(60rem,calc(100dvh-2rem))] overflow-y-auto overflow-x-hidden sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{type}</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{copyDescription(title)}</DialogDescription>
         </DialogHeader>
         <div className="relative mb-4 py-4">
