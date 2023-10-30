@@ -115,7 +115,7 @@ function DownloadBasePalettePlugin({ setOpen }) {
         </div>
       </div>
       <div className="flex justify-between">
-        {!isDesktopSize ? (
+        {isDesktopSize !== true ? (
           <div className="flex items-center justify-center space-x-1.5">
             <Switch
               id="preserve-size"
