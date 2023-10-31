@@ -21,11 +21,30 @@ export type BaseColorTypes = "primary" | "secondary" | "accent" | "gray";
 
 export type BaseColors = Record<BaseColorTypes, RawColor>;
 
+export type ColorReadability = {
+  readability: number;
+  isReadable: boolean;
+};
+
+export enum CVDType {
+  DeficiencyProt = "protanomaly and protanopia",
+  DeficiencyDeuter = "deuteranomaly and deuteranopia",
+  DeficiencyTrit = "tritanomaly and tritanopia",
+}
+
 export type ColorValue =
   | {
       step: number;
       color: string;
       raw: RawColor;
+      /**
+       * Readability is calculated using the WCAG 2.0 formula
+       * Compares the contrast ratio between the foreground and background colors
+       */
+      readability?: {
+        foreground: ColorReadability;
+        background: ColorReadability;
+      };
     }
   | undefined;
 

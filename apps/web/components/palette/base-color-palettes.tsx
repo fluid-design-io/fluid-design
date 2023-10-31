@@ -6,9 +6,11 @@ import React from "react";
 
 import PaletteButton from "./base-palette-button";
 import ColorString from "./color-string";
+import ReadabilityString from "./readability-string";
 
 function BaseColorPalettes() {
-  const { colorPalettes, colorMode } = useColorStore.getState();
+  const { colorPalettes, colorMode, showReadability } =
+    useColorStore.getState();
   const animation = (i, type) => {
     let baseDelay = 0.12;
     switch (type) {
@@ -47,7 +49,7 @@ function BaseColorPalettes() {
               const step = i;
               return (
                 <div
-                  className="flex flex-col bg-background transition-colors"
+                  className="relative flex flex-col bg-background transition-colors"
                   key={`base-color-palette-${type}-${step}`}
                 >
                   <PaletteButton
@@ -70,24 +72,34 @@ function BaseColorPalettes() {
                     <div className="font-comfortaa font-bold text-foreground/80">
                       {colorStepMap[i]}
                     </div>
-                    <div className="relative">
+                    <div className="relative w-full">
                       <div
                         className={cn(
                           "line-clamp-1 text-muted-foreground/80 transition-colors duration-1000 @md/section-secondary:w-[-webkit-fill-available]",
-                          "hover:w-max hover:overflow-visible hover:bg-background hover:transition-none",
+                          "hover:[calc(max(max-content,100%))] hover:overflow-visible hover:bg-background hover:transition-none",
                           "hover:-mx-1 hover:-my-0.5 hover:rounded hover:px-1 hover:py-0.5",
                           "hover:text-muted-foreground hover:ring-1 hover:ring-inset hover:ring-border",
                           "contrast-more:font-medium contrast-more:text-foreground/80 contrast-more:hover:text-foreground",
                           "@md/section-secondary:hover:absolute @md/section-secondary:hover:left-0 @md/section-secondary:hover:top-0 @md/section-secondary:hover:z-10 @md/section-secondary:hover:shadow-sm",
                         )}
                       >
-                        <ColorString
-                          {...{
-                            step,
-                            type,
-                            animation: animation(step, type),
-                          }}
-                        />
+                        {showReadability ? (
+                          <ReadabilityString
+                            {...{
+                              step,
+                              type,
+                              animation: animation(step, type),
+                            }}
+                          />
+                        ) : (
+                          <ColorString
+                            {...{
+                              step,
+                              type,
+                              animation: animation(step, type),
+                            }}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>

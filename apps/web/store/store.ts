@@ -20,12 +20,14 @@ import {
 } from "zustand/middleware";
 import { generateColorPalette } from "@/lib/colorCalculator";
 import { updateCSSVariables } from "@/lib/updateCssVariables";
+import { generateReadability } from "@/lib/generateReadability";
 
 // Zustand store type
 export type ColorStore = {
   colorMode: ColorMode;
   baseColors: Omit<BaseColors, "gray">;
   colorPalettes: ColorPalettes;
+  showReadability: boolean;
   setColorMode: (mode: ColorMode) => void;
   generatePalette: (existing?: boolean) => void;
   updateBaseColor: (newBaseColor: keyof BaseColors, newColor: RawColor) => void;
@@ -40,6 +42,7 @@ let localAndUrlStore = (set, get) => ({
     accent: [],
     gray: [],
   },
+  showReadability: false,
   setColorMode: (mode) => set({ colorMode: mode }),
   updateBaseColor: (type: BaseColorTypes, newColor: RawColor) => {
     const [newPalette, grayPalette] = [
@@ -54,11 +57,22 @@ let localAndUrlStore = (set, get) => ({
         colorMode: get().colorMode,
       }),
     ];
+    /* Calculate WCAG 2.0 */
+    const foreground = grayPalette[0];
+    const background = grayPalette[10];
+    const palettesWithReadability = generateReadability({
+      foreground,
+      background,
+      primaryPalette: newPalette,
+      secondaryPalette: get().colorPalettes.secondary,
+      accentPalette: get().colorPalettes.accent,
+      grayPalette,
+    });
     set(
       produce((state: ColorStore) => {
         state.baseColors[type] = newColor;
-        state.colorPalettes[type] = newPalette;
-        state.colorPalettes.gray = grayPalette;
+        state.colorPalettes[type] = palettesWithReadability[type];
+        state.colorPalettes.gray = palettesWithReadability.gray;
       }),
     );
     const { colorPalettes, baseColors, colorMode } = get();
@@ -88,14 +102,25 @@ let localAndUrlStore = (set, get) => ({
         colorMode: get().colorMode,
       }),
     );
+    /* Calculate WCAG 2.0 */
+    const foreground = grayPalette[0];
+    const background = grayPalette[10];
+    const palettesWithReadability = generateReadability({
+      foreground,
+      background,
+      primaryPalette,
+      secondaryPalette,
+      accentPalette,
+      grayPalette,
+    });
     set(
       produce((state: ColorStore) => {
         state.baseColors = newBaseColors;
         state.colorPalettes = {
-          primary: primaryPalette,
-          secondary: secondaryPalette,
-          accent: accentPalette,
-          gray: grayPalette,
+          primary: palettesWithReadability.primary,
+          secondary: palettesWithReadability.secondary,
+          accent: palettesWithReadability.accent,
+          gray: palettesWithReadability.gray,
         };
       }),
     );

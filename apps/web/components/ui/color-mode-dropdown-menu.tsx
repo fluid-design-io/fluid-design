@@ -10,10 +10,7 @@ import {
 } from "@ui/components/ui/dropdown-menu";
 import { useColorStore } from "@/store/store";
 import { ColorMode } from "@/types/app";
-import { ChevronDownIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 function ColorModeDropdownMenu() {
-  const [mounted, setMounted] = useState(false);
   const { colorMode, setColorMode } = useColorStore();
   const handleChangeColorMode = async (mode: ColorMode) => {
     setColorMode(mode);

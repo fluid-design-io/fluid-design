@@ -2,7 +2,7 @@
 
 import { BaseColorTypes, RawColor } from "@/types/app";
 import { cn } from "@ui/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Copy } from "lucide-react";
@@ -97,7 +97,9 @@ const PaletteButton = ({
           transitionDelay: `${animation}s`,
           transitionDuration: `${animation * 1.2}s`,
         }}
-        initial={false}
+        initial={{
+          opacity: 1,
+        }}
         animate={
           performance === Performance.high
             ? {

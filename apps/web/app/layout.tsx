@@ -52,17 +52,21 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { baseColors, colorPalettes, colorMode } = await getServerColors();
+  const { baseColors, colorPalettes, colorMode, showReadability } =
+    await getServerColors();
   useColorStore.setState({
     baseColors,
     colorPalettes,
     colorMode,
+    showReadability,
   });
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(inter.variable, comfortaa.variable)}>
         <div id="skip-nav" />
-        <ColorStoreInitializer {...{ baseColors, colorPalettes, colorMode }} />
+        <ColorStoreInitializer
+          {...{ baseColors, colorPalettes, colorMode, showReadability }}
+        />
         <StyleSheetInitializer />
         <PerformanceChecker />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
