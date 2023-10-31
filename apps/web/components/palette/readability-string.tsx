@@ -20,7 +20,6 @@ function ReadabilityString({
     } else if (readabilityValue >= 4.5) {
       return "border border-accent-foreground";
     } else if (readabilityValue >= 3) {
-      console.log(`readabilityValue: ${readabilityValue}`);
       return "border border-dashed";
     } else {
       return "";
