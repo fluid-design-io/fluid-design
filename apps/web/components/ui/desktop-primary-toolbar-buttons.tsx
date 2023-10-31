@@ -13,7 +13,7 @@ function DesktopPreviewToolbarButtons() {
     >
       <Toolbar>
         <Toolbar.Readability />
-        {/* <Toolbar.CVD /> coming soon */}
+        <Toolbar.CVD />
         <Toolbar.UploadImage />
         <Toolbar.DownloadBasePalette />
         <Toolbar.ShareableLink />

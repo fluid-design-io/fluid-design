@@ -1,5 +1,4 @@
-import { colorHelper } from "@/lib/colorHelper";
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 // App router includes @vercel/og.
 // No need to install it.
 

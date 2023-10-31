@@ -2,7 +2,6 @@ import primaryToolbarMenu from "../ui/primary-toolbar-menu";
 import { useColorStore } from "@/store/store";
 import ToolbarMenuItem from "./toolbar-menu-item";
 import { cn } from "@ui/lib/utils";
-import { handleToggleReadability } from "@/app/actions";
 import { useState } from "react";
 
 import {
@@ -23,7 +22,7 @@ function Readability() {
   const { showReadability } = useColorStore();
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <button
           type="button"
           aria-label="Show Readability Plugin"

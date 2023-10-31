@@ -13,7 +13,6 @@ import { generateBaseColors } from "@/lib/generateBaseColors";
 
 import {
   persist,
-  StateStorage,
   createJSONStorage,
   devtools,
   PersistOptions,
