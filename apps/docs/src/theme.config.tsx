@@ -25,7 +25,7 @@ const config: DocsThemeConfig = {
     </>
   ),
   project: {
-    link: "https://colors.fluid-design.io",
+    link: "https://github.com/fluid-design-io/fluid-design",
   },
   color: {
     hue: 191,
