@@ -1,7 +1,6 @@
 // @ts-nocheck
 
-import React from "react";
-import { DocsThemeConfig, useConfig } from "nextra-theme-docs";
+import { DocsThemeConfig, useConfig as configHook } from "nextra-theme-docs";
 import Image from "next/image";
 
 const config: DocsThemeConfig = {
@@ -32,8 +31,8 @@ const config: DocsThemeConfig = {
     hue: 191,
     saturation: 70,
   },
-  head: () => {
-    const { frontMatter } = useConfig();
+  head: (): any => {
+    const { frontMatter } = configHook() as any;
     return (
       <>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
