@@ -3,15 +3,15 @@
 import { colorHelper } from "@/lib/colorHelper";
 import { useColorStore } from "@/store/store";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function ExistingColorsOverwritter({ searchParams }) {
-  const { updateBaseColor } = useColorStore();
+  const { updateBaseColor, generatePalette } = useColorStore();
   const colors = searchParams.colors;
   const [loading, setLoading] = useState(colors ? true : false);
   useEffect(() => {
     if (!colors) return;
+    if (colors.split(",").length !== 3) return;
     const colorArray = colors.split(",");
     const baseColors = {
       primary: colorHelper.toRaw(colorArray[0]),
@@ -19,11 +19,15 @@ function ExistingColorsOverwritter({ searchParams }) {
       accent: colorHelper.toRaw(colorArray[2]),
     };
     setTimeout(() => {
+      console.log(`Overwriting colors with ${colors}`);
       updateBaseColor("primary", baseColors.primary);
       updateBaseColor("secondary", baseColors.secondary);
       updateBaseColor("accent", baseColors.accent);
+      setTimeout(() => {
+        generatePalette(true);
+      }, 200);
       setLoading(false);
-    }, 200);
+    }, 150);
   }, []);
   return (
     <AnimatePresence>
