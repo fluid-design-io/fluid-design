@@ -105,7 +105,7 @@ function DownloadBasePalettePlugin({ setOpen }) {
               className={cn(
                 "absolute inset-0 h-full w-full rounded border object-cover",
               )}
-              alt="Social preview"
+              alt="Palette preview"
               width={288}
               height={151}
             />

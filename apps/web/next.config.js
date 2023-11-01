@@ -11,6 +11,10 @@ module.exports = {
         hostname: 'fluid-colors.vercel.app',
       },
       {
+        protocol: 'https',
+        hostname: 'colors.fluid-design.io',
+      },
+      {
         hostname: 'fluid-colors.vercel.app',
       },
       {
