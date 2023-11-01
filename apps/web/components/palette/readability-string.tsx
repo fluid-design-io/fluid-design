@@ -35,7 +35,7 @@ function ReadabilityString({
     : "";
   return (
     <div
-      className="animate-text flex w-full justify-between"
+      className="animate-text flex w-full justify-between text-foreground/90"
       title={`readability`}
     >
       <span

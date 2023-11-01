@@ -34,42 +34,35 @@ export type PluginCvdState = {
 };
 
 export const usePluginCvdStore = create<PluginCvdState>()(
-  devtools(
-    persist(
-      (set, get) => ({
-        isOn: () => {
-          const { protanopia, deuteranopia, tritanopia } = get();
-          return (
-            protanopia[0] !== 0 || deuteranopia[0] !== 0 || tritanopia[0] !== 0
-          );
-        },
-        protanopia: [0],
-        deuteranopia: [0],
-        tritanopia: [0],
-        setProtanopia: (value) =>
-          set(
-            produce((state) => {
-              state.protanopia = value;
-            }),
-          ),
-        setDeuteranopia: (value) =>
-          set(
-            produce((state) => {
-              state.deuteranopia = value;
-            }),
-          ),
-        setTritanopia: (value) =>
-          set(
-            produce((state) => {
-              state.tritanopia = value;
-            }),
-          ),
-      }),
-      {
-        name: "plugin-cvd",
-      },
-    ),
-  ),
+  devtools((set, get) => ({
+    isOn: () => {
+      const { protanopia, deuteranopia, tritanopia } = get();
+      return (
+        protanopia[0] !== 0 || deuteranopia[0] !== 0 || tritanopia[0] !== 0
+      );
+    },
+    protanopia: [0],
+    deuteranopia: [0],
+    tritanopia: [0],
+    setProtanopia: (value) =>
+      set(
+        produce((state) => {
+          state.protanopia = value;
+        }),
+      ),
+    setDeuteranopia: (value) =>
+      set(
+        produce((state) => {
+          state.deuteranopia = value;
+        }),
+      ),
+    setTritanopia: (value) =>
+      set(
+        produce((state) => {
+          state.tritanopia = value;
+        }),
+      ),
+  })),
 );
 
 function CVDPlugin() {
@@ -86,9 +79,10 @@ function CVDPlugin() {
   // make a copy of the colorPalettes object
   const colorPalettesCopy = { ...colorPalettes };
 
-  const handleToggleCVD = () => {
+  const handleCalculateCvd = () => {
+    console.log(`ran handleCalculateCvd`);
     if (protanopia[0] === 0 && deuteranopia[0] === 0 && tritanopia[0] === 0) {
-      generatePalette(true);
+      if (isMounted) generatePalette(true);
     } else {
       const newColorPalettes = Object.keys(colorPalettesCopy).reduce(
         (acc, key) => {
@@ -125,7 +119,7 @@ function CVDPlugin() {
       setIsMounted(true);
       return;
     }
-    handleToggleCVD();
+    handleCalculateCvd();
   }, [protanopia, deuteranopia, tritanopia, baseColors]);
   return (
     <div className="w-full">
