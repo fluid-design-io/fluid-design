@@ -1,6 +1,6 @@
 {
-  "name": "cardware-wiki",
-  "description": "Cardware Wiki for the Cardware Inc",
+  "name": "fluid-colors-wiki",
+  "description": "fluid-colors Docs",
   "version": "1.0.0",
   "private": true,
   "scripts": {
