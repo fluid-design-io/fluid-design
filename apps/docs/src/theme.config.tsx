@@ -42,7 +42,7 @@ const config: DocsThemeConfig = {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://colors.fluid-design.io" />
-        <meta property="og:image" content="/og.png" />
+        <meta property="og:image" content="/og-default.jpg" />
         <meta
           property="og:description"
           content={frontMatter.description || "Fluid Colors Docs"}

@@ -1,5 +1,5 @@
 import "@ui/styles/globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Comfortaa, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/core/theme-provider";
 import { cn } from "ui/lib/utils";
@@ -21,14 +21,19 @@ const comfortaa = Comfortaa({
   variable: "--font-comfortaa",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
+  maximumScale: 1.0,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: {
     default: "Fluid Colors",
     template: "%s | Fluid Colors",
   },
   description: "Next-gen color palette generator",
-  viewport:
-    "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
   openGraph: {
     images: ["/og-default.jpg"],
   },
