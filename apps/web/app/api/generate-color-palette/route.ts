@@ -7,7 +7,6 @@ export async function GET(req: Request) {
   const origin = req.headers.get("origin");
   const { searchParams } = new URL(req.url);
   const colorsString = searchParams.get("colors");
-  console.log({ colorsString });
   if (!colorsString) {
     return NextResponse.json(
       {

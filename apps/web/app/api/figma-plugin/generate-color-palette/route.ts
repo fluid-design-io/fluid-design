@@ -74,7 +74,6 @@ export async function GET(req: Request) {
       colorMode: mode,
     }),
   );
-  console.log(`SUCCCESSFULLY GENERATED PALETTES`);
   return NextResponse.json(
     {
       error: null,
