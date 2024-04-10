@@ -1,6 +1,9 @@
-# 🎨 Fluid Color Palettes — Dynamic Color Palette Generator for Figma and More!
+# 🎨 Fluid Color Palettes
+Dynamic Color Palette Generator for Figma and More!
 
 <img  src="https://user-images.githubusercontent.com/13263720/165000315-67bfd426-a45d-4706-998e-ad99926b4a45.png"  alt="drawing"  width="120"/>
+
+![Screenshot](https://github.com/fluid-design-io/fluid-design/assets/13263720/090c1e05-3600-4b6b-87a6-0780760c62a5)
 
 ## 🌈 What is Fluid Color Palettes?
 
@@ -24,8 +27,7 @@ Welcome to Fluid Color Palettes, where beautiful color palettes meet dynamic fun
 - [x] Tailwind CSS
 - [x] @shadcn/ui
 - [x] React Native Paper
-- [-] Figma plugin [WIP]
-- [ ] Webflow plugin
+- [x] Figma plugin [WIP]
 
 ## 🕸️ Website
 
