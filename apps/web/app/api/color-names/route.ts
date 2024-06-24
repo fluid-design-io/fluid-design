@@ -1,5 +1,6 @@
+import { differenceEuclidean, nearest } from "culori";
+
 import colorNameList from "../../../lib/converted_colors.json";
-import { nearest, differenceEuclidean } from "culori";
 
 export async function POST(req: Request) {
   const { colors } = await req.json();

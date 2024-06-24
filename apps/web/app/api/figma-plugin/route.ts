@@ -1,21 +1,21 @@
+import { BaseColors, RawColor } from "@/types/app";
+import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import tinycolor from "tinycolor2";
-import jwt from "jsonwebtoken";
-import { BaseColors, RawColor } from "@/types/app";
 
 const headers = (origin: string) => ({
-  "Access-Control-Allow-Origin": origin || "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Credentials": "true",
   "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Origin": origin || "*",
 });
 
 export async function OPTIONS(request: Request) {
   const origin = request.headers.get("origin");
 
   return new Response(null, {
-    status: 200,
     headers: headers(origin),
+    status: 200,
   });
 }
 
@@ -64,12 +64,12 @@ export async function GET(req: Request) {
         },
       },
       {
-        status: 400,
         headers: headers(origin),
+        status: 400,
       },
     );
   }
-  const { primary, secondary, accent } = baseColors as BaseColors;
+  const { accent, primary, secondary } = baseColors as BaseColors;
   if (!primary || !secondary || !accent) {
     return NextResponse.json(
       {
@@ -79,12 +79,12 @@ export async function GET(req: Request) {
         },
       },
       {
-        status: 400,
         headers: headers(origin),
+        status: 400,
       },
     );
   }
-  const v = (color: string | RawColor) => tinycolor(color).isValid();
+  const v = (color: RawColor | string) => tinycolor(color).isValid();
   if (!v(primary) || !v(secondary) || !v(accent)) {
     return NextResponse.json(
       {
@@ -94,14 +94,14 @@ export async function GET(req: Request) {
         },
       },
       {
-        status: 400,
         headers: headers(origin),
+        status: 400,
       },
     );
   }
   return NextResponse.json(
     {
-      data: { primary, secondary, accent },
+      data: { accent, primary, secondary },
       error: null,
     },
     {
