@@ -19,9 +19,12 @@ async function MainLayout({ children }: { children: React.ReactNode }) {
     secondary: colorHelper.toHex(baseColorsRaw.secondary),
   }
   const colors = generateColors(baseColors)
+  const c = (keys: string[]) =>
+    keys.map(
+      (key) => colors.colorPalettes[key as BaseColorTypes][5]?.color as string,
+    )
   const colorNames = await getColorNames(
-    // get the [5] color for each base color
-    Object.keys(colors.colorPalettes).map((key) => colors.colorPalettes[key as BaseColorTypes][5]?.color as string)
+    c(['primary', 'secondary', 'accent', 'gray']),
   )
   return (
     <ColorStoreProvider {...{ ...baseColors, colorNames, colors }}>
