@@ -6,7 +6,7 @@ const useCopyText = () => {
 
   const copyText = useCallback((text: string) => {
     if (!navigator.clipboard) {
-      // fallbackCopyTextToClipboard(text)
+      fallbackCopyTextToClipboard(text)
       return
     }
     navigator.clipboard.writeText(text).then(
@@ -17,7 +17,7 @@ const useCopyText = () => {
       },
       (err) => {
         console.error('Failed to copy: ', err)
-      }
+      },
     )
   }, [])
 
