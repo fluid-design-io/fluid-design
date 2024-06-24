@@ -1,4 +1,5 @@
 import { BaseColors } from "@/types/app";
+
 import { colorHelper } from "../colorHelper";
 
 async function generateFigmaUrlToken(baseColors: Omit<BaseColors, "gray">) {
