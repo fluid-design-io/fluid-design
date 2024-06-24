@@ -5,17 +5,17 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 const ImageDragAndDrop = forwardRef(
   (
     {
-      onDrop,
-      onDragOver,
-      onDragLeave,
       className,
       dropAreaStyles,
+      onDragLeave,
+      onDragOver,
+      onDrop,
     }: {
-      onDrop: (files: FileList) => void;
       className?: string;
       dropAreaStyles?: string;
-      onDragOver?: (e: React.DragEvent) => void;
       onDragLeave?: (e: React.DragEvent) => void;
+      onDragOver?: (e: React.DragEvent) => void;
+      onDrop: (files: FileList) => void;
     },
     ref?: React.ForwardedRef<HTMLInputElement>,
   ) => {
@@ -67,30 +67,30 @@ const ImageDragAndDrop = forwardRef(
       >
         <div className={cn("rounded px-6 py-4 text-center", dropAreaStyles)}>
           <ImageIcon
-            className="drop-icon mx-auto h-12 w-12 text-muted-foreground/75"
             aria-hidden="true"
+            className="drop-icon mx-auto h-12 w-12 text-muted-foreground/75"
           />
           <div className="flex justify-center text-sm leading-6 text-muted-foreground/75">
             <label
-              htmlFor="file-upload"
               className="relative cursor-pointer rounded-md bg-muted px-2 font-semibold text-foreground focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-gray-900 hover:text-primary"
+              htmlFor="file-upload"
             >
               <span className="inline">
                 Upload
                 <span className="sr-only sm:not-sr-only">an image</span>
               </span>
               <input
-                ref={ref}
+                accept="image/*"
+                className="sr-only"
                 id="file-upload"
                 name="file-upload"
-                type="file"
-                className="sr-only"
-                accept="image/*"
                 onChange={(e) => {
                   if (e.target.files && e.target.files.length) {
                     onDrop(e.target.files);
                   }
                 }}
+                ref={ref}
+                type="file"
               />
             </label>
             <p className="sr-only sm:not-sr-only sm:pl-1">or drag and drop</p>
