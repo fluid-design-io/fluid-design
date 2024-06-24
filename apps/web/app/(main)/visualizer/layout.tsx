@@ -1,7 +1,8 @@
-import { Card } from "ui/components/ui/card";
-import VisualizerNav from "./visualizer-nav";
-import GraphicVisualizer from "@/components/graphic-visualizer";
 import ColorPickerFab from "@/components/core/color-picker-fab";
+import GraphicVisualizer from "@/components/graphic-visualizer";
+import { Card } from "ui/components/ui/card";
+
+import VisualizerNav from "./visualizer-nav";
 
 export default function Layout({ children }) {
   return (
