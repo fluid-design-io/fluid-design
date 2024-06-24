@@ -1,8 +1,5 @@
 "use client";
 
-import { ChevronsUpDown, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-
 import { Button } from "@ui/components/ui/button";
 import {
   DropdownMenu,
@@ -12,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@ui/components/ui/dropdown-menu";
 import { cn } from "@ui/lib/utils";
+import { ChevronsUpDown, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export function ModeToggle({
   variant = "icon",
@@ -24,11 +23,11 @@ export function ModeToggle({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="outline"
-          size={variant === "icon" ? "icon" : "default"}
           className={cn(
             variant === "list-item" && "flex h-12 items-center justify-start",
           )}
+          size={variant === "icon" ? "icon" : "default"}
+          variant="outline"
         >
           <Sun className="h-[1.2rem] w-[1.2rem] flex-shrink-0 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] flex-shrink-0 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
@@ -51,8 +50,8 @@ export function ModeToggle({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[8.75rem]">
         <DropdownMenuRadioGroup
-          value={theme || "system"}
           onValueChange={setTheme}
+          value={theme || "system"}
         >
           <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>

@@ -1,7 +1,8 @@
 "use client";
 
-import { Toolbar } from "../toolbar";
 import { cn } from "ui/lib/utils";
+
+import { Toolbar } from "../toolbar";
 
 function DesktopPreviewToolbarButtons() {
   return (

@@ -1,40 +1,32 @@
-"use client";
+'use client'
 
-import React from "react";
-import { Button } from "@ui/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@ui/components/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@ui/components/tooltip'
+import { Button } from '@ui/components/ui/button'
+import React from 'react'
 
 const DesktopPreviewToolbarIcon = ({
-  title,
   description,
   icon: Icon,
+  title,
 }: {
-  title: string;
-  description: string;
-  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  description: string
+  icon: React.FC<React.SVGProps<SVGSVGElement>>
+  title: string
 }) => {
   return (
-    <TooltipProvider
-      key={`desktop-primary-toolbar-${title}`}
-      delayDuration={250}
-    >
+    <TooltipProvider delayDuration={250} key={`desktop-primary-toolbar-${title}`}>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            variant="ghost"
             aria-label={title}
-            size="icon"
-            className="hidden h-8 w-8 select-none items-center rounded-sm px-1 py-1 text-sm font-medium outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground lg:flex"
             asChild
+            className="hidden h-8 w-8 select-none items-center rounded-sm px-1 py-1 text-sm font-medium text-foreground/75 outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground lg:flex"
+            size="icon"
+            variant="ghost"
           >
             <div>
               <div className="sr-only">{title}</div>
-              <Icon className="h-5 w-5" />
+              <Icon className="size-5" />
             </div>
           </Button>
         </TooltipTrigger>
@@ -43,7 +35,7 @@ const DesktopPreviewToolbarIcon = ({
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  );
-};
+  )
+}
 
-export default DesktopPreviewToolbarIcon;
+export default DesktopPreviewToolbarIcon

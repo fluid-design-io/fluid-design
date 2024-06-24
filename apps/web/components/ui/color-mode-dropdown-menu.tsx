@@ -1,56 +1,39 @@
-"use client";
+'use client'
 
-import { Button } from "@ui/components/ui/button";
+import { useToolStore } from '@/store/toolStore'
+import { ColorMode } from '@/types/app'
+import { Button } from '@ui/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@ui/components/ui/dropdown-menu";
-import { useColorStore } from "@/store/store";
-import { ColorMode } from "@/types/app";
+} from '@ui/components/ui/dropdown-menu'
 function ColorModeDropdownMenu() {
-  const { colorMode, setColorMode } = useColorStore();
-  const handleChangeColorMode = async (mode: ColorMode) => {
-    setColorMode(mode);
-    // call server to set colormode cookie
-    await fetch("/api/color-mode", {
-      method: "POST",
-      body: JSON.stringify({ mode }),
-    });
-  };
+  const { colorMode, setColorMode } = useToolStore()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="flex items-center justify-center gap-1.5 text-sm uppercase"
-        >
+        <Button className="flex items-center justify-center gap-1.5 text-sm uppercase" variant="outline">
           <span>{colorMode}</span>
           {/* <ChevronDownIcon className="h-3.5 w-3.5" /> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[8.75rem]">
-        <DropdownMenuRadioGroup
-          value={colorMode}
-          onValueChange={handleChangeColorMode}
-        >
+        <DropdownMenuRadioGroup onValueChange={setColorMode} value={colorMode}>
           {Object.values(ColorMode).map((mode) => {
             return (
-              <DropdownMenuRadioItem
-                value={mode}
-                key={mode}
-                className="uppercase"
-              >
+              <DropdownMenuRadioItem className="uppercase" key={mode} value={mode}>
                 {mode}
               </DropdownMenuRadioItem>
-            );
+            )
           })}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
 
-export default ColorModeDropdownMenu;
+export default ColorModeDropdownMenu
