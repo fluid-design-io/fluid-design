@@ -7,12 +7,12 @@ export function findClosestColors(hue): { color: string; ratio: number }[] {
       const { avg } = hues[key];
       const diff = Math.abs(hue - avg);
       return diff < acc.diff
-        ? { diff, key, closerDiff: acc.diff, closerKey: acc.key }
+        ? { closerDiff: acc.diff, closerKey: acc.key, diff, key }
         : acc;
     },
-    { diff: Infinity, key: '', closerDiff: Infinity, closerKey: '' }
+    { closerDiff: Infinity, closerKey: '', diff: Infinity, key: '' }
   );
-  const { key, diff, closerKey, closerDiff } = closestHues;
+  const { closerDiff, closerKey, diff, key } = closestHues;
   if (!hues[closerKey]) {
     return [
       { color: key, ratio: 1 },

@@ -1,32 +1,23 @@
-import { BaseColors, ColorMode, ColorPalettes } from "@/types/app";
-import {
-  CodeButtonTitle,
-  CodeGenerateType,
-  generateCssVariables,
-  getColorHsl,
-} from "./generateVariables";
+import { ColorMode, ColorPalettes } from '@/types/app'
 
-export async function updateCSSVariables(
-  colorPalettes: ColorPalettes,
-  baseColors: Omit<BaseColors, "gray">,
-  colorMode: ColorMode,
-): Promise<void> {
-  let styleElement;
+import { CodeButtonTitle, generateCssVariables, getColorHsl } from './generateVariables'
+
+export function updateCSSVariables(colorPalettes: ColorPalettes) {
+  let styleElement
   // Create or update a style element that contains the variables
-  styleElement = document?.getElementById("dynamic-vars");
+  styleElement = document?.getElementById('dynamic-vars')
   if (!styleElement) {
-    styleElement = document?.createElement("style");
-    styleElement.id = "dynamic-vars";
-    document?.head.appendChild(styleElement);
+    styleElement = document?.createElement('style')
+    styleElement.id = 'dynamic-vars'
+    document?.head.appendChild(styleElement)
   }
 
   // Build the CSS text
   const cssText = `
-      ${await generateCssVariables({
-        title: CodeButtonTitle.SHADCN,
+      ${generateCssVariables({
+        colorMode: ColorMode.HEX,
         colorPalettes,
-        baseColors,
-        colorMode,
+        title: CodeButtonTitle.SHADCN,
       })}
       /* Selection */
       ::selection {
@@ -36,21 +27,20 @@ export async function updateCSSVariables(
       /* High contrast */
       @media (prefers-contrast: more) {
         :root {
-          --border: ${getColorHsl(colorPalettes["gray"], 4)};
+          --border: ${getColorHsl(colorPalettes['gray'], 4)};
         }
         .dark {
-          --border: ${getColorHsl(colorPalettes["gray"], 7)};
+          --border: ${getColorHsl(colorPalettes['gray'], 7)};
         }
       }
       /* Custom constant variables */
-      ${await generateCssVariables({
-        title: CodeButtonTitle.RAW,
+      ${generateCssVariables({
+        colorMode: ColorMode.HEX,
         colorPalettes,
-        baseColors,
-        colorMode,
+        title: CodeButtonTitle.RAW,
       })}
-    `;
+    `
 
   // Inject the CSS text into the style element
-  styleElement && (styleElement.textContent = cssText);
+  styleElement && (styleElement.textContent = cssText)
 }

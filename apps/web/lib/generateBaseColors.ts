@@ -35,34 +35,34 @@ export const generateBaseColors = () => {
   const accentRawColor = generateAccentColor(primaryColor);
 
   // round to 2 decimals
-  let { h: pH, s: pS, l: pL, a: pA } = primaryRawColor;
-  let { h: sH, s: sS, l: sL, a: sA } = secondaryRawColor;
-  let { h: aH, s: aS, l: aL, a: aA } = accentRawColor;
+  let { a: pA, h: pH, l: pL, s: pS } = primaryRawColor;
+  let { a: sA, h: sH, l: sL, s: sS } = secondaryRawColor;
+  let { a: aA, h: aH, l: aL, s: aS } = accentRawColor;
 
   const primaryColorHSL = {
-    h: Math.round(pH * 100) / 100,
-    s: Math.round(pS * 100) / 100,
-    l: Math.round(pL * 100) / 100,
     a: Math.round(pA * 100) / 100,
+    h: Math.round(pH * 100) / 100,
+    l: Math.round(pL * 100) / 100,
+    s: Math.round(pS * 100) / 100,
   };
   const secondaryColorHSL = {
-    h: Math.round(sH * 100) / 100,
-    s: Math.round(sS * 100) / 100,
-    l: Math.round(sL * 100) / 100,
     a: Math.round(sA * 100) / 100,
+    h: Math.round(sH * 100) / 100,
+    l: Math.round(sL * 100) / 100,
+    s: Math.round(sS * 100) / 100,
   };
   const accentColorHSL = {
-    h: Math.round(aH * 100) / 100,
-    s: Math.round(aS * 100) / 100,
-    l: Math.round(aL * 100) / 100,
     a: Math.round(aA * 100) / 100,
+    h: Math.round(aH * 100) / 100,
+    l: Math.round(aL * 100) / 100,
+    s: Math.round(aS * 100) / 100,
   };
 
   // to HSL
   const initColors = {
+    accent: accentColorHSL,
     primary: primaryColorHSL,
     secondary: secondaryColorHSL,
-    accent: accentColorHSL,
   };
   return initColors;
 };
