@@ -1,3 +1,6 @@
+// @ts-check
+
+/** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
   images: {
@@ -21,10 +24,13 @@ module.exports = {
         protocol: 'https',
         hostname: 'user-images.githubusercontent.com',
       },
-    ]
+    ],
   },
-  transpilePackages: ["ui"],
+  experimental: {
+    reactCompiler: true,
+  },
+  transpilePackages: ['ui'],
   typescript: {
-    ignoreBuildErrors: true
-  }
-};
+    ignoreBuildErrors: true,
+  },
+}
