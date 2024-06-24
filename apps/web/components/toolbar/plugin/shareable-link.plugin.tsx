@@ -42,9 +42,9 @@ function ShareableLinkPlugin({
     const { data, error } = await fetch('/api/v1/figma-plugin', {
       body: JSON.stringify({
         baseColors: {
+          accent: colorHelper.toHex(baseColors.accent),
           primary: colorHelper.toHex(baseColors.primary),
           secondary: colorHelper.toHex(baseColors.secondary),
-          accent: colorHelper.toHex(baseColors.accent),
         },
       }),
       method: 'POST',

@@ -81,9 +81,9 @@ export async function GET(req: Request) {
   }
   // !TODO: get mode from query params
   const colors = generateColors({
+    accent,
     primary,
     secondary,
-    accent,
   })
   return NextResponse.json(
     {
