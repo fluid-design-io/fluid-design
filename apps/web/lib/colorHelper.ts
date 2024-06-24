@@ -65,6 +65,7 @@ export const getContrastRatio = tinycolor.readability
 
 export const colorHelper = {
   colorStringToBaseColors,
+  getContrastRatio,
   toColorMode,
   toForeground,
   toHex,
@@ -72,5 +73,4 @@ export const colorHelper = {
   toRaw,
   toRgb,
   toRgba,
-  getContrastRatio,
 }
