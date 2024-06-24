@@ -21,9 +21,9 @@ export async function GET(request: Request) {
     const accent = searchParams.get('accent')
 
     const baseColors = {
+      accent: accent ?? '#0000FF',
       primary: primary ?? '#FF0000',
       secondary: secondary ?? '#00FF00',
-      accent: accent ?? '#0000FF',
     }
 
     const colors = generateColors(baseColors)

@@ -43,7 +43,7 @@ function CodeGenerateButton({
   title: CodeButtonTitle
   type: CodeGenerateType
 }) {
-  const { colorPalettes, baseColors } = useColorStore((s) => s.colors)
+  const { baseColors, colorPalettes } = useColorStore((s) => s.colors)
   const { colorMode } = useToolStore()
   const [code, setCode] = useState<string>('')
   const { copyText, isCopied } = useCopyText()

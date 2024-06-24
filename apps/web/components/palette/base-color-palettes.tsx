@@ -1,20 +1,18 @@
 'use client'
 
 import { useColorStore } from '@/context/color-store-provider'
-
+import { ColorStep, colorStepMap } from '@/lib/colorStepMap'
 import { useToolStore } from '@/store/toolStore'
 import { BaseColorTypes } from '@/types/app'
-import { cn } from '@ui/lib/utils'
-
-import { ColorStep, colorStepMap } from '@/lib/colorStepMap'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@ui/components/ui/hover-card'
 import { Separator } from '@ui/components/ui/separator'
+import { cn } from '@ui/lib/utils'
+import { AArrowUp, X } from 'lucide-react'
+import { useState } from 'react'
+
 import PaletteButton from './base-palette-button'
 import ColorString from './color-string'
 import ReadabilityString from './readability-string'
-
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@ui/components/ui/hover-card'
-import { AArrowUp, X } from 'lucide-react'
-import { useState } from 'react'
 
 const ReadabilityBadge = ({ score }: { score?: number }) => {
   if (!score) return null
@@ -128,7 +126,7 @@ function BaseColorPalettes() {
   const colorPaletteNames: BaseColorTypes[] = ['primary', 'secondary', 'accent', 'gray']
   const handleDragClipPath = (e: React.MouseEvent) => {
     const { clientX, clientY } = e
-    const { left, right, top, bottom } = e.currentTarget.getBoundingClientRect()
+    const { bottom, left, right, top } = e.currentTarget.getBoundingClientRect()
     const width = right - left
     const cursorX = ((clientX - left) / width) * 100
     const cursorY = ((clientY - top) / (bottom - top)) * 100
@@ -208,20 +206,20 @@ function BaseColorPalettes() {
                     </div>
                   </HoverCardTrigger>
                   <HoverCardContent
+                    className="group/hover-card relative mx-4 flex min-h-[10rem] w-[min(22rem,100svw)] flex-col items-stretch justify-stretch p-0 shadow-2xl"
                     style={{
                       backgroundColor: colorPalettes[type][0]?.color,
                     }}
-                    className="group/hover-card relative mx-4 flex min-h-[10rem] w-[min(22rem,100svw)] flex-col items-stretch justify-stretch p-0 shadow-2xl"
                   >
                     <div
                       className="absolute inset-x-0 inset-y-0 z-[12] w-full cursor-none"
-                      onMouseMove={handleDragClipPath}
                       onMouseLeave={() => {
                         setTimeout(() => {
                           setCusorX(51)
                           setCusorY(50)
                         }, 500)
                       }}
+                      onMouseMove={handleDragClipPath}
                     >
                       <div
                         className="absolute z-[13] size-2 -translate-x-3 -translate-y-1 rounded-full opacity-0 ring-2 ring-foreground ring-offset-1 ring-offset-background transition-opacity group-hover/hover-card:opacity-100"
@@ -238,8 +236,8 @@ function BaseColorPalettes() {
                         <PreviewText color={colorPalettes[type][step]?.color} />
 
                         <PreviewText
-                          color={colorPalettes[type][0]?.color}
                           backgroundColor={colorPalettes[type][step]?.color}
+                          color={colorPalettes[type][0]?.color}
                           cursorX={cursorX}
                         />
                       </div>
@@ -260,8 +258,8 @@ function BaseColorPalettes() {
                       <div className="relative w-full flex-1 items-center justify-center overflow-hidden rounded-b-md">
                         <PreviewText color={colorPalettes[type][step]?.color} />
                         <PreviewText
-                          color={colorPalettes[type][10]?.color}
                           backgroundColor={colorPalettes[type][step]?.color}
+                          color={colorPalettes[type][10]?.color}
                           cursorX={cursorX}
                           index={1}
                         />

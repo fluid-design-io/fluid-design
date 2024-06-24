@@ -1,6 +1,7 @@
 'use client'
 
 import { useColorStore } from '@/context/color-store-provider'
+import useCopyText from '@/hooks/use-copy-text'
 import { textAnimation } from '@/lib/animation'
 import { colorHelper } from '@/lib/colorHelper'
 import { useToolStore } from '@/store/toolStore'
@@ -10,7 +11,6 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { CopyIcon, Palette } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
-import useCopyText from '@/hooks/use-copy-text'
 import ColorPickerModal from './color-picker-modal'
 
 function ColorPicker({ className, type }: { className?: string; type: keyof ColorOptions }) {

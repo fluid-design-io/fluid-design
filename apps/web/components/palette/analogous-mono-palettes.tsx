@@ -36,13 +36,13 @@ const PillPalette = ({ color, type }: { color: string; type: 'analogous' | 'mono
   }
   return (
     <div
-      id={`${type}-palette`}
       className={cn(
         'scroll-mt-8',
         'col-span-2 flex flex-col gap-3 md:gap-4',
         '@md/section-primary:col-span-1',
         '@md/section-secondary:col-span-1'
       )}
+      id={`${type}-palette`}
     >
       {colors.map((c, i) => {
         const isDark = tinycolor(color).isDark()

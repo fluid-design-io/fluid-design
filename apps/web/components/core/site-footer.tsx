@@ -1,6 +1,6 @@
+import Link from 'next/link'
 import { cn } from 'ui/lib/utils'
 
-import Link from 'next/link'
 import app from '../../../../package.json'
 
 function SiteFooter() {
@@ -13,7 +13,7 @@ function SiteFooter() {
     >
       <div className="mx-auto max-w-[120rem] px-6 py-4 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
-          <Link href="/how" className="text-xs text-foreground/50 underline">
+          <Link className="text-xs text-foreground/50 underline" href="/how">
             How it works
           </Link>
 

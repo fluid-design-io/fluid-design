@@ -8,6 +8,9 @@ import SearchParamsLoadingIndicator from '../search-params-loading-indicator'
 type Props = {
   searchParams: { colors: string } | undefined
 }
+
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({ searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const colors = searchParams?.colors
   let paletteColors = ''

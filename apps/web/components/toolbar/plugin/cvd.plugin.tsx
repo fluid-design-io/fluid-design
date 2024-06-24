@@ -13,8 +13,8 @@ import { devtools } from 'zustand/middleware'
 
 export type PluginCvdState = {
   deuteranopia: [number]
-  protanopia: [number]
   isOn: () => boolean
+  protanopia: [number]
   setDeuteranopia: (value: [number]) => void
   setProtanopia: (value: [number]) => void
   setTritanopia: (value: [number]) => void
@@ -24,8 +24,8 @@ export type PluginCvdState = {
 export const usePluginCvdStore = create<PluginCvdState>()(
   devtools((set, get) => ({
     deuteranopia: [0],
-    protanopia: [0],
     isOn: () => get().deuteranopia[0] > 0 || get().protanopia[0] > 0 || get().tritanopia[0] > 0,
+    protanopia: [0],
     setDeuteranopia: (value) =>
       set(
         produce((state) => {
@@ -196,7 +196,7 @@ function CVDPlugin() {
                   </p>
                   <p className="text-xs">
                     G. M. Machado, M. M. Oliveira and L. A. F. Fernandes,&nbsp;
-                    <em>"A Physiologically-based Model for Simulation of Color Vision Deficiency,"</em>
+                    <em>&quot;A Physiologically-based Model for Simulation of Color Vision Deficiency,&quot;</em>
                     &nbsp;in IEEE Transactions on Visualization and Computer Graphics, vol. 15, no. 6, pp. 1291-1298,
                     Nov.-Dec. 2009,&nbsp;
                     <a href="https://doi.ieeecomputersociety.org/10.1109/TVCG.2009.113">doi: 10.1109/TVCG.2009.113</a>.

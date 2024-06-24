@@ -2,16 +2,10 @@
  * v0 by Vercel.
  * @see https://v0.dev/t/0AwQeZp
  */
-import { Button } from "@ui/components/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@ui/components/card";
-import { Input } from "@ui/components/input";
-import { Label } from "@ui/components/label";
+import { Button } from '@ui/components/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/components/card'
+import { Input } from '@ui/components/input'
+import { Label } from '@ui/components/label'
 import {
   Select,
   SelectContent,
@@ -20,10 +14,10 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@ui/components/select";
-import { Textarea } from "@ui/components/textarea";
-import { cn } from "@ui/lib/utils";
-import { Globe, Mail, Phone } from "lucide-react";
+} from '@ui/components/select'
+import { Textarea } from '@ui/components/textarea'
+import { cn } from '@ui/lib/utils'
+import { Globe, Mail, Phone } from 'lucide-react'
 
 export default function VisContactForm() {
   return (
@@ -48,41 +42,23 @@ export default function VisContactForm() {
                     <path d="M130 200V.5M.5 .5H200" fill="none" />
                   </pattern>
                 </defs>
-                <rect
-                  className="fill-background-accent"
-                  height="100%"
-                  strokeWidth={0}
-                  width="100%"
-                />
-                <svg
-                  className="overflow-visible fill-background/30"
-                  x="100%"
-                  y={-1}
-                >
+                <rect className="fill-background-accent" height="100%" strokeWidth={0} width="100%" />
+                <svg className="overflow-visible fill-background/30" x="100%" y={-1}>
                   <path d="M-470.5 0h201v201h-201Z" strokeWidth={0} />
                 </svg>
-                <rect
-                  fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)"
-                  height="100%"
-                  strokeWidth={0}
-                  width="100%"
-                />
+                <rect fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" height="100%" strokeWidth={0} width="100%" />
               </svg>
             </div>
             <h2 className="text-3xl font-bold tracking-tight">Get in touch</h2>
             <p className="mt-6 text-lg leading-8 text-foreground/75">
-              Proin volutpat consequat porttitor cras nullam gravida at. Orci
-              molestie a eu arcu. Sed ut tincidunt integer elementum id sem.
-              Arcu sed malesuada et magna.
+              Proin volutpat consequat porttitor cras nullam gravida at. Orci molestie a eu arcu. Sed ut tincidunt
+              integer elementum id sem. Arcu sed malesuada et magna.
             </p>
             <dl className="mt-10 space-y-4 text-base leading-7 text-muted-foreground">
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Address</span>
-                  <Globe
-                    aria-hidden="true"
-                    className="h-7 w-6 text-[hsl(var(--gray-600))]"
-                  />
+                  <Globe aria-hidden="true" className="h-7 w-6 text-[hsl(var(--gray-600))]" />
                 </dt>
                 <dd>
                   545 Mavis Island
@@ -93,16 +69,10 @@ export default function VisContactForm() {
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Telephone</span>
-                  <Phone
-                    aria-hidden="true"
-                    className="h-7 w-6 text-[hsl(var(--gray-600))]"
-                  />
+                  <Phone aria-hidden="true" className="h-7 w-6 text-[hsl(var(--gray-600))]" />
                 </dt>
                 <dd>
-                  <a
-                    className="hover:text-foreground"
-                    href="tel:+1 (555) 234-5678"
-                  >
+                  <a className="hover:text-foreground" href="tel:+1 (555) 234-5678">
                     +1 (555) 234-5678
                   </a>
                 </dd>
@@ -110,16 +80,10 @@ export default function VisContactForm() {
               <div className="flex gap-x-4">
                 <dt className="flex-none">
                   <span className="sr-only">Email</span>
-                  <Mail
-                    aria-hidden="true"
-                    className="h-7 w-6 text-[hsl(var(--gray-600))]"
-                  />
+                  <Mail aria-hidden="true" className="h-7 w-6 text-[hsl(var(--gray-600))]" />
                 </dt>
                 <dd>
-                  <a
-                    className="hover:text-foreground"
-                    href="mailto:hello@example.com"
-                  >
+                  <a className="hover:text-foreground" href="mailto:hello@example.com">
                     hello@example.com
                   </a>
                 </dd>
@@ -128,12 +92,11 @@ export default function VisContactForm() {
           </div>
         </div>
         <div className="flex items-center justify-center border-t border-border lg:border-none">
-          <Card className={cn("border-none")}>
+          <Card className={cn('border-none')}>
             <CardHeader>
               <CardTitle>Contact Us</CardTitle>
               <CardDescription>
-                Fill out the form below and we'll get back to you as soon as
-                possible.
+                Fill out the form below and we&apos;ll get back to you as soon as possible.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -142,26 +105,16 @@ export default function VisContactForm() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="first-name">First name</Label>
-                      <Input
-                        id="first-name"
-                        placeholder="Enter your first name"
-                      />
+                      <Input id="first-name" placeholder="Enter your first name" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="last-name">Last name</Label>
-                      <Input
-                        id="last-name"
-                        placeholder="Enter your last name"
-                      />
+                      <Input id="last-name" placeholder="Enter your last name" />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      placeholder="Enter your email"
-                      type="email"
-                    />
+                    <Input id="email" placeholder="Enter your email" type="email" />
                   </div>
                   <div className="space-y-2">
                     <Label>Pronoun</Label>
@@ -176,20 +129,14 @@ export default function VisContactForm() {
                           <SelectItem value="he/him">He/Him</SelectItem>
                           <SelectItem value="she/her">She/Her</SelectItem>
                           <SelectItem value="they/them">They/Them</SelectItem>
-                          <SelectItem value="prefer not to say">
-                            Prefer not to say
-                          </SelectItem>
+                          <SelectItem value="prefer not to say">Prefer not to say</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      className="min-h-[100px]"
-                      id="message"
-                      placeholder="Enter your message"
-                    />
+                    <Textarea className="min-h-[100px]" id="message" placeholder="Enter your message" />
                   </div>
                   <Button type="submit">Send message</Button>
                 </div>
@@ -199,5 +146,5 @@ export default function VisContactForm() {
         </div>
       </div>
     </div>
-  );
+  )
 }

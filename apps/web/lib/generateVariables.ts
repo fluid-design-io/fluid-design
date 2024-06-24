@@ -19,7 +19,7 @@ export enum CodeButtonTitle {
 }
 
 export const getColorHsl = <T extends BaseColorTypes>(palette: ColorPalettes[T], step: ColorStep): string => {
-  const { h, l, s } = palette.find((color) => color.step === colorStepMap[step])?.raw || { h: 0, s: 0, l: 0 }
+  const { h, l, s } = palette.find((color) => color.step === colorStepMap[step])?.raw || { h: 0, l: 0, s: 0 }
   const hRounded = Math.round(h * 100) / 100
   const sRounded = Math.round(s * 100)
   const lRounded = Math.round(l * 100)

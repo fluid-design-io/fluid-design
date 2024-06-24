@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next'
 
 import SiteFooter from '@/components/core/site-footer'
 import { ThemeProvider } from '@/components/core/theme-provider'
-
 import { Toaster } from '@/components/ui/sonner'
 import '@ui/styles/globals.css'
 import { Comfortaa, Inter } from 'next/font/google'
@@ -18,8 +17,8 @@ export const viewport: Viewport = {
   initialScale: 1.0,
   maximumScale: 1.0,
   userScalable: false,
-  width: 'device-width',
   viewportFit: 'cover',
+  width: 'device-width',
 }
 
 export const metadata: Metadata = {

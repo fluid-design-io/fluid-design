@@ -12,7 +12,7 @@ import CodeGenerateButton from './generate-button'
 
 type CodeButtonType = {
   available?: boolean
-  icon: React.FC<React.SVGProps<SVGSVGElement>>
+  icon: React.ElementType | React.FC<React.SVGProps<SVGSVGElement>>
   title: CodeButtonTitle
   type: CodeGenerateType
 }
@@ -62,7 +62,14 @@ export default function CodeGenPage() {
   )
 }
 
-const CardButton = ({ available = true, icon: Icon, title, type }) => (
+type CardButtonProps = {
+  available?: boolean
+  icon: React.ElementType | React.FC<React.SVGProps<SVGSVGElement>>
+  title: CodeButtonTitle
+  type: CodeGenerateType
+}
+
+const CardButton = ({ available = true, icon: Icon, title, type }: CardButtonProps) => (
   <Card className="relative flex flex-col items-center justify-center space-y-4 overflow-hidden py-6">
     <div className="relative z-10 flex items-center justify-center rounded-full border border-border/60 p-1.5">
       <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border/20 bg-white/30 shadow-sm backdrop-blur-sm backdrop-saturate-200 dark:bg-background-accent/30">

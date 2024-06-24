@@ -12,8 +12,8 @@ import ColorPickerModal from '../palette/color-picker-modal'
 const ColorPickerFabButton = ({ type }: { type: keyof ColorOptions }) => {
   const [isOpen, setIsOpen] = useState(false)
   const {
-    setColor,
     colors: { baseColors },
+    setColor,
   } = useColorStore((s) => s)
   const colorString = colorHelper.toColorMode(baseColors[type], ColorMode.HEX)
   const shadowColor = {

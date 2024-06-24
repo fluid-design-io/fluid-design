@@ -1,0 +1,38 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_URL",
+    "NEXT_PUBLIC_VERCEL_URL"
+  ],
+  "globalDependencies": [
+    "**/.env.*local"
+  ],
+  "globalPassThroughEnv": [
+    "GITHUB_TOKEN"
+  ],
+  "tasks": {
+    "build": {
+      "env": [
+        "NEXT_PUBLIC_*",
+        "FIGMA_AUTH_SECRET"
+      ],
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

@@ -66,9 +66,9 @@ const PaletteButton = ({ animation, step, type }: { animation: number; step: num
         duration: isChanging ? animation * 1.2 : 0.3,
       }}
       type="button"
+      whileFocus={{ scale: 1.05 }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      whileFocus={{ scale: 1.05 }}
     >
       <motion.div
         animate={{

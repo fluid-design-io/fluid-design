@@ -6,6 +6,7 @@ import { colorHelper } from '@/lib/colorHelper'
 import { generateBaseColors } from '@/lib/generateBaseColors'
 import { BaseColorTypes } from '@/types/app'
 import '@ui/styles/globals.css'
+import { Suspense } from 'react'
 
 import { getColorNames } from '../actions'
 import StyleSheetInitializer from '../stylesheet-initializer'
@@ -24,7 +25,9 @@ async function MainLayout({ children }: { children: React.ReactNode }) {
   )
   return (
     <ColorStoreProvider {...{ ...baseColors, colorNames, colors }}>
-      <StyleSheetInitializer />
+      <Suspense fallback={null}>
+        <StyleSheetInitializer />
+      </Suspense>
       <SiteHeader />
       <Toolbar />
       {children}

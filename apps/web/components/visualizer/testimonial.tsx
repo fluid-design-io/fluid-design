@@ -1,6 +1,8 @@
-import { cn } from "@ui/lib/utils";
+/* eslint-disable @next/next/no-img-element */
 
-import PeakVentureLogo from "../svg/peak-venture-logo";
+import { cn } from '@ui/lib/utils'
+
+import PeakVentureLogo from '../svg/peak-venture-logo'
 
 export default function VisTestimonials() {
   return (
@@ -13,19 +15,16 @@ export default function VisTestimonials() {
             src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1216&q=80"
           />
           <div className="absolute inset-0 bg-muted/90 mix-blend-screen dark:mix-blend-multiply" />
-          <div
-            aria-hidden="true"
-            className="absolute -left-80 -top-56 transform-gpu blur-3xl"
-          >
+          <div aria-hidden="true" className="absolute -left-80 -top-56 transform-gpu blur-3xl">
             <div
               className={cn(
-                "aspect-[1097/845] w-[68.5625rem] bg-gradient-to-r opacity-[0.15] dark:opacity-[0.35]",
-                "from-[hsl(var(--primary-600))] to-[hsl(var(--accent-800))]",
-                "dark:from-[hsl(var(--primary-600))] dark:to-[hsl(var(--accent-400))]",
+                'aspect-[1097/845] w-[68.5625rem] bg-gradient-to-r opacity-[0.15] dark:opacity-[0.35]',
+                'from-[hsl(var(--primary-600))] to-[hsl(var(--accent-800))]',
+                'dark:from-[hsl(var(--primary-600))] dark:to-[hsl(var(--accent-400))]'
               )}
               style={{
                 clipPath:
-                  "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+                  'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
               }}
             />
           </div>
@@ -35,13 +34,13 @@ export default function VisTestimonials() {
           >
             <div
               className={cn(
-                "aspect-[1097/845] w-[68.5625rem] bg-gradient-to-r opacity-10 dark:opacity-20",
-                "from-[hsl(var(--primary-600))] to-[hsl(var(--accent-800))]",
-                "dark:from-[hsl(var(--primary-600))] dark:to-[hsl(var(--accent-400))]",
+                'aspect-[1097/845] w-[68.5625rem] bg-gradient-to-r opacity-10 dark:opacity-20',
+                'from-[hsl(var(--primary-600))] to-[hsl(var(--accent-800))]',
+                'dark:from-[hsl(var(--primary-600))] dark:to-[hsl(var(--accent-400))]'
               )}
               style={{
                 clipPath:
-                  "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+                  'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
               }}
             />
           </div>
@@ -50,9 +49,8 @@ export default function VisTestimonials() {
             <figure>
               <blockquote className="mt-6 text-lg font-semibold text-foreground sm:text-xl sm:leading-8">
                 <p>
-                  “Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-                  expedita voluptas culpa sapiente alias molestiae. Numquam
-                  corrupti in laborum sed rerum et corporis.”
+                  “Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita voluptas culpa sapiente alias
+                  molestiae. Numquam corrupti in laborum sed rerum et corporis.”
                 </p>
               </blockquote>
               <figcaption className="mt-6 text-base text-foreground">
@@ -64,5 +62,5 @@ export default function VisTestimonials() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -17,7 +17,7 @@ type GenerateImageOptions = {
 
 function DownloadBasePalettePlugin({ setOpen }: { setOpen: (open: boolean) => void }) {
   const [isLoaded, setisLoaded] = useState(false)
-  const [imageData, setImageData] = useState<string | null>(null)
+  const [imageData, setImageData] = useState<null | string>(null)
   const [desktopSize, setDesktopSize] = useState<boolean | undefined>(undefined)
   const [isDesktopSize, setIsDesktopSize] = useState(false)
   const handleGenerateImage = (options: GenerateImageOptions) => {
@@ -117,7 +117,7 @@ function DownloadBasePalettePlugin({ setOpen }: { setOpen: (open: boolean) => vo
         ) : (
           <div />
         )}
-        <Button className="h-8" onClick={handleDownload} size="sm" disabled={!isLoaded}>
+        <Button className="h-8" disabled={!isLoaded} onClick={handleDownload} size="sm">
           <DownloadIcon className="h-4 w-4" />
           <span className="sr-only sm:not-sr-only sm:ms-2">Download image</span>
         </Button>

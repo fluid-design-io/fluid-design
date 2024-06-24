@@ -114,7 +114,7 @@ const OverView = () => {
   )
 }
 
-const BreakDown = ({ factor, seed, title, unit }) => {
+const BreakDown = ({ factor, seed, title, unit }: { factor: number; seed: number; title: string; unit: string }) => {
   const r = () => Math.random() * 90 * factor + 10
   const [pieData, setPieData] = useState([
     { name: 'Group A', value: 0 },

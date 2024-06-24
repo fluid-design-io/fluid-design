@@ -87,19 +87,18 @@ export const generateColorPalette = ({ color, type }: { color: RawColor; type: B
       let { l } = oklschColor
       const lInfluence = lig / 50 // 2% of the lightness based on the input lightness
       l = (COLOR_LENGTH - 1 - i) * (1 / COLOR_LENGTH) + lInfluence + 1 / COLOR_LENGTH / 2
-      console.log(`l: ${l}, lig: ${lig}`)
       s = 0.01 + sat * 0.25
       calculatedColor = tinycolor(formatHsl({ h, l, mode: 'okhsl', s }))
     } else {
       let hue = Math.round(rawColor.toHsl().h * 10) / 10
       // if hue is Nan, set it to 0
       if (isNaN(hue)) {
-        const lch = calculatedColor.toLch()
+        const lch = (calculatedColor as any).toLch()
         calculatedColor = tinycolor({
           c: lch.c,
           h: lch.h,
           l: (COLOR_LENGTH - 1 - i) * 8.85 + 5,
-        })
+        } as any)
       } else {
         hue === 360 ? (hue = 0.001) : hue
         hue === 0 ? (hue = 0.001) : hue
