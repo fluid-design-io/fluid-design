@@ -1,50 +1,51 @@
-import { Download, Eye, ImagePlus, Link } from "lucide-react";
-import EyeCVD from "../svg/eye-cvd";
+import { Contrast, Download, ImagePlus, Link } from 'lucide-react'
+
+import EyeCVD from '../svg/eye-cvd'
 
 export enum ToolbarMenus {
-  UPLOAD_IMAGE = "Upload Image",
-  DOWNLOAD = "Download",
-  SHARE = "Share",
-  READABILITY = "Readability",
-  CVD = "Color Vision Deficiency",
+  CVD = 'Color Vision Deficiency',
+  DOWNLOAD = 'Download',
+  READABILITY = 'Readability',
+  SHARE = 'Share',
+  UPLOAD_IMAGE = 'Upload Image',
 }
 
 export type ToolbarMenu = {
-  title: string;
-  description: string;
-  icon: React.FC<React.SVGProps<SVGSVGElement>>;
-};
+  description: string
+  icon: React.FC<React.SVGProps<SVGSVGElement>>
+  title: string
+}
 
 export type PrimaryToolbarMenu = {
-  [key in ToolbarMenus]: ToolbarMenu;
-};
+  [key in ToolbarMenus]: ToolbarMenu
+}
 
 const primaryToolbarMenu: PrimaryToolbarMenu = {
-  [ToolbarMenus.READABILITY]: {
-    title: "Readability",
-    description: "Check the contrast ratio of your palette",
-    icon: Eye,
-  },
   [ToolbarMenus.CVD]: {
-    title: "Color Vision Deficiency",
-    description: "Simulate color vision deficiency",
+    description: 'Simulate color vision deficiency',
     icon: EyeCVD,
-  },
-  [ToolbarMenus.UPLOAD_IMAGE]: {
-    title: "Upload Image",
-    description: "Generate a color palette from an image",
-    icon: ImagePlus,
+    title: 'Color Vision Deficiency',
   },
   [ToolbarMenus.DOWNLOAD]: {
-    title: "Download",
-    description: "Download the current palette as a PNG",
+    description: 'Download the current palette as a PNG',
     icon: Download,
+    title: 'Download',
+  },
+  [ToolbarMenus.READABILITY]: {
+    description: 'Check the contrast ratio of your palette',
+    icon: Contrast,
+    title: 'Readability',
   },
   [ToolbarMenus.SHARE]: {
-    title: "Share",
-    description: "Create a sharable link to your palette",
+    description: 'Create a sharable link to your palette',
     icon: Link,
+    title: 'Share',
   },
-};
+  [ToolbarMenus.UPLOAD_IMAGE]: {
+    description: 'Generate a color palette from an image',
+    icon: ImagePlus,
+    title: 'Upload Image',
+  },
+}
 
-export default primaryToolbarMenu;
+export default primaryToolbarMenu
