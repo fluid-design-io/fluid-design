@@ -1,102 +1,110 @@
-import { ImageResponse } from "next/og";
+import { generateColors } from '@/data/generate-colors'
+import { BaseColorTypes } from '@/types/app'
+import { ImageResponse } from 'next/og'
 // App router includes @vercel/og.
 // No need to install it.
 
 //! DOSE IT MAKE A DIFFERENCE? edge vs node?
 // export const runtime = "edge";
-export const alt = "Fluid Colors";
+export const alt = 'Fluid Colors'
 export const size = {
-  width: 1200,
   height: 630,
-};
+  width: 1200,
+}
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url)
 
-    // ?colors=<colors>
-    const hasColors = searchParams.has("colors");
-    const colors = hasColors ? searchParams.get("colors") : "My default colors";
+    const primary = searchParams.get('primary')
+    const secondary = searchParams.get('secondary')
+    const accent = searchParams.get('accent')
 
-    const { data, error } = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_URL
-      }/api/generate-color-palette/?colors=${encodeURIComponent(colors)}`,
-    ).then((res) => res.json());
-
-    if (error) {
-      throw new Error(error);
+    const baseColors = {
+      primary: primary ?? '#FF0000',
+      secondary: secondary ?? '#00FF00',
+      accent: accent ?? '#0000FF',
     }
 
-    const { colorPalettes } = data;
-    const backgroundGradientFrom = colorPalettes.gray[8].color;
-    const backgroundGradientTo = colorPalettes.gray[9].color;
-    const backgroundLinearGradient = `linear-gradient(135deg, ${backgroundGradientFrom} 0%, ${backgroundGradientTo} 100%)`;
-    const paletteBackgroundColor = colorPalettes.gray[0].color;
-    const accentColor = colorPalettes.accent[7].color;
-    const shadowLayer_1 = colorPalettes.primary[9].color;
-    const shadowLayer_2 = colorPalettes.secondary[10].color;
+    const colors = generateColors(baseColors)
+
+    const { colorPalettes } = colors
+
+    // throw if object is empty
+
+    if (Object.keys(colorPalettes).length === 0) {
+      throw new Error('Failed to generate color palettes')
+    }
+
+    const backgroundGradientFrom = colorPalettes.gray[8].color
+    const backgroundGradientTo = colorPalettes.gray[9].color
+    const backgroundLinearGradient = `linear-gradient(135deg, ${backgroundGradientFrom} 0%, ${backgroundGradientTo} 100%)`
+    const paletteBackgroundColor = colorPalettes.gray[0].color
+    const accentColor = colorPalettes.accent[7].color
+    const shadowLayer_1 = colorPalettes.primary[9].color
+    const shadowLayer_2 = colorPalettes.secondary[10].color
+    const colorPaletteNames: Array<BaseColorTypes> = ['primary', 'secondary', 'accent', 'gray']
     return new ImageResponse(
       (
         <div
           style={{
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            textAlign: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            flexWrap: "nowrap",
+            alignItems: 'center',
             backgroundColor: backgroundGradientFrom,
             backgroundImage: backgroundLinearGradient,
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+            height: '100%',
+            justifyContent: 'center',
+            textAlign: 'center',
+            width: '100%',
           }}
         >
           <div
             style={{
-              display: "flex",
-              position: "absolute",
-              width: "100%",
-              height: "100%",
               backgroundImage: `radial-gradient(circle at 25px 25px, ${accentColor} 2%, transparent 0%), radial-gradient(circle at 75px 75px, ${accentColor} 2%, transparent 0%)`,
-              backgroundSize: "100px 100px",
+              backgroundSize: '100px 100px',
+              display: 'flex',
+              height: '100%',
+              position: 'absolute',
+              width: '100%',
             }}
           />
           <div
             style={{
-              width: "80%",
-              height: "55%",
-              display: "flex",
-              textAlign: "center",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              flexWrap: "nowrap",
+              alignItems: 'center',
               background: paletteBackgroundColor,
               borderRadius: 24,
-              padding: 24,
               boxShadow: `-10px 30px 0px ${shadowLayer_1}, -20px 55px 0px ${shadowLayer_2}`,
-              // rotate the palette from bottom left
+              display: 'flex',
+              flexDirection: 'column',
+              flexWrap: 'nowrap',
+              height: '55%',
+              justifyContent: 'center',
+              padding: 24,
+              textAlign: 'center',
               // transformOrigin: "bottom left",
-              transform: "rotate(-5deg) translate(0px, -15px)",
+              transform: 'rotate(-5deg) translate(0px, -15px)',
+              // rotate the palette from bottom left
+              width: '80%',
             }}
           >
             {
               // generate a rectangle for each color, for each palette
-              Object.keys(colorPalettes).map((paletteName) => {
-                const palette = colorPalettes[paletteName];
+              colorPaletteNames.map((paletteName) => {
+                const palette = colorPalettes[paletteName as BaseColorTypes]
                 return (
                   <div
                     key={paletteName}
                     style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "nowrap",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: `${size.width / 11 - 32}px`,
-                      height: "25%",
+                      alignItems: 'center',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      flexWrap: 'nowrap',
+                      height: '25%',
+                      justifyContent: 'center',
                       margin: 4,
+                      width: `${size.width / 11 - 32}px`,
                     }}
                   >
                     {palette.map((color) => {
@@ -104,20 +112,20 @@ export async function GET(request: Request) {
                         <div
                           key={color.step}
                           style={{
-                            width: "100%",
-                            height: "100%",
                             backgroundColor: color.color,
-                            margin: 4,
-                            borderRadius: 12,
-                            borderWidth: 2,
                             borderColor: colorPalettes.gray[2].color,
-                            borderStyle: "solid",
+                            borderRadius: 12,
+                            borderStyle: 'solid',
+                            borderWidth: 2,
+                            height: '100%',
+                            margin: 4,
+                            width: '100%',
                           }}
                         />
-                      );
+                      )
                     })}
                   </div>
-                );
+                )
               })
             }
           </div>
@@ -125,12 +133,12 @@ export async function GET(request: Request) {
       ),
       {
         ...size,
-      },
-    );
+      }
+    )
   } catch (e: any) {
-    console.log(`${e.message}`);
+    console.log(`${e.message}`)
     return new Response(`Failed to generate the image`, {
       status: 500,
-    });
+    })
   }
 }
