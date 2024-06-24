@@ -70,7 +70,7 @@
     @apply border-border;
   }
   body {
-    @apply text-foreground bg-background-accent transition-colors;
+    @apply text-foreground bg-background-accent transition-colors scroll-smooth;
   }
   code {
     @apply font-comfortaa tabular-nums;
@@ -118,5 +118,10 @@
   }
   .box-border {
     @apply border-border/10 text-foreground/30 selection:bg-foreground/10 selection:text-foreground contrast-more:text-foreground;
+  }
+
+  /* text-shadow */
+  .text-shadow {
+    text-shadow: 0 1px 2px hsl(var(--foreground) / 0.07);
   }
 }
