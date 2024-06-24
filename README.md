@@ -1,13 +1,12 @@
 # 🎨 Fluid Color Palettes
-Dynamic Color Palette Generator for Figma and More!
 
-<img  src="https://user-images.githubusercontent.com/13263720/165000315-67bfd426-a45d-4706-998e-ad99926b4a45.png"  alt="drawing"  width="120"/>
-
-![Screenshot](https://github.com/fluid-design-io/fluid-design/assets/13263720/090c1e05-3600-4b6b-87a6-0780760c62a5)
+![Cover](https://github.com/fluid-design-io/fluid-design/assets/13263720/06d18211-85a6-4094-8bad-2ab5c7e33aad)
 
 ## 🌈 What is Fluid Color Palettes?
 
 Welcome to Fluid Color Palettes, where beautiful color palettes meet dynamic functionality! This project powers a Figma plugin that brings fully dynamic variables to your design process. But that's not all! You can also use this tool as a standalone website, offering a modern and minimal UI to visualize and interact with your chosen colors.
+
+![Color In Action](https://github.com/fluid-design-io/fluid-design/assets/13263720/36ae44b4-f4f5-4bb6-89ef-db7d25d26e4b)
 
 ## 🚀 Features
 
@@ -35,11 +34,15 @@ Welcome to Fluid Color Palettes, where beautiful color palettes meet dynamic fun
 
 ## 📣 Contributing
 
-<!-- Information on how others can contribute to your project -->
+We welcome contributions from the community! If you have any ideas, suggestions, or bug reports, please feel free to open an issue or submit a pull request. We are always looking to improve and expand our project, and we would love to have you on board!
 
 ## 📜 License
 
-MIT License
+I don't know what it means, but you can do whatever you want with this project. 🤷‍♂️
+
+```plaintext
+Hey there, code wrangler! This GitHub project is rocking the MIT license, which means you can take it, shake it, break it, or make it your own. Seriously, go wild—I’m not going to lose any sleep over it. Enjoy! 😎🎉
+```
 
 ## 🙏 Acknowledgments
 
@@ -48,7 +51,6 @@ Huge shoutout to these awesome libraries that make my project shine 🌟:
 - 🎨 **[Culori](https://github.com/Evercoder/culori)**: Our color wizard for magical color manipulations.
 - 🌈 **[Extract-Colors](https://github.com/Namide/extract-colors)**: The extract artist helping us pull colors out of thin air.
 - 🌟 **[Framer-Motion](https://github.com/framer/motion)**: The spell we cast for our smooth animations.
-- ✨ **[Immer](https://github.com/immerjs/immer)**: Our immutable charm for state management.
 - 🛡️ **[Jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)**: Our secret keeper for secure tokens.
 - 🧙‍♂️ **[Lucide-React](https://github.com/lucide-icons/lucide)**: Creating icons that enchant the UI.
 - 🚀 **[Next.js](https://github.com/vercel/next.js)**: The magic carpet that takes our project to the web.
@@ -60,6 +62,3 @@ Huge shoutout to these awesome libraries that make my project shine 🌟:
 - 🗃️ **[Zustand](https://github.com/pmndrs/zustand)**: Our state management potion brewer.
 
 Thank you for helping us bring color and magic to the design and development world! 🎉
-
-
-
