@@ -1,47 +1,39 @@
-import primaryToolbarMenu from "../ui/primary-toolbar-menu";
-import { useColorStore } from "@/store/store";
-import ToolbarMenuItem from "./toolbar-menu-item";
-import { cn } from "@ui/lib/utils";
-import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from '@ui/components/ui/popover'
+import { Skeleton } from '@ui/components/ui/skeleton'
+import { cn } from '@ui/lib/utils'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@ui/components/ui/popover";
+import primaryToolbarMenu from '../ui/primary-toolbar-menu'
+import { usePluginCvdStore } from './plugin/cvd.plugin'
+import ToolbarMenuItem from './toolbar-menu-item'
 
-import dynamic from "next/dynamic";
-import { usePluginCvdStore } from "./plugin/cvd.plugin";
-
-const CVDPlugin = dynamic(() => import("./plugin/cvd.plugin"), {
+const CVDPlugin = dynamic(() => import('./plugin/cvd.plugin'), {
+  loading: () => <Skeleton className="h-[40svh] lg:h-[max(calc(80vh-8rem),10rem)]" />,
   ssr: false,
-});
-function CVD() {
-  const menuItem = primaryToolbarMenu["Color Vision Deficiency"];
-  const maybePluginStore = usePluginCvdStore();
-  const [open, setOpen] = useState(false);
-  // const { showReadability } = useColorStore();
+})
+function CVD({ className }: { className?: string }) {
+  const menuItem = primaryToolbarMenu['Color Vision Deficiency']
+  const maybePluginStore = usePluginCvdStore()
+  const [open, setOpen] = useState(false)
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
         <button
-          type="button"
           aria-label="Show cvd Plugin"
-          className={cn(
-            maybePluginStore?.isOn() &&
-              "-mx-1.5 rounded-sm bg-primary/20 px-1.5 lg:mx-0 lg:px-0",
-          )}
+          className={cn(maybePluginStore?.isOn() && 'bg-primary/20', className)}
+          type="button"
         >
           <ToolbarMenuItem {...menuItem} />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[18rem] sm:w-[24rem]" align="end">
+      <PopoverContent align="end" className="w-[18rem] sm:w-[28rem]">
         {open && <CVDPlugin key={`shareable-${open}`} />}
       </PopoverContent>
     </Popover>
-  );
+  )
 }
 
-export default CVD;
+export default CVD
 
-CVD.displayName = "CVD";
+CVD.displayName = 'CVD'

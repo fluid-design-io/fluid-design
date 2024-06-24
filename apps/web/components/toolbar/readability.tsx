@@ -1,46 +1,40 @@
-import primaryToolbarMenu from "../ui/primary-toolbar-menu";
-import { useColorStore } from "@/store/store";
-import ToolbarMenuItem from "./toolbar-menu-item";
-import { cn } from "@ui/lib/utils";
-import { useState } from "react";
+import { useToolStore } from '@/store/toolStore'
+import { Popover, PopoverContent, PopoverTrigger } from '@ui/components/ui/popover'
+import { Skeleton } from '@ui/components/ui/skeleton'
+import { cn } from '@ui/lib/utils'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@ui/components/ui/popover";
+import primaryToolbarMenu from '../ui/primary-toolbar-menu'
+import ToolbarMenuItem from './toolbar-menu-item'
 
-import dynamic from "next/dynamic";
-
-const ReadabilityPlugin = dynamic(() => import("./plugin/readability.plugin"), {
+const ReadabilityPlugin = dynamic(() => import('./plugin/readability.plugin'), {
+  loading: () => <Skeleton className="h-[40svh] w-full lg:h-[max(calc(80vh-6rem),10rem)]" />,
   ssr: false,
-});
+})
 
-function Readability() {
-  const menuItem = primaryToolbarMenu.Readability;
-  const [open, setOpen] = useState(false);
-  const { showReadability } = useColorStore();
+function Readability({ className }: { className?: string }) {
+  const menuItem = primaryToolbarMenu.Readability
+  const [open, setOpen] = useState(false)
+  const { showReadability } = useToolStore()
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
         <button
-          type="button"
           aria-label="Show Readability Plugin"
-          className={cn(
-            showReadability &&
-              "-mx-1.5 rounded-sm bg-primary/20 px-1.5 lg:mx-0 lg:px-0",
-          )}
+          className={cn(showReadability && 'bg-primary/20', className)}
+          type="button"
         >
           <ToolbarMenuItem {...menuItem} />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[18rem] sm:w-[24rem]" align="end">
+      <PopoverContent align="end" className="w-[18rem] sm:w-[28rem]">
         {open && <ReadabilityPlugin key={`shareable-${open}`} />}
       </PopoverContent>
     </Popover>
-  );
+  )
 }
 
-export default Readability;
+export default Readability
 
-Readability.displayName = "Readability";
+Readability.displayName = 'Readability'

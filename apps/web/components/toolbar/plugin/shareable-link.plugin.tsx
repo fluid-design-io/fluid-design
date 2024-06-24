@@ -1,116 +1,100 @@
-"use client";
+'use client'
 
-import { Input } from "ui/components/ui/input";
-import { Button } from "ui/components/ui/button";
-import { Copy, Figma } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { Skeleton } from "@ui/components/ui/skeleton";
-import { cn } from "ui/lib/utils";
-import Image from "next/image";
-import { useToast } from "ui/components/ui/use-toast";
-import { Switch } from "@ui/components/ui/switch";
-import { Label } from "@ui/components/ui/label";
-import { useColorStore } from "@/store/store";
+import { useColorStore } from '@/context/color-store-provider'
+import useCopyText from '@/hooks/use-copy-text'
+import { colorHelper } from '@/lib/colorHelper'
+import { Label } from '@ui/components/ui/label'
+import { Skeleton } from '@ui/components/ui/skeleton'
+import { Switch } from '@ui/components/ui/switch'
+import { Copy, Figma } from 'lucide-react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import { Button } from 'ui/components/ui/button'
+import { Input } from 'ui/components/ui/input'
+import { cn } from 'ui/lib/utils'
 
-function ShareableLinkPlugin({ colors, setOpen }) {
-  const { toast } = useToast();
-  const { baseColors } = useColorStore();
-  const [loadingSocialPreview, setLoadingSocialPreview] = useState(true);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [figmaPlugin, setFigmaPlugin] = useState(false);
-  const staticURL = `${process.env.NEXT_PUBLIC_URL}/?colors=${colors}`;
+function ShareableLinkPlugin({ setOpen }: { setOpen: (open: boolean) => void }) {
+  const baseColors = useColorStore((s) => s.colors.baseColors)
+  const [loadingSocialPreview, setLoadingSocialPreview] = useState(true)
+  const [token, setToken] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [figmaPlugin, setFigmaPlugin] = useState(false)
+  const { copyText } = useCopyText()
+  const colorParams =
+    '/?' +
+    Object.entries(baseColors)
+      .map(([key, value]) => `${key}=${colorHelper.toHex(value)}`.replace('#', ''))
+      .join('&')
+  const staticUrl = process.env.NEXT_PUBLIC_URL + colorParams
   const handleCopy = () => {
-    navigator.clipboard.writeText(
-      figmaPlugin ? staticURL + `&token=${token}` : staticURL,
-    );
-    setOpen(false);
-    toast({
-      title: "Copied to clipboard!",
-    });
-  };
+    copyText(figmaPlugin ? staticUrl + `&token=${token}` : staticUrl)
+    setOpen(false)
+  }
   const handleGenerateToken = async () => {
-    setLoading(true);
-    const { data, error } = await fetch("/api/v1/figma-plugin", {
+    setLoading(true)
+    const { data, error } = await fetch('/api/v1/figma-plugin', {
       body: JSON.stringify({
         baseColors,
       }),
-      method: "POST",
-    }).then((res) => res.json());
+      method: 'POST',
+    }).then((res) => res.json())
     if (error) {
-      toast({
-        title: "Error generating token",
-        description: error.message,
-        variant: "destructive",
-      });
-      setLoading(false);
-      return;
+      toast.error('Error generating token')
+      setLoading(false)
+      return
     }
-    setToken(data.token);
-    setLoading(false);
-  };
+    setToken(data.token)
+    setLoading(false)
+  }
   useEffect(() => {
-    if (!figmaPlugin || !!token) return;
-    handleGenerateToken();
-  }, [figmaPlugin]);
+    if (!figmaPlugin || !!token) return
+    handleGenerateToken()
+  }, [figmaPlugin])
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="relative">
+      <div className="relative w-full">
         <div
           className={cn(
-            "mb-4 overflow-hidden rounded-md",
-            "aspect-[120/63] w-[16rem] rounded-md sm:w-[22rem]",
+            'mb-4 grid place-items-stretch overflow-hidden rounded-md',
+            'aspect-[120/63] w-full rounded-md'
           )}
         >
           <Skeleton
-            className={cn("h-full w-full", {
-              "opacity-0": !loadingSocialPreview,
+            className={cn('h-full w-full', {
+              'opacity-0': !loadingSocialPreview,
             })}
           />
           <Image
-            src={`${process.env.NEXT_PUBLIC_URL}/api/og?colors=${colors}`}
-            className={cn(
-              "absolute inset-0 h-full w-full rounded border object-cover",
-            )}
             alt="Social preview"
+            className={cn('absolute inset-0 h-full w-full rounded border object-cover')}
+            height={184}
             onLoad={() => setLoadingSocialPreview(false)}
-            width={288}
-            height={151}
+            src={`${process.env.NEXT_PUBLIC_URL}/api/og${colorParams}`}
+            width={352}
           />
         </div>
       </div>
       <div className="flex items-center justify-between space-x-2">
-        <Label
-          htmlFor="preserve-size"
-          className="flex items-center justify-start text-foreground/80"
-        >
+        <Label className="flex items-center justify-start text-foreground/80" htmlFor="preserve-size">
           <Figma className="h3.5 me-1.5 w-3.5" /> Figma Plugin
         </Label>
-        <Switch
-          id="preserve-size"
-          onCheckedChange={setFigmaPlugin}
-          checked={figmaPlugin}
-          aria-label="Figma Plugin"
-        />
+        <Switch aria-label="Figma Plugin" checked={figmaPlugin} id="preserve-size" onCheckedChange={setFigmaPlugin} />
       </div>
       <div className="flex space-x-2">
         <Input
           className="h-8"
-          value={figmaPlugin ? staticURL + `&token=${token}` : staticURL}
+          disabled={loading}
           readOnly
-          disabled={loading}
+          value={figmaPlugin ? staticUrl + `&token=${token}` : staticUrl}
         />
-        <Button
-          className="h-8"
-          size="icon"
-          onClick={handleCopy}
-          disabled={loading}
-        >
+        <Button className="h-8" disabled={loading} onClick={handleCopy} size="icon">
           <Copy className="h-4 w-4" />
+          <span className="sr-only">Copy</span>
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
-export default ShareableLinkPlugin;
+export default ShareableLinkPlugin

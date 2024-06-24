@@ -1,17 +1,17 @@
-import ToolbarUploadImage from "./upload-image";
-import ToolbarDownloadBasePalette from "./download-base-palette";
-import ToolbarShareableLink from "./shareable-link";
-import Readability from "./readability";
-import CVD from "./cvd";
+import CVD from './cvd'
+import ToolbarDownloadBasePalette from './download-base-palette'
+import Readability from './readability'
+import ToolbarShareableLink from './shareable-link'
+import ToolbarUploadImage from './upload-image'
 
-const ToolbarPrimative = ({ children }) => children;
+const ToolbarPrimative = ({ children }: { children: React.ReactNode }) => children
 
-ToolbarPrimative.displayName = "Toolbar";
+ToolbarPrimative.displayName = 'Toolbar'
 
 export const Toolbar = Object.assign(ToolbarPrimative, {
-  UploadImage: ToolbarUploadImage,
-  DownloadBasePalette: ToolbarDownloadBasePalette,
-  ShareableLink: ToolbarShareableLink,
-  Readability: Readability,
   CVD: CVD,
-});
+  DownloadBasePalette: ToolbarDownloadBasePalette,
+  Readability: Readability,
+  ShareableLink: ToolbarShareableLink,
+  UploadImage: ToolbarUploadImage,
+})
