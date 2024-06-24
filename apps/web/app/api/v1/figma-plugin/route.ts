@@ -1,4 +1,4 @@
-import { BaseColors, RawColor } from '@/types/app'
+import { ColorOptions } from '@/types/app'
 import jwt from 'jsonwebtoken'
 import { NextResponse } from 'next/server'
 import tinycolor from 'tinycolor2'
@@ -53,9 +53,9 @@ export async function GET(req: Request) {
   const authSecret = process.env.FIGMA_AUTH_SECRET
   // decode the token using the same secret key
   // we should get the base colors
-  let baseColors: Partial<BaseColors>
+  let baseColors: Partial<ColorOptions>
   try {
-    baseColors = jwt.verify(token, authSecret)
+    baseColors = await jwt.verify(token, authSecret)
   } catch (error) {
     console.log(`====> Error:`, error)
     return NextResponse.json(
@@ -71,8 +71,8 @@ export async function GET(req: Request) {
       },
     )
   }
-  const { accent, primary, secondary } = baseColors as BaseColors
-  const v = (color: RawColor | string) => tinycolor(color).isValid()
+  const { accent, primary, secondary } = baseColors as ColorOptions
+  const v = (color: string) => tinycolor(color).isValid()
   if (!v(primary) || !v(secondary) || !v(accent)) {
     return NextResponse.json(
       {
@@ -89,11 +89,7 @@ export async function GET(req: Request) {
   }
   return NextResponse.json(
     {
-      data: {
-        accent,
-        primary,
-        secondary,
-      },
+      data: baseColors,
       error: null,
     },
     {

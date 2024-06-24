@@ -14,7 +14,11 @@ import { Button } from 'ui/components/ui/button'
 import { Input } from 'ui/components/ui/input'
 import { cn } from 'ui/lib/utils'
 
-function ShareableLinkPlugin({ setOpen }: { setOpen: (open: boolean) => void }) {
+function ShareableLinkPlugin({
+  setOpen,
+}: {
+  setOpen: (open: boolean) => void
+}) {
   const baseColors = useColorStore((s) => s.colors.baseColors)
   const [loadingSocialPreview, setLoadingSocialPreview] = useState(true)
   const [token, setToken] = useState(null)
@@ -24,7 +28,9 @@ function ShareableLinkPlugin({ setOpen }: { setOpen: (open: boolean) => void }) 
   const colorParams =
     '/?' +
     Object.entries(baseColors)
-      .map(([key, value]) => `${key}=${colorHelper.toHex(value)}`.replace('#', ''))
+      .map(([key, value]) =>
+        `${key}=${colorHelper.toHex(value)}`.replace('#', ''),
+      )
       .join('&')
   const staticUrl = process.env.NEXT_PUBLIC_URL + colorParams
   const handleCopy = () => {
@@ -35,7 +41,11 @@ function ShareableLinkPlugin({ setOpen }: { setOpen: (open: boolean) => void }) 
     setLoading(true)
     const { data, error } = await fetch('/api/v1/figma-plugin', {
       body: JSON.stringify({
-        baseColors,
+        baseColors: {
+          primary: colorHelper.toHex(baseColors.primary),
+          secondary: colorHelper.toHex(baseColors.secondary),
+          accent: colorHelper.toHex(baseColors.accent),
+        },
       }),
       method: 'POST',
     }).then((res) => res.json())
@@ -57,7 +67,7 @@ function ShareableLinkPlugin({ setOpen }: { setOpen: (open: boolean) => void }) 
         <div
           className={cn(
             'mb-4 grid place-items-stretch overflow-hidden rounded-md',
-            'aspect-[120/63] w-full rounded-md'
+            'aspect-[120/63] w-full rounded-md',
           )}
         >
           <Skeleton
@@ -67,7 +77,9 @@ function ShareableLinkPlugin({ setOpen }: { setOpen: (open: boolean) => void }) 
           />
           <Image
             alt="Social preview"
-            className={cn('absolute inset-0 h-full w-full rounded border object-cover')}
+            className={cn(
+              'absolute inset-0 h-full w-full rounded border object-cover',
+            )}
             height={184}
             onLoad={() => setLoadingSocialPreview(false)}
             src={`${process.env.NEXT_PUBLIC_URL}/api/og${colorParams}`}
@@ -76,10 +88,18 @@ function ShareableLinkPlugin({ setOpen }: { setOpen: (open: boolean) => void }) 
         </div>
       </div>
       <div className="flex items-center justify-between space-x-2">
-        <Label className="flex items-center justify-start text-foreground/80" htmlFor="preserve-size">
+        <Label
+          className="flex items-center justify-start text-foreground/80"
+          htmlFor="preserve-size"
+        >
           <Figma className="h3.5 me-1.5 w-3.5" /> Figma Plugin
         </Label>
-        <Switch aria-label="Figma Plugin" checked={figmaPlugin} id="preserve-size" onCheckedChange={setFigmaPlugin} />
+        <Switch
+          aria-label="Figma Plugin"
+          checked={figmaPlugin}
+          id="preserve-size"
+          onCheckedChange={setFigmaPlugin}
+        />
       </div>
       <div className="flex space-x-2">
         <Input
@@ -88,7 +108,12 @@ function ShareableLinkPlugin({ setOpen }: { setOpen: (open: boolean) => void }) 
           readOnly
           value={figmaPlugin ? staticUrl + `&token=${token}` : staticUrl}
         />
-        <Button className="h-8" disabled={loading} onClick={handleCopy} size="icon">
+        <Button
+          className="h-8"
+          disabled={loading}
+          onClick={handleCopy}
+          size="icon"
+        >
           <Copy className="h-4 w-4" />
           <span className="sr-only">Copy</span>
         </Button>

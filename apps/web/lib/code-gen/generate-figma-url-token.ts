@@ -1,20 +1,21 @@
-import { BaseColors } from "@/types/app";
+import { ColorOptions } from '@/types/app'
 
-import { colorHelper } from "../colorHelper";
-
-async function generateFigmaUrlToken(baseColors: Omit<BaseColors, "gray">) {
-  const { data, error } = await fetch("/api/v1/figma-plugin", {
+async function generateFigmaUrlToken(baseColors: ColorOptions) {
+  const { data, error } = await fetch('/api/v1/figma-plugin', {
     body: JSON.stringify({
       baseColors,
     }),
-    method: "POST",
-  }).then((res) => res.json());
-  const hexColors = Object.values(baseColors).map((color) =>
-    colorHelper.toHex(color),
-  );
+    method: 'POST',
+  }).then((res) => res.json())
+  const hexColors = [
+    baseColors.primary,
+    baseColors.secondary,
+    baseColors.accent,
+  ]
+  console.log(`====> hexColors:`, hexColors)
   return `${process.env.NEXT_PUBLIC_URL}/?token=${
     data.token
-  }&colors=${encodeURIComponent(hexColors.join(","))}`;
+  }&colors=${encodeURIComponent(hexColors.join(','))}`
 }
 
-export default generateFigmaUrlToken;
+export default generateFigmaUrlToken

@@ -1,5 +1,5 @@
-import { generateColorPalette } from '@/lib/colorCalculator'
-import { BaseColorTypes, BaseColors, ColorMode } from '@/types/app'
+import { generateColors } from '@/data/generate-colors'
+import { ColorOptions } from '@/types/app'
 import jwt from 'jsonwebtoken'
 import { NextResponse } from 'next/server'
 
@@ -27,9 +27,9 @@ export async function GET(req: Request) {
   const authSecret = process.env.FIGMA_AUTH_SECRET
   // decode the token using the same secret key
   // we should get the base colors
-  let baseColors: Partial<BaseColors>
+  let baseColors: Partial<ColorOptions>
   try {
-    baseColors = jwt.verify(token, authSecret)
+    baseColors = await jwt.verify(token, authSecret)
   } catch (error) {
     console.log(`====> Error:`, error)
     return NextResponse.json(
@@ -42,10 +42,29 @@ export async function GET(req: Request) {
       {
         headers: headers(origin),
         status: 400,
-      }
+      },
     )
   }
-  const { accent, primary, secondary } = baseColors as BaseColors
+  if (
+    !baseColors ||
+    !baseColors.primary ||
+    !baseColors.secondary ||
+    !baseColors.accent
+  ) {
+    return NextResponse.json(
+      {
+        data: null,
+        error: {
+          message: 'Missing base colors',
+        },
+      },
+      {
+        headers: headers(origin),
+        status: 400,
+      },
+    )
+  }
+  const { accent, primary, secondary } = baseColors
   if (!primary || !secondary || !accent) {
     return NextResponse.json(
       {
@@ -57,34 +76,26 @@ export async function GET(req: Request) {
       {
         headers: headers(origin),
         status: 400,
-      }
+      },
     )
   }
   // !TODO: get mode from query params
-  const mode = ColorMode.HEX
-  const [primaryPalette, secondaryPalette, accentPalette, grayPalette] = ['primary', 'secondary', 'accent', 'gray'].map(
-    (color) =>
-      generateColorPalette({
-        color: color === 'gray' ? baseColors.primary : baseColors[color],
-        type: color as BaseColorTypes,
-      })
-  )
+  const colors = generateColors({
+    primary,
+    secondary,
+    accent,
+  })
   return NextResponse.json(
     {
       data: {
         baseColors,
-        colorMode: mode,
-        colorPalettes: {
-          accent: accentPalette,
-          gray: grayPalette,
-          primary: primaryPalette,
-          secondary: secondaryPalette,
-        },
+        colorMode: 'hex',
+        colorPalettes: colors.colorPalettes,
       },
       error: null,
     },
     {
-      headers: headers(origin),
-    }
+      status: 200,
+    },
   )
 }
