@@ -50,7 +50,7 @@ function SixtyThirtyTenPalettes({ className }: { className?: string }) {
             >
               <div
                 className={cn(
-                  'absolute start-0 top-0 p-4 font-sans text-lg font-extralight text-background/70 delay-300 duration-700',
+                  'absolute start-0 top-0 p-4 font-sans text-lg font-extralight text-background/80 delay-300 duration-700',
                   'contrast-more:font-medium contrast-more:text-foreground/80 contrast-more:hover:text-foreground',
                   'animate-text transition-all'
                 )}

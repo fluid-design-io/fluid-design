@@ -7,10 +7,8 @@ import { Button } from '@ui/components/ui/button'
 import { cn } from '@ui/lib/utils'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Dice1, Dice2, Dice3, Dice4, Dice5, Dice6 } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import { useState } from 'react'
-
-const MobilePrimaryMenu = dynamic(() => import('@/components/ui/mobile-primary-menu'), { ssr: false })
+import MobilePrimaryMenu from './mobile-primary-menu'
 
 export const DiceButton = () => {
   const [face, setFace] = useState(0)

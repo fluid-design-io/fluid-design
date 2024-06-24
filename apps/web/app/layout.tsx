@@ -15,8 +15,7 @@ const comfortaa = Comfortaa({
 
 export const viewport: Viewport = {
   initialScale: 1.0,
-  maximumScale: 1.0,
-  userScalable: false,
+  userScalable: true,
   viewportFit: 'cover',
   width: 'device-width',
 }

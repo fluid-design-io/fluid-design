@@ -47,14 +47,13 @@ const PillPalette = ({ color, type }: { color: string; type: 'analogous' | 'mono
       {colors.map((c, i) => {
         const isDark = tinycolor(color).isDark()
         const foregroundColor = isDark
-          ? 'text-white/30 hover:text-white/70 focus:text-white/70 contrast-more:text-white/80 contrast-more:hover:text-white contrast-more:font-medium'
-          : 'text-black/30 hover:text-black/70 focus:text-black/70 contrast-more:text-black/80 contrast-more:hover:text-black contrast-more:font-medium'
+          ? 'text-white/0 transition-colors group-hover/pill-btn:text-white/70 group-focus/pill-btn:text-white/70 contrast-more:text-white/80 contrast-more:hover:text-white contrast-more:font-medium'
+          : 'text-black/0 transition-colors group-hover/pill-btn:text-black/70 group-focus/pill-btn:text-black/70 contrast-more:text-black/80 contrast-more:hover:text-black contrast-more:font-medium'
         return (
           <button
             aria-label={`Copy ${c} to clipboard`}
             className={cn(
-              'group/pill-btn flex h-10 w-full items-center justify-between rounded-full border border-border px-2.5 text-xs transition-colors duration-500 focus:outline-none focus:ring focus:ring-accent focus:ring-opacity-50',
-              foregroundColor
+              'group/pill-btn flex h-10 w-full items-center justify-between rounded-full border border-border px-2.5 text-xs transition-colors duration-500 focus:outline-none focus:ring focus:ring-accent focus:ring-opacity-50'
             )}
             key={`${type}-${i}`}
             style={{
@@ -63,10 +62,15 @@ const PillPalette = ({ color, type }: { color: string; type: 'analogous' | 'mono
             }}
             type="button"
           >
-            <motion.code className="animate-text" key={`${type}-text-${i}`}>
+            <motion.code className={cn('animate-text', foregroundColor)} key={`${type}-text-${i}`}>
               {colorString(c)}
             </motion.code>
-            <Copy className="h-4 w-4 opacity-0 transition-opacity group-hover/pill-btn:opacity-100 group-focus/pill-btn:opacity-100" />
+            <Copy
+              className={cn(
+                'h-4 w-4 opacity-0 transition-opacity group-hover/pill-btn:opacity-100 group-focus/pill-btn:opacity-100',
+                foregroundColor
+              )}
+            />
           </button>
         )
       })}
