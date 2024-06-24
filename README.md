@@ -20,6 +20,10 @@ Welcome to Fluid Color Palettes, where beautiful color palettes meet dynamic fun
 - 🎛️ **Interactive & Graphic Visualization**: See your palette come alive, either in an interactive format or as a graphic.
 - 📜 **Code Export**: Grab the generated color tokens for different platforms, directly from the 'Code' tab.
 
+![Dark Mode & Contrast Quick View](https://github.com/fluid-design-io/fluid-design/assets/13263720/c843267c-9eff-4693-b979-aa6f6ab4842e)
+
+https://github.com/fluid-design-io/fluid-design/assets/13263720/8cd7d33f-d62e-45b7-abb0-1dcc79c4e5bf
+
 ## ✅ Currently Supported Tokens
 
 - [x] RAW
@@ -36,12 +40,13 @@ Welcome to Fluid Color Palettes, where beautiful color palettes meet dynamic fun
 
 We welcome contributions from the community! If you have any ideas, suggestions, or bug reports, please feel free to open an issue or submit a pull request. We are always looking to improve and expand our project, and we would love to have you on board!
 
-## 📜 License
-
-I don't know what it means, but you can do whatever you want with this project. 🤷‍♂️
+## 🤷‍♂️ License
 
 ```plaintext
-Hey there, code wrangler! This GitHub project is rocking the MIT license, which means you can take it, shake it, break it, or make it your own. Seriously, go wild—I’m not going to lose any sleep over it. Enjoy! 😎🎉
+Hey there, code wrangler! This GitHub project is rocking the MIT license,
+which means you can take it, shake it, break it, or make it your own.
+
+Seriously, go wild—I’m not going to lose any sleep over it. Enjoy! 😎🎉
 ```
 
 ## 🙏 Acknowledgments
