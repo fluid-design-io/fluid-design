@@ -1,110 +1,90 @@
-"use client";
+'use client'
 
-import { useColorStore } from "@/store/store";
-import useStore from "@/store/useStore";
-import { Button } from "@ui/components/ui/button";
-import {
-  Dice1,
-  Dice2,
-  Dice3,
-  Dice4,
-  Dice5,
-  Dice6,
-  LoaderIcon,
-} from "lucide-react";
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { cn } from "@ui/lib/utils";
+import { useColorStore } from '@/context/color-store-provider'
+import { colorHelper } from '@/lib/colorHelper'
+import { generateBaseColors } from '@/lib/generateBaseColors'
+import { Button } from '@ui/components/ui/button'
+import { cn } from '@ui/lib/utils'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Dice1, Dice2, Dice3, Dice4, Dice5, Dice6 } from 'lucide-react'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
 
-import dynamic from "next/dynamic";
-
-const MobilePrimaryMenu = dynamic(
-  () => import("@/components/ui/mobile-primary-menu"),
-  { ssr: false },
-);
+const MobilePrimaryMenu = dynamic(() => import('@/components/ui/mobile-primary-menu'), { ssr: false })
 
 export const DiceButton = () => {
-  const store = useStore(useColorStore, (state) => state);
-  const [face, setFace] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const faces = [Dice1, Dice2, Dice3, Dice4, Dice5, Dice6];
-  const Face = faces[face];
+  const [face, setFace] = useState(0)
+  const [faceKey, setFaceKey] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const setBaseColors = useColorStore((s) => s.setBaseColors)
+  const faces = [Dice1, Dice2, Dice3, Dice4, Dice5, Dice6]
+  const Face = faces[face]
 
   const roll = () => {
-    let currentFace = face;
-    const newFace = Math.floor(Math.random() * 6);
-    if (currentFace === newFace) {
-      roll();
-      return;
-    }
-    setFace(newFace);
+    const newFace = Math.floor(Math.random() * 6)
+    setLoading(true)
+    setFace(newFace)
+    // set a randome faceKey to trigger the animation
+    setFaceKey(Math.round(Math.random() * 3000))
+
+    // remove url search params if exists
+    const url = window.location.href.split('?')[0]
+    window.history.pushState({}, document.title, url)
+
     // find #palette-body and add a .coloring class
-    const paletteBody = document?.getElementById("palette-body");
+    const paletteBody = document?.getElementById('palette-body')
     if (paletteBody) {
-      paletteBody.classList.add("coloring");
+      paletteBody.classList.add('coloring')
     }
-    setLoading(true);
-    // delay 1000ms
+
+    // delay the fetching of new colors
     setTimeout(() => {
-      store.generatePalette();
+      const baseColorsRaw = generateBaseColors()
+      setBaseColors({
+        accent: colorHelper.toHex(baseColorsRaw.accent),
+        primary: colorHelper.toHex(baseColorsRaw.primary),
+        secondary: colorHelper.toHex(baseColorsRaw.secondary),
+      })
+
       setTimeout(() => {
+        setLoading(false)
         if (paletteBody) {
-          paletteBody.classList.remove("coloring");
+          paletteBody.classList.remove('coloring')
         }
-        setLoading(false);
-      }, 700);
-    }, 300);
-  };
+      }, 700)
+    }, 320)
+  }
   return (
     <div className="inline-flex">
       <Button
-        variant="default"
+        className={cn('rounded-e-none transition-colors duration-1000 lg:rounded-e-md', {
+          'pointer-events-none': loading,
+        })}
         onClick={roll}
-        title="Roll to generate a new random palette"
-        disabled={loading}
-        className={cn("rounded-e-none lg:rounded-e-md")}
         size="sm"
+        title="Roll to generate a new random palette"
       >
         <div className="sr-only">Roll to generate a new random palette</div>
         <AnimatePresence mode="popLayout">
-          {loading ? (
-            <motion.div
-              key="dice-button-loading"
-              className="flex items-center justify-center gap-2"
+          <motion.div className="flex items-center justify-center gap-2" key={`dice-button-${faceKey}`}>
+            <motion.span
+              animate={{ opacity: 1, scale: 1, transition: { delay: 0.3, duration: 0.7 } }}
+              exit={{
+                opacity: 0,
+                scale: 0.8,
+              }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              transition={{
+                duration: 0.7,
+              }}
             >
-              <motion.span
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{
-                  duration: 0.3,
-                }}
-              >
-                <LoaderIcon className="h-5 w-5 animate-spin" />
-              </motion.span>
-              <span className="text-sm font-semibold">Generate</span>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="dice-button"
-              className="flex items-center justify-center gap-2"
-            >
-              <motion.span
-                initial={{ rotate: -30, scale: 0.9, opacity: 0 }}
-                animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                exit={{ rotate: 30, scale: 0.9, opacity: 0 }}
-                transition={{
-                  duration: 0.3,
-                }}
-              >
-                <Face className="h-5 w-5" />
-              </motion.span>
-              <span className="text-sm font-semibold">Generate</span>
-            </motion.div>
-          )}
+              <Face className="h-5 w-5" />
+            </motion.span>
+            <span className="text-sm font-semibold">Generate</span>
+          </motion.div>
         </AnimatePresence>
       </Button>
       <MobilePrimaryMenu disabled={loading} />
     </div>
-  );
-};
+  )
+}
