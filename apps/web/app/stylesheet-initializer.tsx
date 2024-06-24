@@ -8,8 +8,16 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 
 function StyleSheetInitializer() {
-  const { accent, generateColorNames, generateColors, primary, secondary, setBaseColors, setColorNames, setColors } =
-    useColorStore((s) => s)
+  const {
+    accent,
+    generateColorNames,
+    generateColors,
+    primary,
+    secondary,
+    setBaseColors,
+    setColorNames,
+    setColors,
+  } = useColorStore((s) => s)
   const searchParams = useSearchParams()
   const primaryParam = searchParams.get('primary')
   const secondaryParam = searchParams.get('secondary')
@@ -31,18 +39,27 @@ function StyleSheetInitializer() {
       secondary,
     }
     const colors = generateColors(baseColors)
-    const colorNameColors = Object.keys(colors.colorPalettes).map(
-      (key) => colors.colorPalettes[key as BaseColorTypes][5]?.color as string
-    )
-    generateColorNames(colorNameColors).then(setColorNames)
+    const c = (keys: string[]) =>
+      keys.map(
+        (key) =>
+          colors.colorPalettes[key as BaseColorTypes][5]?.color as string,
+      )
+    const colorNames = c(['primary', 'secondary', 'accent', 'gray'])
+    generateColorNames(colorNames).then(setColorNames)
     setColors(colors)
     addBodyColorTransition()
     updateCSSVariables(colors.colorPalettes)
   }, [primary, secondary, accent])
   useEffect(() => {
     if (primaryParam && secondaryParam && accentParam) {
-      if (primaryParam !== primary || secondaryParam !== secondary || accentParam !== accent) {
-        if (areSearchParamColorsValid(primaryParam, secondaryParam, accentParam)) {
+      if (
+        primaryParam !== primary ||
+        secondaryParam !== secondary ||
+        accentParam !== accent
+      ) {
+        if (
+          areSearchParamColorsValid(primaryParam, secondaryParam, accentParam)
+        ) {
           console.log('setting colors from search params')
           setBaseColors({
             accent: accentParam,

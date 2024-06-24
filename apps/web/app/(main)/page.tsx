@@ -11,7 +11,10 @@ type Props = {
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata({ searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+  { searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const colors = searchParams?.colors
   let paletteColors = ''
   let opengraphImage = '/og-default.jpg'
@@ -52,7 +55,7 @@ export default function Page({
   searchParams: { accent?: string; primary?: string; secondary?: string }
 }) {
   return (
-    <div className="site-padding mx-auto flex w-full max-w-[120rem] flex-1 flex-col pb-20 sm:pb-24">
+    <div className="site-padding mx-auto flex min-h-[calc(100svh-10.5rem)] w-full max-w-[120rem] flex-1 flex-col justify-center pb-20 sm:pb-24">
       <SearchParamsLoadingIndicator {...searchParams} />
       <RootSkipNavContent />
       <ColorPalette />
