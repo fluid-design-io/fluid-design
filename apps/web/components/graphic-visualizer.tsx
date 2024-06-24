@@ -1,11 +1,12 @@
 import SvgGeometry from "@/components/svg/geometry";
-import SvgPattern from "@/components/svg/pattern";
 import SvgLanding from "@/components/svg/landing";
 import SvgNamecard from "@/components/svg/namecard";
-import SvgArtisticFont from "./svg/artistic-font";
-import DataChart from "./svg/data-chart";
+import SvgPattern from "@/components/svg/pattern";
 import { Card } from "@ui/components/card";
 import { cn } from "@ui/lib/utils";
+
+import SvgArtisticFont from "./svg/artistic-font";
+import DataChart from "./svg/data-chart";
 function GraphicVisualizer() {
   const cardStyle = cn(
     "flex aspect-[4/3] items-center justify-center p-6 [&>svg]:rounded overflow-hidden",

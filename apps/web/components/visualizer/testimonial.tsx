@@ -1,4 +1,5 @@
 import { cn } from "@ui/lib/utils";
+
 import PeakVentureLogo from "../svg/peak-venture-logo";
 
 export default function VisTestimonials() {
@@ -7,14 +8,14 @@ export default function VisTestimonials() {
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="relative overflow-hidden border border-border/10 bg-muted px-6 py-20 shadow-xl shadow-primary/5 sm:rounded-3xl sm:px-10 sm:py-24 md:px-12 lg:px-20">
           <img
+            alt=""
             className="absolute inset-0 h-full w-full object-cover brightness-150 saturate-0"
             src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1216&q=80"
-            alt=""
           />
           <div className="absolute inset-0 bg-muted/90 mix-blend-screen dark:mix-blend-multiply" />
           <div
-            className="absolute -left-80 -top-56 transform-gpu blur-3xl"
             aria-hidden="true"
+            className="absolute -left-80 -top-56 transform-gpu blur-3xl"
           >
             <div
               className={cn(
@@ -29,8 +30,8 @@ export default function VisTestimonials() {
             />
           </div>
           <div
-            className="hidden md:absolute md:bottom-16 md:left-[50rem] md:block md:transform-gpu md:blur-3xl"
             aria-hidden="true"
+            className="hidden md:absolute md:bottom-16 md:left-[50rem] md:block md:transform-gpu md:blur-3xl"
           >
             <div
               className={cn(

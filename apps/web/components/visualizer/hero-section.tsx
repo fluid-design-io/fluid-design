@@ -1,4 +1,4 @@
-import { cn } from "@ui/lib/utils";
+import { cn } from '@ui/lib/utils'
 
 /**
  * v0 by Vercel.
@@ -8,17 +8,17 @@ export default function VisHeroSection() {
   return (
     <section className="relative isolate w-full bg-background py-12 transition-colors md:py-24 lg:py-32 xl:py-40">
       <div
-        className={cn(
-          "pointer-events-none absolute bg-gradient-to-b opacity-10 mix-blend-normal blur-[120px] dark:opacity-[0.15]",
-          "left-1/2 top-[10vh] -translate-x-1/2 sm:top-1/2 sm:-translate-y-2/3",
-          "h-[145vh] w-[75vw]",
-          "sm:h-[50vw] sm:w-[50vw]",
-          "sm:w-[33vw] lg:h-[33vw]",
-          "from-[hsl(var(--primary-600))] to-[hsl(var(--accent-800))]",
-          "dark:from-[hsl(var(--primary-600))] dark:to-[hsl(var(--accent-400))]",
-          "transition-all",
-        )}
         aria-hidden
+        className={cn(
+          'pointer-events-none absolute bg-gradient-to-b opacity-10 mix-blend-normal blur-[120px] dark:opacity-[0.15]',
+          'left-1/2 top-[10svh] -translate-x-1/2 sm:top-1/2 sm:-translate-y-2/3',
+          'h-[145svh] w-[75vw]',
+          'sm:h-[50vw] sm:w-[50vw]',
+          'sm:w-[33vw] lg:h-[33vw]',
+          'from-[hsl(var(--primary-600))] to-[hsl(var(--accent-800))]',
+          'dark:from-[hsl(var(--primary-600))] dark:to-[hsl(var(--accent-400))]',
+          'transition-all'
+        )}
       />
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid items-center gap-6">
@@ -28,8 +28,7 @@ export default function VisHeroSection() {
                 Discover Our Unique Features
               </h1>
               <p className="mx-auto max-w-[600px] text-[hsl(var(--primary-700))] transition-colors dark:text-[hsl(var(--primary-200))] md:text-xl">
-                Our features are designed to enhance your productivity and
-                streamline your workflow.
+                Our features are designed to enhance your productivity and streamline your workflow.
               </p>
             </div>
             <div className="mx-auto w-full max-w-full space-y-4">
@@ -52,12 +51,9 @@ export default function VisHeroSection() {
                       <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
                     </svg>
                   </div>
-                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">
-                    Smart Inbox
-                  </h2>
+                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">Smart Inbox</h2>
                   <p className="w-4/5 text-muted-foreground sm:w-3/4">
-                    Our Smart Inbox feature helps you manage your emails
-                    efficiently by prioritizing important emails.
+                    Our Smart Inbox feature helps you manage your emails efficiently by prioritizing important emails.
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
@@ -79,12 +75,10 @@ export default function VisHeroSection() {
                       <path d="m20 22-5-5" />
                     </svg>
                   </div>
-                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">
-                    Seamless Integration
-                  </h2>
+                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">Seamless Integration</h2>
                   <p className="w-4/5 text-muted-foreground sm:w-3/4">
-                    Seamless Integration allows you to connect with your
-                    favorite apps and services without leaving your inbox.
+                    Seamless Integration allows you to connect with your favorite apps and services without leaving your
+                    inbox.
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
@@ -105,12 +99,10 @@ export default function VisHeroSection() {
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   </div>
-                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">
-                    Advanced Customization
-                  </h2>
+                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">Advanced Customization</h2>
                   <p className="w-4/5 text-muted-foreground sm:w-3/4">
-                    With Advanced Customization, you can personalize your email
-                    client to suit your preferences and work style.
+                    With Advanced Customization, you can personalize your email client to suit your preferences and work
+                    style.
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
@@ -131,12 +123,9 @@ export default function VisHeroSection() {
                       <path d="m21 21-4.3-4.3" />
                     </svg>
                   </div>
-                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">
-                    Powerful Search
-                  </h2>
+                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">Powerful Search</h2>
                   <p className="w-4/5 text-muted-foreground sm:w-3/4">
-                    Our Powerful Search feature allows you to find any email,
-                    contact, or file in seconds.
+                    Our Powerful Search feature allows you to find any email, contact, or file in seconds.
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
@@ -157,12 +146,9 @@ export default function VisHeroSection() {
                       <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                     </svg>
                   </div>
-                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">
-                    Reliable Security
-                  </h2>
+                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">Reliable Security</h2>
                   <p className="w-4/5 text-muted-foreground sm:w-3/4">
-                    With Reliable Security, your data is always safe and
-                    protected.
+                    With Reliable Security, your data is always safe and protected.
                   </p>
                 </div>
                 <div className="flex flex-col items-center space-y-2 rounded-lg border border-border/50 p-4 transition-all hover:border-border hover:bg-muted/30 hover:shadow">
@@ -184,12 +170,9 @@ export default function VisHeroSection() {
                       <path d="m20 22-5-5" />
                     </svg>
                   </div>
-                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">
-                    Easy Collaboration
-                  </h2>
+                  <h2 className="mb-2 text-xl font-semibold text-foreground/80">Easy Collaboration</h2>
                   <p className="w-4/5 text-muted-foreground sm:w-3/4">
-                    Easy Collaboration allows you to share and edit documents
-                    with your team in real time.
+                    Easy Collaboration allows you to share and edit documents with your team in real time.
                   </p>
                 </div>
               </div>
@@ -198,5 +181,5 @@ export default function VisHeroSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
