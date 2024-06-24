@@ -1,25 +1,25 @@
 import { NextResponse } from "next/server";
 
 const headers = (origin: string) => ({
-  "Access-Control-Allow-Origin": origin || "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Credentials": "true",
   "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Origin": origin || "*",
 });
 
 export async function OPTIONS(request: Request) {
   const origin = request.headers.get("origin");
 
   return new Response(null, {
-    status: 200,
     headers: headers(origin),
+    status: 200,
   });
 }
 
 type NotificationType = "error" | "info" | "none";
 type Notification = {
-  message: string;
   href?: string;
+  message: string;
   type: NotificationType;
 };
 
