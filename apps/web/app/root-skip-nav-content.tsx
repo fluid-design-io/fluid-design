@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 const RootSkipNavContent = () => {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false)
   useEffect(() => {
-    setMounted(true);
-  }, []);
-  if (!mounted) return null;
+    setMounted(true)
+  }, [])
+  if (!mounted) return null
   return createPortal(
     <div className="skip-main-wrap">
       <div className="skip-main flex flex-col gap-1">
@@ -19,7 +19,7 @@ const RootSkipNavContent = () => {
         <a className="skip-btn" href="#analogous-palette">
           Analogous Palettes
         </a>
-        <a className="skip-btn" href="#analogous-palette">
+        <a className="skip-btn" href="#monochromatic-palette">
           Monochromatic Palettes
         </a>
         <div className="flex flex-col gap-1">
@@ -40,8 +40,8 @@ const RootSkipNavContent = () => {
       </div>
     </div>,
     // #skip-nav
-    document.getElementById("skip-nav")!,
-  );
-};
+    document.getElementById('skip-nav')!
+  )
+}
 
-export default RootSkipNavContent;
+export default RootSkipNavContent
