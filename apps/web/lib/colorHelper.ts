@@ -61,6 +61,8 @@ export const areSearchParamColorsValid = (primary?: string, secondary?: string, 
   return tinycolor(primary).isValid() && tinycolor(secondary).isValid() && tinycolor(accent).isValid()
 }
 
+export const getContrastRatio = tinycolor.readability
+
 export const colorHelper = {
   colorStringToBaseColors,
   toColorMode,
@@ -70,4 +72,5 @@ export const colorHelper = {
   toRaw,
   toRgb,
   toRgba,
+  getContrastRatio,
 }

@@ -18,16 +18,41 @@ export enum CodeButtonTitle {
   WEBFLOW = 'Webflow',
 }
 
-export const getColorHsl = <T extends BaseColorTypes>(palette: ColorPalettes[T], step: ColorStep): string => {
-  const { h, l, s } = palette.find((color) => color.step === colorStepMap[step])?.raw || { h: 0, l: 0, s: 0 }
-  const hRounded = Math.round(h * 100) / 100
-  const sRounded = Math.round(s * 100)
-  const lRounded = Math.round(l * 100)
+export const getColorHsl = <T extends BaseColorTypes>(
+  palette: ColorPalettes[T],
+  step: ColorStep,
+  /**
+   * If provided, the current color will be considered as **Foreground Color**,
+   * and it use the background color to calculate the contrast ratio.
+   *
+   * If the ratio is less than 4.5, it will use the `contrastColor` color as the foreground color if exists.
+   */
+  backgroundStep: ColorStep | undefined = undefined
+): string => {
+  let color = palette.find((color) => color.step === colorStepMap[step])?.color || '#000'
+  if (backgroundStep !== undefined) {
+    const background = palette.find((color) => color.step === colorStepMap[backgroundStep])
+    const backgroundColor = background?.color || '#fff'
+    const contrastRatio = colorHelper.getContrastRatio(color, backgroundColor)
+    if (contrastRatio < 4.5) {
+      // find the nearest color with the contrastColor
+      const contrastColor = palette.find((color) => {
+        const contrastRatio = colorHelper.getContrastRatio(color.color, backgroundColor)
+        return contrastRatio >= 4.5
+      })?.step
+      if (!contrastColor) return color
+      color = palette.find((color) => color.step === contrastColor)?.color || color
+    }
+  }
+  const hsl = colorHelper.toRaw(color)
+  const hRounded = Math.round(hsl.h)
+  const sRounded = Math.round(hsl.s * 100)
+  const lRounded = Math.round(hsl.l * 100)
   return `${hRounded} ${sRounded}% ${lRounded}%`
 }
 
 const generateShadcnCss = (colorPalettes: ColorPalettes) => {
-  const g = (color: BaseColorTypes, step: ColorStep) => getColorHsl(colorPalettes[color], step)
+  const g = (color: BaseColorTypes, step: ColorStep, bs?: ColorStep) => getColorHsl(colorPalettes[color], step, bs)
   const darkTheme: Record<AppCSSVariables, string> = {
     '--accent': g('accent', 8),
     '--accent-foreground': g('accent', 1),
@@ -39,11 +64,11 @@ const generateShadcnCss = (colorPalettes: ColorPalettes) => {
     '--foreground': g('gray', 0),
     '--input': g('gray', 8),
     '--muted': g('gray', 9),
-    '--muted-foreground': g('gray', 4),
+    '--muted-foreground': g('gray', 4, 10),
     '--popover': g('gray', 10),
-    '--popover-foreground': g('gray', 0),
+    '--popover-foreground': g('gray', 0, 10),
     '--primary': g('primary', 4),
-    '--primary-foreground': g('primary', 9),
+    '--primary-foreground': g('primary', 9, 4),
     '--ring': g('gray', 0),
     '--secondary': g('secondary', 9),
     '--secondary-foreground': g('secondary', 1),
@@ -60,14 +85,14 @@ const generateShadcnCss = (colorPalettes: ColorPalettes) => {
     '--foreground': g('gray', 10),
     '--input': g('gray', 2),
     '--muted': g('gray', 1),
-    '--muted-foreground': g('gray', 7),
+    '--muted-foreground': g('gray', 7, 1),
     '--popover': g('gray', 0),
     '--popover-foreground': g('gray', 10),
     '--primary': g('primary', 6),
-    '--primary-foreground': g('primary', 1),
+    '--primary-foreground': g('primary', 1, 6),
     '--ring': g('gray', 10),
     '--secondary': g('secondary', 2),
-    '--secondary-foreground': g('secondary', 9),
+    '--secondary-foreground': g('secondary', 9, 2),
   }
 
   const cssText = `:root {
