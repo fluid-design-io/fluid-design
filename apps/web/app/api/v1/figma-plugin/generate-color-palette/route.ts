@@ -6,9 +6,9 @@ import { NextResponse } from 'next/server'
 export const dynamic = 'force-dynamic'
 
 const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Origin': '*',
 }
 
 export async function GET(req: Request) {
@@ -87,8 +87,8 @@ export async function GET(req: Request) {
       error: null,
     },
     {
-      status: 200,
       headers,
+      status: 200,
     },
   )
 }
