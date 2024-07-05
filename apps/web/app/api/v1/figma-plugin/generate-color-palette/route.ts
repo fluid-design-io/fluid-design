@@ -3,20 +3,12 @@ import { ColorOptions } from '@/types/app'
 import jwt from 'jsonwebtoken'
 import { NextResponse } from 'next/server'
 
-const headers = (origin: string) => ({
-  'Access-Control-Allow-Credentials': 'true',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Origin': origin || '*',
-})
+export const dynamic = 'force-dynamic'
 
-export async function OPTIONS(request: Request) {
-  const origin = request.headers.get('origin')
-
-  return new Response(null, {
-    headers: headers(origin),
-    status: 200,
-  })
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 }
 
 export async function GET(req: Request) {
@@ -40,7 +32,7 @@ export async function GET(req: Request) {
         },
       },
       {
-        headers: headers(origin),
+        headers,
         status: 400,
       },
     )
@@ -59,7 +51,7 @@ export async function GET(req: Request) {
         },
       },
       {
-        headers: headers(origin),
+        headers,
         status: 400,
       },
     )
@@ -74,7 +66,7 @@ export async function GET(req: Request) {
         },
       },
       {
-        headers: headers(origin),
+        headers,
         status: 400,
       },
     )
@@ -96,6 +88,7 @@ export async function GET(req: Request) {
     },
     {
       status: 200,
+      headers,
     },
   )
 }
